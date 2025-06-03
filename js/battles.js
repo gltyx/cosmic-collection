@@ -682,7 +682,7 @@ function showSacrificeDialog(cardId) {
       const availableSlot = state.battle.slots.findIndex(slot => slot === null);
       
       if (availableSlot === -1) {
-        alert('No available battle slots!');
+        alert('没有可用的战斗槽位!');
         return;
       }
 

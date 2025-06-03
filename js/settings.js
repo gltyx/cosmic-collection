@@ -78,7 +78,7 @@ function initializeSettingsTab() {
     saveToFileBtn.addEventListener('click', function() {
         const saveData = localStorage.getItem('ccgSave');
         if (!saveData) {
-            alert('No save data found!');
+            alert('没有找到保存数据!');
             return;
         }
 
@@ -123,10 +123,10 @@ function initializeSettingsTab() {
                     // Validate the save data
                     JSON.parse(saveData);
                     localStorage.setItem('ccgSave', saveData);
-                    alert('Save data loaded successfully!');
+                    alert('存档数据加载成功!');
                     window.location.reload();
                 } catch (error) {
-                    alert('Invalid save file!');
+                    alert('无效的存档文件!');
                     // Resume the interval if load fails
                     currencyInterval = setInterval(updateCurrencyAndSave, 1000);
                 }
@@ -141,14 +141,14 @@ function initializeSettingsTab() {
     saveToClipboardBtn.addEventListener('click', function() {
         const saveData = localStorage.getItem('ccgSave');
         if (!saveData) {
-            alert('No save data found!');
+            alert('未找到存档数据!');
             return;
         }
 
         navigator.clipboard.writeText(saveData).then(() => {
-            alert('Save data copied to clipboard!');
+            alert('存档数据已保存到剪贴板!');
         }).catch(err => {
-            alert('Failed to copy to clipboard: ' + err);
+            alert('复制到剪贴板失败: ' + err);
         });
     });
 
@@ -164,15 +164,15 @@ function initializeSettingsTab() {
                 // Validate the save data
                 JSON.parse(text);
                 localStorage.setItem('ccgSave', text);
-                alert('Save data loaded successfully!');
+                alert('存档数据加载成功!');
                 window.location.reload();
             } catch (error) {
-                alert('Invalid save data in clipboard!');
+                alert('剪贴板中的存档数据无效!');
                 // Resume the interval if load fails
                 currencyInterval = setInterval(updateCurrencyAndSave, 1000);
             }
         }).catch(err => {
-            alert('Failed to read from clipboard: ' + err);
+            alert('从剪贴板读取失败: ' + err);
             // Resume the interval if clipboard read fails
             currencyInterval = setInterval(updateCurrencyAndSave, 1000);
         });
@@ -194,7 +194,7 @@ function initializeSettingsTab() {
         
         if (state.lastUnstuck && (now - parseInt(state.lastUnstuck)) < 24 * 60 * 60 * 1000) {
             const hoursLeft = Math.ceil((24 * 60 * 60 * 1000 - (now - parseInt(state.lastUnstuck))) / (60 * 60 * 1000));
-            alert(`You can only use Get Unstuck once per day. Please try again in ${hoursLeft} hours.`);
+            alert(`每日只能使用1次摆脱卡死。请在 ${hoursLeft} 小时后再试.`);
             return;
         }
         
@@ -234,7 +234,7 @@ function initializeSettingsTab() {
         unstuckWarningModal.style.display = 'none';
         
         // Show confirmation
-        alert('Successfully reset cooldown and currencies. You can use this feature again in 24 hours.');
+        alert('成功重置冷却时间和货币。您可以在24小时后再次使用此功能。');
 
         saveState();
     });
