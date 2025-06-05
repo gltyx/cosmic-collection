@@ -246,7 +246,7 @@ var cnItems = {
     "BASIC": "基础",
     "Affordable": "买得起",
     "Binder envy begins right here.": "对活页夹的羡慕就从这里开始。",
-    "Cooldown Divider:": "冷却时间分配:",
+    "Cooldown Divider:": "冷却时间除法器:",
     "Every bundle here was curated for the chosen—aka, you.": "这里的每一捆都是为被选中的人精心策划的，也就是你。",
     "Flint": "燧石",
     "Flint was used for tools and fire-starting by early humans over 2 million years ago.": "燧石在200多万年前被早期人类用来制作工具和生火。",
