@@ -73,28 +73,28 @@ window.skills = [
     {
       id: 2001,
       name: "More Cards",
-      description: "+2 to max cards per poke.",
+      description: "+4 to max cards per poke.",
       cost: { realmId: 1, currencyId: "stone", amount: 5e3 },
       purchased: false
     },
     {
       id: 2002,
       name: "More Cards 2",
-      description: "+5 to max cards per poke.",
+      description: "+8 to max cards per poke.",
       cost: { realmId: 2, currencyId: "coral", amount: 1e4 },
       purchased: false
     },
     {
       id: 2003,
       name: "More Cards 3",
-      description: "+10 to max cards per poke.",
+      description: "+12 to max cards per poke.",
       cost: { realmId: 3, currencyId: "pollen", amount: 1.5e4 },
       purchased: false
     },
     {
       id: 2004,
       name: "More Cards 4",
-      description: "+15 to max cards per poke.",
+      description: "+16 to max cards per poke.",
       cost: { realmId: 4, currencyId: "egg", amount: 2e4 },
       purchased: false
     },
@@ -178,14 +178,14 @@ window.skills = [
     {
       id: 2101,
       name: "Massive Black Hole",
-      description: "+10 to max cards per poke.",
+      description: "+20 to max cards per poke.",
       cost: { realmId: 1, currencyId: "stone", amount: 1e7 },
       purchased: false
     },
     {
       id: 2102,
       name: "Massive Black Hole 2",
-      description: "+25 to max cards per poke.",
+      description: "+40 to max cards per poke.",
       cost: { realmId: 2, currencyId: "coral", amount: 2e7 },
       purchased: false
     },
@@ -1242,8 +1242,8 @@ window.skills = [
     {
       id: 12204,
       name: "Curious Interceptor",
-      description: "Discovering a new card while interceptor is active increases its duration by 30 seconds. (Now you can stop to check out the new card!) Getting a Tier Up gives 3 seconds. ",
-      cost: { realmId: 6, currencyId: "egg", amount: 1.5e8 },
+      description: "Discovering a new card while interceptor is active increases its duration by 15 seconds. (Now you can stop to check out the new card!) Getting a Tier Up gives 2 seconds. ",
+      cost: { realmId: 6, currencyId: "egg", amount: 1e8 },
       purchased: false
     },
     {
@@ -1467,7 +1467,7 @@ window.skills = [
       id: 18101,
       name: "Don't Show Me Locked Cards",
       description: "Locked cards no longer show up after poke.",
-      cost: { realmId: 6, currencyId: "zeal", amount: 1e11},
+      cost: { realmId: 6, currencyId: "zeal", amount: 2.5e10},
       purchased: false
     },
     {
@@ -1482,6 +1482,13 @@ window.skills = [
       name: "More Bulk Offers Please 2",
       description: "Increase chance that merchants sell multiple copies of cards from 50% to 75%.",
       cost: { realmId: 10, currencyId: "coin", amount: 7.5e12},
+      purchased: false
+    },
+    {
+      id: 19003,
+      name: "More Bulk Offers Please 3",
+      description: "Increase chance that merchants sell multiple copies of cards from 75% to 100%.",
+      cost: { realmId: 11, currencyId: "coin", amount: 1e18},
       purchased: false
     },
     {
@@ -1537,13 +1544,27 @@ window.skills = [
       id: 19501,
       name: "Larger Card Stacks",
       description: "Increase max card bulk offer from 3√qty to 2.5√qty.",
-      cost: { realmId: 10, currencyId: "coral", amount: 1e12},
+      cost: { realmId: 4, currencyId: "coral", amount: 1e7},
       purchased: false
     },
     {
       id: 19502,
       name: "Larger Card Stacks 2",
       description: "Increase max card bulk offer from 2.5√qty to 2√qty.",
+      cost: { realmId: 6, currencyId: "coral", amount: 2e8},
+      purchased: false
+    },
+    {
+      id: 19503,
+      name: "Larger Card Stacks 3",
+      description: "Increase max card bulk offer from 2√qty to 10 * 2√qty",
+      cost: { realmId: 10, currencyId: "coral", amount: 1e12},
+      purchased: false
+    },
+    {
+      id: 19504,
+      name: "Larger Card Stacks 4",
+      description: "Increase max card bulk offer from 10 * 2√qty to 100 * 2√qty.",
       cost: { realmId: 11, currencyId: "coral", amount: 2.5e18},
       purchased: false
     },
@@ -1606,161 +1627,161 @@ window.skills = [
     {
       id: 21001,
       name: "Card Supernova",
-      description: "+1000 to max cards per poke.",
+      description: "+1111 to max cards per poke.",
       cost: { realmId: 8, currencyId: "stone", amount: 1e11 },
       purchased: false
     },
     {
       id: 21002,
       name: "Card Supernova 2",
-      description: "+2000 to max cards per poke.",
+      description: "+2222 to max cards per poke.",
       cost: { realmId: 8, currencyId: "coral", amount: 2e11 },
       purchased: false
     },
     {
       id: 21003,
       name: "Card Supernova 3",
-      description: "+3000 to max cards per poke.",
+      description: "+3333 to max cards per poke.",
       cost: { realmId: 8, currencyId: "pollen", amount: 3e11 },
       purchased: false
     },
     {
       id: 21004,
       name: "Card Supernova 4",
-      description: "+4000 to max cards per poke.",
+      description: "+4444 to max cards per poke.",
       cost: { realmId: 9, currencyId: "egg", amount: 4e11 },
       purchased: false
     },
     {
       id: 21005,
       name: "Card Supernova 5",
-      description: "+5000 to max cards per poke.",
+      description: "+5555 to max cards per poke.",
       cost: { realmId: 9, currencyId: "crystal", amount: 5e11 },
       purchased: false
     },
     {
       id: 21006,
       name: "Card Supernova 6",
-      description: "+6000 to max cards per poke.",
+      description: "+6666 to max cards per poke.",
       cost: { realmId: 9, currencyId: "tooth", amount: 6e11 },
       purchased: false
     },
     {
       id: 21007,
       name: "Card Supernova 7",
-      description: "+14000 to max cards per poke.",
+      description: "+14441 to max cards per poke.",
       cost: { realmId: 10, currencyId: "coin", amount: 7e12 },
       purchased: false
     },
     {
       id: 21008,
       name: "Card Supernova 8",
-      description: "+16000 to max cards per poke.",
+      description: "+16661 to max cards per poke.",
       cost: { realmId: 10, currencyId: "spirit", amount: 8e12 },
       purchased: false
     },
     {
       id: 21009,
       name: "Card Supernova 9",
-      description: "+18000 to max cards per poke.",
+      description: "+18881 to max cards per poke.",
       cost: { realmId: 10, currencyId: "rune", amount: 9e12 },
       purchased: false
     },
     {
       id: 21010,
       name: "Card Supernova 10",
-      description: "+20000 to max cards per poke.",
+      description: "+22222 to max cards per poke.",
       cost: { realmId: 11, currencyId: "pearl", amount: 1e13 },
       purchased: false
     },
     {
       id: 21011,
       name: "Card Supernova 11",
-      description: "+40000 to max cards per poke.",
+      description: "+44444 to max cards per poke.",
       cost: { realmId: 11, currencyId: "royal_jelly", amount: 1e14 },
       purchased: false
     },
     {
       id: 21012,
       name: "Card Supernova 12",
-      description: "+80000 to max cards per poke.",
+      description: "+88888 to max cards per poke.",
       cost: { realmId: 11, currencyId: "feather", amount: 1e15 },
       purchased: false
     },
     {
       id: 21013,
       name: "Card Supernova 13",
-      description: "+160000 to max cards per poke.",
+      description: "+166661 to max cards per poke.",
       cost: { realmId: 11, currencyId: "cosmic_ray", amount: 1e16 },
       purchased: false
     },
     { 
       id: 22001,
       name: "Rare Income",
-      description: "Increase global rune per second multiplier by 1.5x.",
+      description: "Increase global rune per second multiplier by 3x.",
       cost: { realmId: 10, currencyId: "stone", amount: 5e13 },
       purchased: false
     },
     {
       id: 22002,
       name: "Rare Income 2",
-      description: "Increase global pearl per second multiplier by 1.5x.",
+      description: "Increase global pearl per second multiplier by 3x.",
       cost: { realmId: 10, currencyId: "coral", amount: 5e13 },
       purchased: false
     },
     {
       id: 22003,
       name: "Rare Income 3",
-      description: "Increase global royal jelly per second multiplier by 1.5x.",
+      description: "Increase global royal jelly per second multiplier by 3x.",
       cost: { realmId: 10, currencyId: "pollen", amount: 5e13 },
       purchased: false
     },
     {
       id: 22004,
       name: "Rare Income 4",
-      description: "Increase global feather per second multiplier by 1.5x.",
+      description: "Increase global feather per second multiplier by 3x.",
       cost: { realmId: 10, currencyId: "egg", amount: 5e13 },
       purchased: false
     },
     {
       id: 22005,
       name: "Rare Income 5",
-      description: "Increase global cosmic ray per second multiplier by 1.5x.",
+      description: "Increase global cosmic ray per second multiplier by 3x.",
       cost: { realmId: 10, currencyId: "crystal", amount: 5e13 },
       purchased: false
     },
     {
       id: 22006,
       name: "Rare Income 6",
-      description: "Increase global rune per second multiplier by 1.5x.",
+      description: "Increase global rune per second multiplier by 3x.",
       cost: { realmId: 11, currencyId: "stone", amount: 1.5e19 },
       purchased: false
     },
     {
       id: 22007,
       name: "Rare Income 7",
-      description: "Increase global pearl per second multiplier by 1.5x.",
+      description: "Increase global pearl per second multiplier by 3x.",
       cost: { realmId: 11, currencyId: "tooth", amount: 1.5e19 },
       purchased: false
     },
     {
       id: 22008,
       name: "Rare Income 8",
-      description: "Increase global royal jelly per second multiplier by 1.5x.",
+      description: "Increase global royal jelly per second multiplier by 3x.",
       cost: { realmId: 11, currencyId: "coin", amount: 1.5e19 },
       purchased: false
     },
     {
       id: 22009,
       name: "Rare Income 9",
-      description: "Increase global feather per second multiplier by 1.5x.",
+      description: "Increase global feather per second multiplier by 3x.",
       cost: { realmId: 11, currencyId: "spirit", amount: 1.5e19 },
       purchased: false
     },
     {
       id: 22010,
       name: "Rare Income 10",
-      description: "Increase global cosmic ray per second multiplier by 1.5x.",
+      description: "Increase global cosmic ray per second multiplier by 3x.",
       cost: { realmId: 11, currencyId: "zeal", amount: 1.5e19 },
       purchased: false
     },
@@ -1865,71 +1886,71 @@ window.skills = [
     {
       id: 24001,
       name: "Shorter Sacrifice",
-      description: "Reduce sacrifice lockout time by 1 hour.",
-      cost: { realmId: 11, currencyId: "stone", amount: 1e18 },
+      description: "Reduce sacrifice lockout time by 2 hours.",
+      cost: { realmId: 11, currencyId: "stone", amount: 1e16 },
       purchased: false
     },
     {
       id: 24002,
       name: "Shorter Sacrifice 2",
-      description: "Reduce sacrifice lockout time by 1 hour.",
-      cost: { realmId: 11, currencyId: "coral", amount: 2e18 },
+      description: "Reduce sacrifice lockout time by 2 hours.",
+      cost: { realmId: 11, currencyId: "coral", amount: 2e17 },
       purchased: false
     },
     {
       id: 24003,
       name: "Shorter Sacrifice 3",
-      description: "Reduce sacrifice lockout time by 1 hour.",
-      cost: { realmId: 11, currencyId: "pollen", amount: 4e18 },
+      description: "Reduce sacrifice lockout time by 2 hours.",
+      cost: { realmId: 11, currencyId: "pollen", amount: 4e17 },
       purchased: false
     },
     {
       id: 24004,
       name: "Shorter Sacrifice 4",
-      description: "Reduce sacrifice lockout time by 1 hour.",
-      cost: { realmId: 11, currencyId: "egg", amount: 8e18 },
+      description: "Reduce sacrifice lockout time by 2 hours.",
+      cost: { realmId: 11, currencyId: "egg", amount: 8e17 },
       purchased: false
     },
     {
       id: 24005,
       name: "Shorter Sacrifice 5",
-      description: "Reduce sacrifice lockout time by 1 hour.",
-      cost: { realmId: 11, currencyId: "crystal", amount: 1.5e19 },
+      description: "Reduce sacrifice lockout time by 2 hours.",
+      cost: { realmId: 11, currencyId: "crystal", amount: 1.5e18 },
       purchased: false
     },
     {
       id: 24006,
       name: "Shorter Sacrifice 6",
       description: "Reduce sacrifice lockout time by 1 hour.",
-      cost: { realmId: 11, currencyId: "rune", amount: 3e19 },
+      cost: { realmId: 11, currencyId: "rune", amount: 3e18 },
       purchased: false
     },
     {
       id: 24007,
       name: "Shorter Sacrifice 7",
       description: "Reduce sacrifice lockout time by 1 hour.",
-      cost: { realmId: 11, currencyId: "pearl", amount: 6e19 },
+      cost: { realmId: 11, currencyId: "pearl", amount: 6e18 },
       purchased: false
     },
     {
       id: 24008,
       name: "Shorter Sacrifice 8",
       description: "Reduce sacrifice lockout time by 1 hour.",
-      cost: { realmId: 11, currencyId: "royal_jelly", amount: 1e20 },
+      cost: { realmId: 11, currencyId: "royal_jelly", amount: 1e19 },
       purchased: false
     },
     {
       id: 24009,
       name: "Shorter Sacrifice 9",
       description: "Reduce sacrifice lockout time by 1 hour.",
-      cost: { realmId: 11, currencyId: "feather", amount: 2e20 },
+      cost: { realmId: 11, currencyId: "feather", amount: 2e19 },
       purchased: false
     },
     {
       id: 24010,
       name: "Shorter Sacrifice 10",
       description: "Reduce sacrifice lockout time by 1 hour.",
-      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 4e20 },
+      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 4e19 },
       purchased: false
     },
     {
@@ -1956,8 +1977,239 @@ window.skills = [
     {
       id: 24014,
       name: "Shorter Sacrifice 14",
-      description: "Reduce sacrifice lockout time by 1 hour.",
+      description: "Reduce sacrifice lockout time by 2 hours.",
       cost: { realmId: 11, currencyId: "zeal", amount: 6e21 },
+      purchased: false
+    },
+    {
+      id: 25001,
+      name: "Card Leveler",
+      description: "Unlocks a button on Collection screen that levels all cards in current realm/filter (left to right).",
+      cost: { realmId: 10, currencyId: "pearl", amount: 1e11 },
+      purchased: false
+    },
+    {
+      id: 25002,
+      name: "Card Leveler 2",
+      description: "Changes Level All button to work right to left.",
+      cost: { realmId: 10, currencyId: "royal_jelly", amount: 2e13 },
+      purchased: false
+    },
+    {
+      id: 26001,
+      name: "Crit Chance",
+      description: "Unlock battle Critical Hit Chance and set it to 5%.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 3e7 },
+      purchased: false
+    },
+    {
+      id: 26002,
+      name: "Crit Chance 2",
+      description: "+5% Critical Hit Chance.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 8e9 },
+      purchased: false
+    },
+    {
+      id: 26003,
+      name: "Crit Chance 3",
+      description: "+5% Critical Hit Chance.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 2e11 },
+      purchased: false
+    },
+    {
+      id: 26101,
+      name: "Crit Damage",
+      description: "+10% Critical Hit Damage.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 1e8 },
+      purchased: false
+    },
+    {
+      id: 26102,
+      name: "Crit Damage 2",
+      description: "+10% Critical Hit Damage.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 2e8 },
+      purchased: false
+    },
+    {
+      id: 26103,
+      name: "Crit Damage 3",
+      description: "+10% Critical Hit Damage.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 4e8 },
+      purchased: false
+    },
+    {
+      id: 26104,
+      name: "Crit Damage 4",
+      description: "+10% Critical Hit Damage.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 8e8 },
+      purchased: false
+    },
+    {
+      id: 26105,
+      name: "Crit Damage 5",
+      description: "+10% Critical Hit Damage.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 1.6e9 },
+      purchased: false
+    },
+    {
+      id: 26106,
+      name: "Crit Damage 6",
+      description: "+10% Critical Hit Damage.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 3.2e9 },
+      purchased: false
+    },
+    {
+      id: 26107,
+      name: "Crit Damage 7",
+      description: "+10% Critical Hit Damage.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 6.4e9 },
+      purchased: false
+    },
+    {
+      id: 26108,
+      name: "Crit Damage 5",
+      description: "+10% Critical Hit Damage.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 1.25e10 },
+      purchased: false
+    },
+    {
+      id: 26109,
+      name: "Crit Damage 9",
+      description: "+10% Critical Hit Damage.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 2.5e10 },
+      purchased: false
+    },
+    {
+      id: 26110,
+      name: "Crit Damage 10",
+      description: "+10% Critical Hit Damage.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 5e10 },
+      purchased: false
+    },
+    {
+      id: 26111,
+      name: "Crit Damage 11",
+      description: "+10% Critical Hit Damage.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 1e11 },
+      purchased: false
+    },
+    {
+      id: 26112,
+      name: "Crit Damage 12",
+      description: "+10% Critical Hit Damage.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 2e11 },
+      purchased: false
+    },
+    {
+      id: 26113,
+      name: "Crit Damage 13",
+      description: "+10% Critical Hit Damage.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 4e11 },
+      purchased: false
+    },
+    {
+      id: 26114,
+      name: "Crit Damage 14",
+      description: "+10% Critical Hit Damage.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 8e11 },
+      purchased: false
+    },
+    {
+      id: 26115,
+      name: "Crit Damage 15",
+      description: "+10% Critical Hit Damage.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 1.6e12 },
+      purchased: false
+    },
+    {
+      id: 26201,
+      name: "So Many Cards, So Few Slots",
+      description: "Increase battle slot limit by +1.",
+      cost: { realmId: 11, currencyId: "rune", amount: 1e18 },
+      purchased: false
+    },
+    {
+      id: 26202,
+      name: "So Many Cards, So Few Slots 2",
+      description: "Increase battle slot limit by +1.",
+      cost: { realmId: 11, currencyId: "pearl", amount: 1e18 },
+      purchased: false
+    },
+    {
+      id: 26301,
+      name: "Spiritual Dodge",
+      description: "Unlock battle dodge mechanic and set dodge chance to 0.5%.",
+      cost: { realmId: 11, currencyId: "spirit", amount: 3e15 },
+      purchased: false
+    },
+    {
+      id: 26302,
+      name: "Spiritual Dodge 2",
+      description: "Increase dodge chance by +0.5%.",
+      cost: { realmId: 11, currencyId: "spirit", amount: 9e15 },
+      purchased: false
+    },
+    {
+      id: 26303,
+      name: "Spiritual Dodge 3",
+      description: "Increase dodge chance by +0.5%.",
+      cost: { realmId: 11, currencyId: "spirit", amount: 2.7e16 },
+      purchased: false
+    },
+    {
+      id: 26304,
+      name: "Spiritual Dodge 4",
+      description: "Increase dodge chance by +0.5%.",
+      cost: { realmId: 11, currencyId: "spirit", amount: 8.1e16 },
+      purchased: false
+    },
+    {
+      id: 26305,
+      name: "Spiritual Dodge 5",
+      description: "Increase dodge chance by +0.5%.",
+      cost: { realmId: 11, currencyId: "spirit", amount: 2.4e17 },
+      purchased: false
+    },
+    {
+      id: 26306,
+      name: "Spiritual Dodge 6",
+      description: "Increase dodge chance by +0.5%.",
+      cost: { realmId: 11, currencyId: "spirit", amount: 7.3e17 },
+      purchased: false
+    },
+    {
+      id: 26401,
+      name: "Cosmic Stun",
+      description: "Unlock battle stun mechanic and set stun chance to 0.2%.",
+      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 1e15 },
+      purchased: false
+    },
+    {
+      id: 26402,
+      name: "Cosmic Stun 2",
+      description: "Increase stun chance by +0.2%.",
+      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 5e15 },
+      purchased: false
+    },
+    {
+      id: 26403,
+      name: "Cosmic Stun 3",
+      description: "Increase stun chance by +0.2%.",
+      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 2.5e16 },
+      purchased: false
+    },
+    {
+      id: 26404,
+      name: "Cosmic Stun 4",
+      description: "Increase stun chance by +0.2%.",
+      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 1.25e17 },
+      purchased: false
+    },
+    {
+      id: 26405,
+      name: "Cosmic Stun 5",
+      description: "Increase stun chance by +0.2%.",
+      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 6.25e17 },
       purchased: false
     }
   ];
@@ -2042,16 +2294,16 @@ function applySkill(id, skipCost = false) {
         initBattleSystem();
         break;
       case 2001: // More Cards
-        state.effects.maxCardsPerPoke += 2;
+        state.effects.maxCardsPerPoke += 4;
         break;
       case 2002:
-        state.effects.maxCardsPerPoke += 5;
+        state.effects.maxCardsPerPoke += 8;
         break;
       case 2003:
-        state.effects.maxCardsPerPoke += 10;
+        state.effects.maxCardsPerPoke += 12;
         break;
       case 2004:
-        state.effects.maxCardsPerPoke += 15;
+        state.effects.maxCardsPerPoke += 16;
         break;
       case 2005:
         state.effects.maxCardsPerPoke += 25;
@@ -2087,10 +2339,10 @@ function applySkill(id, skipCost = false) {
         state.effects.maxCardsPerPoke += 500;
         break;
       case 2101: // Massive Black Hole
-        state.effects.maxCardsPerPoke += 10;
+        state.effects.maxCardsPerPoke += 20;
         break;
       case 2102:
-        state.effects.maxCardsPerPoke += 25;
+        state.effects.maxCardsPerPoke += 40;
         break;
       case 2103:
         state.effects.maxCardsPerPoke += 50;
@@ -2592,9 +2844,8 @@ function applySkill(id, skipCost = false) {
         if (loadFinished) updatePokeFilterStats();
         break;
       case 19001: // More Bulk Offers Please
-        state.merchantBulkChance += 0.25;
-        break;
       case 19002: // More Bulk Offers Please 2
+      case 19003: // More Bulk Offers Please 3
         state.merchantBulkChance += 0.25;
         break;
       case 19101: // Negotiation Tactics
@@ -2619,6 +2870,12 @@ function applySkill(id, skipCost = false) {
         break;
       case 19502:
         state.merchantBulkRoot -= 0.5;
+        break;
+      case 19503:
+        state.merchantBulkMult *= 10;
+        break;
+      case 19504:
+        state.merchantBulkMult *= 10;
         break;
       case 20001:
         state.effects.currencyPerPokeMultiplier['stone'] *= 2;
@@ -2645,63 +2902,63 @@ function applySkill(id, skipCost = false) {
         state.effects.currencyPerPokeMultiplier['spirit'] *= 2;
         break;
       case 21001:
-        state.effects.maxCardsPerPoke += 1000;
+        state.effects.maxCardsPerPoke += 1111;
         break;
       case 21002:
-        state.effects.maxCardsPerPoke += 2000;
+        state.effects.maxCardsPerPoke += 2222;
         break;
       case 21003:
-        state.effects.maxCardsPerPoke += 3000;
+        state.effects.maxCardsPerPoke += 3333;
         break;
       case 21004:
-        state.effects.maxCardsPerPoke += 4000;
+        state.effects.maxCardsPerPoke += 4444;
         break;
       case 21005:
-        state.effects.maxCardsPerPoke += 5000;
+        state.effects.maxCardsPerPoke += 5555;
         break;
       case 21006:
-        state.effects.maxCardsPerPoke += 6000;
+        state.effects.maxCardsPerPoke += 6666;
         break;
       case 21007:
-        state.effects.maxCardsPerPoke += 14000;
+        state.effects.maxCardsPerPoke += 14441;
         break;
       case 21008:
-        state.effects.maxCardsPerPoke += 16000;
+        state.effects.maxCardsPerPoke += 16661;
         break;
       case 21009:
-        state.effects.maxCardsPerPoke += 18000;
+        state.effects.maxCardsPerPoke += 18881;
         break;
       case 21010:
-        state.effects.maxCardsPerPoke += 20000;
+        state.effects.maxCardsPerPoke += 22222;
         break;
       case 21011: // Card Supernova 11
-        state.effects.maxCardsPerPoke += 40000;
+        state.effects.maxCardsPerPoke += 44444;
         break;
       case 21012: // Card Supernova 12
-        state.effects.maxCardsPerPoke += 80000;
+        state.effects.maxCardsPerPoke += 88888;
         break;
       case 21013: // Card Supernova 13
-        state.effects.maxCardsPerPoke += 160000;
+        state.effects.maxCardsPerPoke += 166661;
         break;
       case 22001: // Rare Income
       case 22006: // Rare Income 6
-        state.effects.currencyPerSecMultiplier['rune'] *= 1.5;
+        state.effects.currencyPerSecMultiplier['rune'] *= 3;
         break;
       case 22002: // Rare Income 2
       case 22007: // Rare Income 7
-        state.effects.currencyPerSecMultiplier['pearl'] *= 1.5;
+        state.effects.currencyPerSecMultiplier['pearl'] *= 3;
         break;
       case 22003: // Rare Income 3
       case 22008: // Rare Income 8
-        state.effects.currencyPerSecMultiplier['royal_jelly'] *= 1.5;
+        state.effects.currencyPerSecMultiplier['royal_jelly'] *= 3;
         break;
       case 22004: // Rare Income 4
       case 22009: // Rare Income 9
-        state.effects.currencyPerSecMultiplier['feather'] *= 1.5;
+        state.effects.currencyPerSecMultiplier['feather'] *= 3;
         break;
       case 22005: // Rare Income 5
       case 22010: // Rare Income 10
-        state.effects.currencyPerSecMultiplier['cosmic_ray'] *= 1.5;
+        state.effects.currencyPerSecMultiplier['cosmic_ray'] *= 3;
         break;
       case 23001: // Casual Gamer
       case 23002: // Casual Gamer 2
@@ -2724,6 +2981,9 @@ function applySkill(id, skipCost = false) {
       case 24003: // Shorter Sacrifice 3
       case 24004: // Shorter Sacrifice 4
       case 24005: // Shorter Sacrifice 5
+      case 24014: // Shorter Sacrifice 14
+        state.sacrificeLockoutTime -= 2; // 1 hour
+        break;
       case 24006: // Shorter Sacrifice 6
       case 24007: // Shorter Sacrifice 7
       case 24008: // Shorter Sacrifice 8
@@ -2732,9 +2992,55 @@ function applySkill(id, skipCost = false) {
       case 24011: // Shorter Sacrifice 11
       case 24012: // Shorter Sacrifice 12
       case 24013: // Shorter Sacrifice 13
-      case 24014: // Shorter Sacrifice 14
-        state.sacrificeLockoutTime -= 1; // 1 hour
+        state.sacrificeLockoutTime -= 1; // 2 hours
         break;
+      case 25001: // Card Leveler
+        break;
+      case 26001: // Crit Chance
+      case 26002:
+      case 26003:
+        state.battle.critChance += 0.05;
+        break;
+      case 26101: // Crit Damage
+      case 26102:
+      case 26103:
+      case 26104:
+      case 26105:
+      case 26106:
+      case 26107:
+      case 26108:
+      case 26109:
+      case 26110:      
+      case 26111:
+      case 26112:
+      case 26113:
+      case 26114:
+      case 26115:
+        state.battle.critDamage += 0.1;
+        break;
+      case 26201:
+        state.battle.slotLimit += 1;
+        break;
+      case 26202:
+        state.battle.slotLimit += 1;
+        break;
+      case 26301: // Spiritual Dodge
+      case 26302:
+      case 26303:
+      case 26304:
+      case 26305:
+      case 26306:
+        state.battle.dodgeChance += 0.005;
+        break;
+      case 26401: // Stun Chance
+      case 26402:
+      case 26403:
+      case 26404:
+      case 26405:
+        state.battle.stunChance += 0.002;
+        break;
+
+
     }
 
     // Remove purchased skill from sortedSkillsByCurrency
@@ -2748,6 +3054,8 @@ function applySkill(id, skipCost = false) {
     }
   
     // 4) refresh UI
-    renderSkillsTab();
-    updateCurrencyBar();
+    if(loadFinished) {
+      renderSkillsTab();
+      updateCurrencyBar();
+    }
 }

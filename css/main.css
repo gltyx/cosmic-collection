@@ -208,3 +208,42 @@
   pointer-events: auto;
   overflow-y: auto; /* Add scrolling for the content */
 }
+
+
+/* intermittent slicing/glitch */
+@keyframes glitch-slice {
+  0% { clip: rect(10px, 9999px, 50px, 0); transform: translate(-2px, -2px) skew(0.5deg); }
+  10% { clip: rect(80px, 9999px, 130px, 0); transform: translate(2px, 2px) skew(-0.5deg); }
+  20% { clip: rect(50px, 9999px, 90px, 0); transform: translate(-2px, 2px) skew(0.5deg); }
+  30% { clip: rect(20px, 9999px, 70px, 0); transform: translate(2px, -2px) skew(-0.5deg); }
+  40% { clip: rect(70px, 9999px, 120px, 0); transform: translate(-2px, -2px) skew(0.5deg); }
+  50% { clip: rect(40px, 9999px, 100px, 0); transform: translate(2px, 2px) skew(-0.5deg); }
+  60% { clip: rect(10px, 9999px, 50px, 0); transform: translate(-2px, 2px) skew(0.5deg); }
+  70% { clip: rect(80px, 9999px, 130px, 0); transform: translate(2px, -2px) skew(-0.5deg); }
+  80% { clip: rect(50px, 9999px, 90px, 0); transform: translate(-2px, -2px) skew(0.5deg); }
+  90% { clip: rect(20px, 9999px, 70px, 0); transform: translate(2px, 2px) skew(0.5deg); }
+  100% { clip: rect(10px, 9999px, 50px, 0); transform: translate(0,0) skew(0); }
+}
+
+/* full-screen hue shift / flicker */
+@keyframes hue-flicker {
+  0%   { filter: hue-rotate(0deg) brightness(1); }
+  50%  { filter: hue-rotate(90deg) brightness(0.7); }
+  100% { filter: hue-rotate(0deg) brightness(1); }
+}
+
+/* the “glitch” class we’ll toggle */
+.glitch {
+  animation:
+    glitch-slice 0.3s steps(2) infinite,
+    hue-flicker 0.5s linear infinite;
+}
+
+#matrix-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  background: transparent;
+}

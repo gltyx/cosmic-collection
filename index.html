@@ -8,10 +8,10 @@
                maximum-scale=1,
                user-scalable=no">
   <title>Incremental Card Game</title>
-  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico"> <!-- For older browsers -->
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon_32.png"> <!-- For modern browsers -->
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon_32.png">
   <link rel="icon" type="image/png" sizes="64x64" href="assets/images/favicon_64.png">
-  <link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <link rel="stylesheet" href="css/merchant.css" />
   <link rel="stylesheet" href="css/skills.css" />
   <link rel="stylesheet" href="css/statistics.css" />
@@ -22,7 +22,9 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="css/settings.css" />
+  <link rel="stylesheet" href="css/battle_tricks.css" />
   <link rel="stylesheet" href="css/battles.css" />
+  <link rel="stylesheet" href="css/achievements.css" />
 </head>
 <body>
 <script src="chs.js"></script>
@@ -76,6 +78,7 @@
     <button id="tab-btn-skills"  class="tab-btn">Skills</button>
     <button id="tab-btn-merchant"class="tab-btn">Merchant</button>
     <button id="tab-btn-battles" class="tab-btn">Battles</button>
+    <button id="tab-btn-achievements" class="tab-btn">Achievements</button>
     <button id="tab-btn-stats"   class="tab-btn">Stats</button>
     <button id="tab-btn-settings" class="tab-btn">Settings</button>
   </nav>
@@ -155,11 +158,17 @@
   <div id="tab-content-battles" class="tab-content" style="display:none;">
   </div>
 
-  <div id="tab-content-stats" class="tab-content" style="display:none;">
+  <!-- ACHIEVEMENTS TAB -->
+  <div id="tab-content-achievements" class="tab-content">
+    <div id="achievements-container"></div>
   </div>
 
+  <!-- Stats TAB -->
+  <div id="tab-content-stats" class="tab-content" style="display:none;">
+  </div>
   <div id="tab-content-settings" class="tab-content" style="display:none;">
     <div class="settings-container">
+      <div class="version">Game Version: v0.173</div>
       <div class="settings-section">
         <h2>Save & Load</h2>
         <div class="settings-buttons">
@@ -193,6 +202,28 @@
           <button id="autoAbsorberToggle" class="settings-button toggle-button" style="display: none;">
             <i class="fas fa-times"></i> Auto-Use Max Absorber
           </button>
+        </div>      </div>
+      <div class="settings-section">
+        <h2>Community & Support</h2>
+        <div class="settings-buttons">
+          <button id="gameTipsBtn" class="settings-button toggle-button">
+            <i class="fas fa-lightbulb"></i> Game Tips
+          </button>
+          <button id="discordButton" class="settings-button">
+            <i class="fab fa-discord"></i> Join Discord
+          </button>
+          <button id="donationButton" class="settings-button">
+            <i class="fas fa-heart"></i> Support Development
+          </button>
+        </div>
+        <div id="supporterCheckboxContainer" class="settings-row" style="display: none;">
+          <label class="checkbox-container">
+            <input type="checkbox" id="supporterCheckbox">
+            <span class="checkbox-text">I've supported the game</span>
+          </label>
+          <p class="settings-description">
+            Honor system - check this box if you've supported the game to receive 25% more max cards permanently. (And if your financial situation does not allow it, don't worry about it, click the checkbox anyway and enjoy the game!)
+          </p>
         </div>
       </div>
       <div class="settings-section">
@@ -263,8 +294,9 @@
   <script src="js/absorber.js"></script>
   <script src="js/interceptor.js"></script>
   <script src="js/time_crunch.js"></script>
+  <script src="js/battle_tricks.js"></script>
   <script src="js/battles.js"></script>
-
+  <script src="js/achievements.js"></script>
   <!-- Main Behavior -->
   <script src="js/main.js"></script>
 <!--客服 开始-->
@@ -284,5 +316,6 @@ var _hmt = _hmt || [];
 })();
 </script>
     </div>
+
 </body>
 </html>

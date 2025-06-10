@@ -264,8 +264,8 @@ const merchants = [
       const greeting = pickRandom(window.merchantGreetings);
       const pitch = pickRandom(window.merchantPitches);
       state.currentMerchantMessage = `
-        <div class="merchant-greeting">${greeting}</div>
-        <div class="merchant-pitch">${pitch}</div>
+        <div class="merchant-pitch">Merchant says:</div>
+        <div class="merchant-greeting">${greeting}<br>${pitch}</div>
       `;
 
       renderMerchantTab();
@@ -385,13 +385,13 @@ const merchants = [
       // randomness ±99%
       // divide is not a function of Decimal, so we need to use a different approach
       const priceRandomVal = (Math.random()*1.98 + 0.01) * state.currentMerchant.priceMultiplier;
-      price = price.times(priceRandomVal).dividedBy(state.effects.merchantPriceDivider).ceil();
+      price = price.times(priceRandomVal).dividedBy(state.effects.merchantPriceDivider).dividedBy(state.achievementRewards.merchantPriceDivider).ceil();
   
       
       let quantity = 1;
       let quantityRandomVal = 0;
       if (ownQty > 9 && Math.random() < state.merchantBulkChance) {
-        const maxStack = Math.floor(Math.pow(ownQty, 1 / state.merchantBulkRoot));
+        const maxStack = Math.min(Math.floor(Math.pow(ownQty, 1 / state.merchantBulkRoot) * state.merchantBulkMult), ownQty);
         quantityRandomVal = Math.random();
         quantity = Math.max(1, Math.floor(quantityRandomVal * maxStack) + 1);
         price = price.times(Math.cbrt(quantity));
@@ -520,13 +520,38 @@ const merchants = [
         }
     });
 
+    // Remove any existing merchant info section
+    const existingInfo = document.querySelector('.merchant-info');
+    if (existingInfo) {
+      existingInfo.remove();
+    }
+
+    // Add merchant info section
+    const infoEl = document.createElement('div');
+    infoEl.className = 'merchant-info';
+    
+    const nameEl = document.createElement('div');
+    nameEl.className = 'merchant-name';
+    nameEl.textContent = state.currentMerchant.name;
+    
+    const descEl = document.createElement('div');
+    descEl.className = 'merchant-description';
+    descEl.textContent = state.currentMerchant.description;
+    
+    infoEl.append(nameEl, descEl);
+    
+    // Insert info section after image
+    if (imgEl.parentNode) {
+      imgEl.parentNode.insertBefore(infoEl, imgEl.nextSibling);
+    }
+
     // Generate new message if undefined
     if (!state.currentMerchantMessage) {
       const greeting = pickRandom(window.merchantGreetings);
       const pitch = pickRandom(window.merchantPitches);
       state.currentMerchantMessage = `
-        <div class="merchant-greeting">${greeting}</div>
-        <div class="merchant-pitch">${pitch}</div>
+        <div class="merchant-pitch">Merchant says:</div>
+        <div class="merchant-greeting">${greeting}<br>${pitch}</div>
       `;
     }
 
@@ -615,7 +640,11 @@ const merchants = [
       bar.style.width = pct + '%';
       const thresholdLab = document.createElement('div');
       thresholdLab.className = 'tier-threshold';
-      thresholdLab.textContent = `${formatNumber(card.quantity)} / ${formatNumber(nextThresh)} for Tier ${card.tier+1}`;
+      if (card.tier === 20) {
+        thresholdLab.textContent = 'Max Tier';
+      } else {
+        thresholdLab.textContent = `${formatNumber(card.quantity)} / ${formatNumber(nextThresh)} for T${card.tier+1}`;
+      }
       barContainer.append(bar, thresholdLab);
       front.appendChild(barContainer);
   
@@ -623,7 +652,7 @@ const merchants = [
       if (o.quantity > 1) {
         const qtyBadge = document.createElement('div');
         qtyBadge.className = 'count-badge';
-        qtyBadge.textContent = o.quantity;
+        qtyBadge.textContent = `${formatNumber(o.quantity)}`;
         front.appendChild(qtyBadge);
       }
   
@@ -741,75 +770,16 @@ const merchants = [
     if (buyoutCostContainer) {
       buyoutCostContainer.remove();
     }
-    renderMerchantTab();
+    renderMerchantTab();  
     updateCurrencyBar();
     state.stats.merchantPurchases++;
+    checkAchievements('merchantTrader');
   }
   
   
   // expose unlock helper if needed elsewhere
   window.unlockMerchantByName = unlockMerchantByName;
-  
-  function generateMerchantOffer() {
-    // Get all cards that can be offered
-    const availableCards = cards.filter(c => {
-      // Skip cards that are locked
-      if (c.realm === 11 && isCardLocked(c.id)) {
-        return false;
-      }
-      return c.quantity > 0;
-    });
 
-    if (availableCards.length === 0) return null;
-
-    // Pick a random card
-    const card = pickRandom(availableCards);
-    if (!card) return null;
-
-    // Pick a random currency
-    const currency = pickRandom(currencies.filter(c => c.id !== 'harvester' && c.id !== 'timeCrunch'));
-
-    // Calculate base price
-    const basePrice = card.power * card.tier * Math.sqrt(card.level);
-    const price = new Decimal(basePrice)
-      .times(currency.priceMultiplier)
-      .times(1 - state.effects.merchantPriceDivider);
-
-    // Calculate quantity
-    let quantity = 1;
-    if (Math.random() < state.merchantBulkChance) {
-      quantity = Math.floor(Math.random() * 3) + 1;
-    }
-
-    return {
-      cardId: card.id,
-      currency: currency.id,
-      price: price,
-      quantity: quantity
-    };
-  }
-
-  function updateMerchantOffer() {
-    const offer = getMerchantOffer();
-    if (!offer) return;
-    
-    const now = Date.now();
-    const elapsed = (now - offer.timestamp) / 1000;
-    const progress = Math.min(1, elapsed / offer.cooldown);
-    
-    const bar = document.querySelector('.merchant-offer .merchant-modal-bar');
-    const threshold = document.querySelector('.merchant-offer .threshold');
-    const countBadge = document.querySelector('.merchant-offer .count-badge');
-    
-    if (bar) bar.style.width = `${progress * 100}%`;
-    if (threshold) threshold.textContent = `${Math.ceil(offer.cooldown - elapsed)}s`;
-    if (countBadge) countBadge.textContent = offer.cards.length;
-    
-    if (progress >= 1) {
-      const newOffer = generateMerchantOffer();
-      setMerchantOffer(newOffer);
-    }
-  }
   
   let merchantIsNew = false;
   let merchantOffersOriginalCount = null;
@@ -846,6 +816,7 @@ const merchants = [
       giveCard(o.cardId, o.quantity || 1);
     }
     state.stats.merchantPurchases += state.merchantOffers.length;
+    checkAchievements('merchantTrader');
     state.merchantOffers = [];
     const now       = Date.now();
     const maxRemain = skillMap[19401].purchased ? 5 * 1000 : 10 * 1000;

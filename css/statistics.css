@@ -12,6 +12,13 @@
   width: 100%;
 }
 
+.stats-top-row-with-battles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: clamp(8px, 3dvh, 16px);
+  width: 100%;
+}
+
 /* Statistics Sections */
 .stats-section {
   margin-bottom: clamp(12px, 4dvh, 24px);

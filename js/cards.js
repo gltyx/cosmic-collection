@@ -264,7 +264,7 @@ window.cards = [
         "type": "flatMaxCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 10
+          "amount": 9
         },
         "value": 3.0
       },
@@ -365,6 +365,17 @@ window.cards = [
         "type": "rarityOddsDivider",
         "realm": 1,
         "rarity": "basic"
+      }
+    ],
+    "specialEffects": [
+      {
+        "type": "flatCurrencyPerPoke",
+        "requirement": {
+          "type": "level",
+          "amount": 18
+        },
+        "currency": "rune",
+        "value": 1.0
       }
     ]
   },
@@ -720,7 +731,7 @@ window.cards = [
         "type": "flatCurrencyPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 7
         },
         "currency": "rune",
         "value": 100.0
@@ -2650,9 +2661,9 @@ window.cards = [
         "type": "flatMaxCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 10
+          "amount": 8
         },
-        "value": 100.0
+        "value": 80.0
       },
       {
         "type": "flatMaxCardsPerPoke",
@@ -3340,9 +3351,9 @@ window.cards = [
         "type": "flatMaxCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 5
+          "amount": 8
         },
-        "value": 15.0
+        "value": 20.0
       },
       {
         "type": "flatMaxCardsPerPoke",
@@ -5850,7 +5861,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 30
+          "amount": 25
         },
         "currency": "rune",
         "value": 10.0
@@ -10123,7 +10134,7 @@ window.cards = [
         "type": "flatMaxCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 40
+          "amount": 30
         },
         "value": 1000000.0
       }
@@ -11422,7 +11433,7 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 20
         },
         "currency": "coral",
         "value": 2.0
@@ -11535,10 +11546,10 @@ window.cards = [
         "type": "flatCurrencyPerSecond",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 20
         },
         "currency": "egg",
-        "value": 1500.0
+        "value": 20000.0
       }
     ]
   },
@@ -11595,10 +11606,10 @@ window.cards = [
         "type": "flatCurrencyPerSecond",
         "requirement": {
           "type": "level",
-          "amount": 33
+          "amount": 30
         },
         "currency": "pollen",
-        "value": 330000.0
+        "value": 300000.0
       }
     ]
   },
@@ -11726,10 +11737,10 @@ window.cards = [
         "type": "flatCurrencyPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 20
         },
         "currency": "royal_jelly",
-        "value": 1000.0
+        "value": 500000.0
       }
     ]
   },
@@ -11795,9 +11806,9 @@ window.cards = [
         "type": "flatMaxCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 44
+          "amount": 40
         },
-        "value": 10000.0
+        "value": 40000.0
       }
     ]
   },
@@ -11861,7 +11872,7 @@ window.cards = [
         "type": "flatCooldownDivider",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 20
         },
         "value": 2.0
       }
@@ -12086,7 +12097,7 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 33
+          "amount": 30
         },
         "currency": "stone",
         "value": 3.0
@@ -12240,7 +12251,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 20
         },
         "currency": "royal_jelly",
         "value": 3.0
@@ -12318,7 +12329,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 33
+          "amount": 30
         },
         "currency": "pearl",
         "value": 3.0
@@ -12389,7 +12400,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 20
         },
         "currency": "feather",
         "value": 3.0
@@ -12469,7 +12480,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 55
+          "amount": 50
         },
         "currency": "cosmic_ray",
         "value": 3.0
@@ -12555,7 +12566,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 33
+          "amount": 30
         },
         "currency": "coin",
         "value": 100.0
@@ -14752,14 +14763,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Ancient sea Titaness and mother of all rivers and nymphs.",
     "power": 200,
-    "defense": 3,
+    "defense": 2,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -14775,19 +14786,19 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "currency": "stone",
-        "value": 8.0
+        "value": 12.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "stone",
-        "value": 15.0
+        "value": 20.0
       }
     ]
   },
@@ -14800,14 +14811,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Goddess of the hearth whose eternal flame kept Olympus at peace.",
     "power": 200,
-    "defense": 6,
+    "defense": 4,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -14828,19 +14839,19 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "currency": "coral",
-        "value": 8.0
+        "value": 12.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "coral",
-        "value": 15.0
+        "value": 20.0
       }
     ]
   },
@@ -14853,14 +14864,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Hundred-armed giant who hurled rocks faster than Zeus could blink.",
     "power": 300,
-    "defense": 7,
+    "defense": 6,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -14881,19 +14892,19 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "currency": "pollen",
-        "value": 8.0
+        "value": 12.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "pollen",
-        "value": 15.0
+        "value": 20.0
       }
     ]
   },
@@ -14906,14 +14917,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "God of deep darkness and shadow who helped birth daylight.",
     "power": 300,
-    "defense": 8,
+    "defense": 7,
     "baseEffects": [
       {
         "type": "currencyPerSec",
@@ -14934,19 +14945,19 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "currency": "egg",
-        "value": 8.0
+        "value": 12.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "egg",
-        "value": 15.0
+        "value": 20.0
       }
     ]
   },
@@ -14959,14 +14970,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Primordial love god who could make even Zeus fall hopelessly in love.",
     "power": 300,
-    "defense": 9,
+    "defense": 8,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -14992,19 +15003,19 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "currency": "crystal",
-        "value": 8.0
+        "value": 12.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "crystal",
-        "value": 15.0
+        "value": 20.0
       }
     ]
   },
@@ -15017,10 +15028,10 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Memory goddess who birthed the nine Muses after sleeping with Zeus.",
     "power": 500,
@@ -15050,19 +15061,19 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "currency": "tooth",
-        "value": 8.0
+        "value": 12.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "tooth",
-        "value": 15.0
+        "value": 20.0
       }
     ]
   },
@@ -15075,10 +15086,10 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Titan father of Prometheus, Atlas, and other key players in human fate.",
     "power": 500,
@@ -15108,19 +15119,19 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "currency": "coin",
-        "value": 8.0
+        "value": 12.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "coin",
-        "value": 15.0
+        "value": 20.0
       }
     ]
   },
@@ -15133,10 +15144,10 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Titan of light and father of the sun, moon, and dawn.",
     "power": 500,
@@ -15166,19 +15177,19 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "currency": "spirit",
-        "value": 8.0
+        "value": 12.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "spirit",
-        "value": 15.0
+        "value": 20.0
       }
     ]
   },
@@ -15191,10 +15202,10 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Goddess of divine law who warned Zeus not to marry Thetis.",
     "power": 500,
@@ -15232,19 +15243,19 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "currency": "rune",
-        "value": 8.0
+        "value": 12.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "rune",
-        "value": 15.0
+        "value": 20.0
       }
     ]
   },
@@ -15257,75 +15268,12 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "World-river Titan who fathered thousands of water spirits.",
-    "power": 1000,
-    "defense": 20,
-    "baseEffects": [
-      {
-        "type": "currencyPerPoke",
-        "currency": "zeal",
-        "value": 250.0
-      },
-      {
-        "type": "maxCardsPerPoke"
-      },
-      {
-        "type": "rarityOddsDivider",
-        "realm": 6,
-        "rarity": "decent"
-      },
-      {
-        "type": "rarityOddsDivider",
-        "realm": 6,
-        "rarity": "fine"
-      },
-      {
-        "type": "rarityOddsDivider",
-        "realm": 6,
-        "rarity": "rare"
-      }
-    ],
-    "specialEffects": [
-      {
-        "type": "currencyPerSecMultiplier",
-        "requirement": {
-          "type": "level",
-          "amount": 8
-        },
-        "currency": "pearl",
-        "value": 8.0
-      },
-      {
-        "type": "currencyPerPokeMultiplier",
-        "requirement": {
-          "type": "level",
-          "amount": 15
-        },
-        "currency": "pearl",
-        "value": 15.0
-      }
-    ]
-  },
-  {
-    "id": "1111",
-    "name": "Rhea",
-    "realm": 11,
-    "locked": true,
-    "rarity": "rare",
-    "quantity": 0,
-    "tier": 0,
-    "level": 1,
-    "levelScaling": 10.0,
-    "levelCost": {
-      "currency": "zeal",
-      "amount": 100.0
-    },
-    "description": "Mother of Olympians who tricked Cronus by feeding him a rock baby.",
     "power": 1000,
     "defense": 25,
     "baseEffects": [
@@ -15339,6 +15287,69 @@ window.cards = [
       },
       {
         "type": "rarityOddsDivider",
+        "realm": 6,
+        "rarity": "decent"
+      },
+      {
+        "type": "rarityOddsDivider",
+        "realm": 6,
+        "rarity": "fine"
+      },
+      {
+        "type": "rarityOddsDivider",
+        "realm": 6,
+        "rarity": "rare"
+      }
+    ],
+    "specialEffects": [
+      {
+        "type": "currencyPerSecMultiplier",
+        "requirement": {
+          "type": "level",
+          "amount": 12
+        },
+        "currency": "pearl",
+        "value": 12.0
+      },
+      {
+        "type": "currencyPerPokeMultiplier",
+        "requirement": {
+          "type": "level",
+          "amount": 22
+        },
+        "currency": "pearl",
+        "value": 20.0
+      }
+    ]
+  },
+  {
+    "id": "1111",
+    "name": "Rhea",
+    "realm": 11,
+    "locked": true,
+    "rarity": "rare",
+    "quantity": 0,
+    "tier": 0,
+    "level": 1,
+    "levelScaling": 5.0,
+    "levelCost": {
+      "currency": "zeal",
+      "amount": 10.0
+    },
+    "description": "Mother of Olympians who tricked Cronus by feeding him a rock baby.",
+    "power": 1000,
+    "defense": 30,
+    "baseEffects": [
+      {
+        "type": "currencyPerPoke",
+        "currency": "zeal",
+        "value": 250.0
+      },
+      {
+        "type": "maxCardsPerPoke"
+      },
+      {
+        "type": "rarityOddsDivider",
         "realm": 7,
         "rarity": "decent"
       },
@@ -15358,19 +15369,19 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "currency": "royal_jelly",
-        "value": 8.0
+        "value": 12.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "royal_jelly",
-        "value": 15.0
+        "value": 20.0
       }
     ]
   },
@@ -15383,14 +15394,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Titan who gave fire to humans and paid with eternal liver-munching.",
     "power": 1000,
-    "defense": 30,
+    "defense": 35,
     "baseEffects": [
       {
         "type": "currencyPerSec",
@@ -15426,19 +15437,19 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "currency": "feather",
-        "value": 8.0
+        "value": 12.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "feather",
-        "value": 15.0
+        "value": 20.0
       }
     ]
   },
@@ -15451,10 +15462,10 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Titan punished to hold up the sky on his shoulders forever.",
     "power": 1000,
@@ -15497,19 +15508,19 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "currency": "cosmic_ray",
-        "value": 8.0
+        "value": 12.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "cosmic_ray",
-        "value": 15.0
+        "value": 20.0
       }
     ]
   },
@@ -15522,14 +15533,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Queen of the Underworld whose seasonal visits cause spring and winter.",
     "power": 2000,
-    "defense": 45,
+    "defense": 50,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -15565,16 +15576,16 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "currency": "zeal",
-        "value": 8.0
+        "value": 12.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "zeal",
         "value": 3.0
@@ -15590,14 +15601,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Wine god who could drive entire cities mad and once killed a Giant with a stick.",
     "power": 2000,
-    "defense": 50,
+    "defense": 60,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -15633,7 +15644,7 @@ window.cards = [
         "type": "merchantPriceDivider",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "value": 2.0
       },
@@ -15641,7 +15652,7 @@ window.cards = [
         "type": "merchantPriceDivider",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "value": 3.0
       }
@@ -15656,14 +15667,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Goddess of love whose beauty started the Trojan War.",
     "power": 2000,
-    "defense": 70,
+    "defense": 80,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -15699,7 +15710,7 @@ window.cards = [
         "type": "flatMaxCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "value": 500000.0
       },
@@ -15707,7 +15718,7 @@ window.cards = [
         "type": "flatMaxCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "value": 1500000.0
       }
@@ -15722,10 +15733,10 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Crippled smith who forged Zeus’s thunderbolts and golden traps.",
     "power": 2000,
@@ -15768,7 +15779,7 @@ window.cards = [
         "type": "flatMinCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "value": 50000.0
       },
@@ -15776,7 +15787,7 @@ window.cards = [
         "type": "flatMinCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "value": 150000.0
       }
@@ -15791,10 +15802,10 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Trickster and messenger god who once stole Apollo’s cattle as a baby.",
     "power": 2000,
@@ -15845,7 +15856,7 @@ window.cards = [
         "type": "allGeneratorMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 8
+          "amount": 12
         },
         "value": 5.0
       },
@@ -15853,7 +15864,7 @@ window.cards = [
         "type": "allGeneratorMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "value": 5.0
       }
@@ -15868,14 +15879,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "God of war who loved bloodshed but kept getting outsmarted by Athena.",
     "power": 5000,
-    "defense": 120,
+    "defense": 125,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -15911,18 +15922,18 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 10
+          "amount": 16
         },
         "currency": "zeal",
-        "value": 1.5
+        "value": 2.0
       },
       {
         "type": "flatCooldownDivider",
         "requirement": {
           "type": "level",
-          "amount": 20
+          "amount": 30
         },
-        "value": 25.0
+        "value": 30.0
       }
     ]
   },
@@ -15935,10 +15946,10 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Moon goddess and huntress who turned a peeping hunter into a deer.",
     "power": 5000,
@@ -15983,19 +15994,19 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 10
+          "amount": 16
         },
         "currency": "zeal",
-        "value": 1.5
+        "value": 2.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 20
+          "amount": 30
         },
         "currency": "stone",
-        "value": 20.0
+        "value": 30.0
       }
     ]
   },
@@ -16008,10 +16019,10 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Titaness of magic and ghosts who was honored by Zeus and killed Giants with fire.",
     "power": 5000,
@@ -16051,19 +16062,19 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 10
+          "amount": 16
         },
         "currency": "zeal",
-        "value": 1.5
+        "value": 2.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 20
+          "amount": 30
         },
         "currency": "coral",
-        "value": 20.0
+        "value": 30.0
       }
     ]
   },
@@ -16076,10 +16087,10 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "The original sun god who could literally see everything.",
     "power": 5000,
@@ -16127,19 +16138,19 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 10
+          "amount": 16
         },
         "currency": "zeal",
-        "value": 1.5
+        "value": 2.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 20
+          "amount": 30
         },
         "currency": "pollen",
-        "value": 20.0
+        "value": 30.0
       }
     ]
   },
@@ -16152,10 +16163,10 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Archer god who killed a giant python and ran the best oracle in the world.",
     "power": 5000,
@@ -16211,19 +16222,19 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 10
+          "amount": 16
         },
         "currency": "zeal",
-        "value": 1.5
+        "value": 2.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 20
+          "amount": 30
         },
         "currency": "egg",
-        "value": 20.0
+        "value": 30.0
       }
     ]
   },
@@ -16236,14 +16247,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Goddess of harvest whose grief once caused global famine.",
     "power": 10000,
-    "defense": 350,
+    "defense": 500,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -16289,19 +16300,19 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 12
+          "amount": 18
         },
         "currency": "zeal",
-        "value": 2.0
+        "value": 3.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 24
+          "amount": 35
         },
         "currency": "crystal",
-        "value": 24.0
+        "value": 35.0
       }
     ]
   },
@@ -16314,14 +16325,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Warrior goddess who sprang fully armed from Zeus’s head and beat Giants solo.",
     "power": 10000,
-    "defense": 400,
+    "defense": 600,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -16372,19 +16383,19 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 12
+          "amount": 18
         },
         "currency": "zeal",
-        "value": 2.0
+        "value": 3.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 24
+          "amount": 35
         },
         "currency": "tooth",
-        "value": 24.0
+        "value": 35.0
       }
     ]
   },
@@ -16397,14 +16408,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Queen of the gods who could manipulate Olympus through cunning alone.",
     "power": 10000,
-    "defense": 450,
+    "defense": 700,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -16450,19 +16461,19 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 12
+          "amount": 18
         },
         "currency": "zeal",
-        "value": 2.0
+        "value": 3.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 24
+          "amount": 35
         },
         "currency": "coin",
-        "value": 24.0
+        "value": 35.0
       }
     ]
   },
@@ -16475,14 +16486,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Underworld ruler with a helmet of invisibility and all the dead as subjects.",
     "power": 10000,
-    "defense": 500,
+    "defense": 800,
     "baseEffects": [
       {
         "type": "currencyPerSec",
@@ -16531,19 +16542,19 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 12
+          "amount": 18
         },
         "currency": "zeal",
-        "value": 2.0
+        "value": 3.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 24
+          "amount": 35
         },
         "currency": "spirit",
-        "value": 24.0
+        "value": 35.0
       }
     ]
   },
@@ -16556,14 +16567,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Earth-shaking sea god who created horses and caused earthquakes with his trident.",
     "power": 10000,
-    "defense": 600,
+    "defense": 900,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -16615,19 +16626,19 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 12
+          "amount": 18
         },
         "currency": "zeal",
-        "value": 2.0
+        "value": 3.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 24
+          "amount": 35
         },
         "currency": "rune",
-        "value": 24.0
+        "value": 35.0
       }
     ]
   },
@@ -16640,14 +16651,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Sky god castrated by his own son, which kicked off a cosmic power struggle.",
     "power": 50000,
-    "defense": 700,
+    "defense": 1000,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -16693,19 +16704,19 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "zeal",
-        "value": 3.0
+        "value": 4.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 30
+          "amount": 44
         },
         "currency": "pearl",
-        "value": 30.0
+        "value": 44.0
       }
     ]
   },
@@ -16718,14 +16729,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "The living abyss where the worst beings are locked away forever.",
     "power": 50000,
-    "defense": 800,
+    "defense": 1200,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -16771,19 +16782,19 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "zeal",
-        "value": 3.0
+        "value": 4.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 30
+          "amount": 44
         },
         "currency": "royal_jelly",
-        "value": 30.0
+        "value": 44.0
       }
     ]
   },
@@ -16796,14 +16807,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Titan who ate his kids to avoid being overthrown… and still got overthrown.",
     "power": 50000,
-    "defense": 1000,
+    "defense": 1400,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -16852,19 +16863,19 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "zeal",
-        "value": 3.0
+        "value": 4.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 30
+          "amount": 44
         },
         "currency": "feather",
-        "value": 30.0
+        "value": 44.0
       }
     ]
   },
@@ -16877,14 +16888,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "A hundred-headed dragon who almost dethroned Zeus and wrecked Olympus.",
     "power": 50000,
-    "defense": 1250,
+    "defense": 1600,
     "baseEffects": [
       {
         "type": "currencyPerSec",
@@ -16931,19 +16942,19 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "zeal",
-        "value": 3.0
+        "value": 4.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 30
+          "amount": 44
         },
         "currency": "cosmic_ray",
-        "value": 30.0
+        "value": 44.0
       }
     ]
   },
@@ -16956,14 +16967,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Earth herself, mother of the Titans, Giants, and monsters like Typhon.",
     "power": 50000,
-    "defense": 1500,
+    "defense": 1800,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -17015,19 +17026,19 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 15
+          "amount": 22
         },
         "currency": "zeal",
-        "value": 3.0
+        "value": 4.0
       },
       {
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 30
+          "amount": 44
         },
         "currency": "zeal",
-        "value": 30.0
+        "value": 44.0
       }
     ]
   },
@@ -17040,14 +17051,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "Goddess of night so terrifying that even Zeus feared upsetting her.",
     "power": 100000,
-    "defense": 2000,
+    "defense": 3000,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -17096,7 +17107,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 18
+          "amount": 27
         },
         "currency": "zeal",
         "value": 5.0
@@ -17105,10 +17116,10 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 36
+          "amount": 52
         },
         "currency": "zeal",
-        "value": 100.0
+        "value": 520.0
       }
     ]
   },
@@ -17121,14 +17132,14 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "The original void from which all existence—including the gods—emerged.",
     "power": 100000,
-    "defense": 3000,
+    "defense": 4000,
     "baseEffects": [
       {
         "type": "currencyPerSec",
@@ -17175,7 +17186,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 18
+          "amount": 27
         },
         "currency": "zeal",
         "value": 5.0
@@ -17184,9 +17195,9 @@ window.cards = [
         "type": "flatCooldownDivider",
         "requirement": {
           "type": "level",
-          "amount": 36
+          "amount": 52
         },
-        "value": 250.0
+        "value": 520.0
       }
     ]
   },
@@ -17199,10 +17210,10 @@ window.cards = [
     "quantity": 0,
     "tier": 0,
     "level": 1,
-    "levelScaling": 10.0,
+    "levelScaling": 5.0,
     "levelCost": {
       "currency": "zeal",
-      "amount": 100.0
+      "amount": 10.0
     },
     "description": "King of the gods who once chained the monster Typhon beneath Mount Etna with his thunderbolts.",
     "power": 100000,
@@ -17258,7 +17269,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 18
+          "amount": 27
         },
         "currency": "zeal",
         "value": 5.0
@@ -17267,7 +17278,7 @@ window.cards = [
         "type": "flatMaxCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 36
+          "amount": 52
         },
         "value": 1000000000.0
       }

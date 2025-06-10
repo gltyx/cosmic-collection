@@ -61,9 +61,51 @@ function updateStatsUI() {
     generalSection.innerHTML = `
       <h3 style="border-bottom:2px solid var(--dark); padding-bottom:4px;">General Stats</h3>
       <p><strong>Black Hole Pokes:</strong> ${s.totalPokes}</p>
+      <p><strong>Total Cards Drawn:</strong> ${s.totalCardsDrawn}</p>
       <p><strong>Merchant Purchases:</strong> ${s.merchantPurchases || 0}</p>
-    `;
+    `;    
     generalSection.appendChild(tblR);
+
+    const battleStatsSection = document.createElement('section');
+    // --- Battle Stats Section (if crit unlocked) ---
+    if (state.battle.critChance > 0) {
+      
+        battleStatsSection.className = 'stats-section';
+        
+        const battleTable = document.createElement('table');
+        battleTable.className = 'rarity-table';
+        battleTable.innerHTML = `
+            <thead>
+                <tr>
+                    <th>Battle Effect</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Critical Hit Chance</td>
+                    <td>${(state.battle.critChance * 100).toFixed(0)}%</td>
+                </tr>
+                <tr>
+                    <td>Critical Hit Damage</td>
+                    <td>×${formatNumber(state.battle.critDamage)}</td>
+                </tr>
+                <tr>
+                    <td>Dodge Change</td>
+                    <td>${(state.battle.dodgeChance * 100).toFixed(0)}%</td>
+                </tr>
+                <tr>
+                    <td>Stun Chance (per card)</td>
+                    <td>${(state.battle.stunChance * 100).toFixed(0)}%</td>
+                </tr>
+            </tbody>
+        `;
+        
+        battleStatsSection.innerHTML = `
+            <h3 style="border-bottom:2px solid var(--dark); padding-bottom:4px;">Battle Stats</h3>
+        `;
+        battleStatsSection.appendChild(battleTable);
+    }
 
     // --- Global Gains & Effects Section ---
     // Currency gain table
@@ -165,12 +207,22 @@ function updateStatsUI() {
         <tbody>
             <tr>
                 <td>${EFFECT_NAMES.minCardsPerPoke}</td>
-                <td>${formatNumber(state.effects.minCardsPerPoke)}</td>
+                <td>${formatNumber(state.effects.minCardsPerPoke + state.achievementRewards.minCardsPerPoke)}</td>
             </tr>
+            ${(state.achievementRewards.minCardsMultiplier > 1) ?
+            `<tr>
+                <td>Min Cards Multiplier</td>
+                <td>x${formatNumber(state.achievementRewards.minCardsMultiplier)}</td>
+            </tr>` : ''}
             <tr>
                 <td>${EFFECT_NAMES.maxCardsPerPoke}</td>
-                <td>${formatNumber(state.effects.maxCardsPerPoke)}</td>
+                <td>${formatNumber(state.effects.maxCardsPerPoke + state.achievementRewards.maxCardsPerPoke)}</td>
             </tr>
+            ${(state.supporterCheckboxClicked || (state.achievementRewards.maxCardsMultiplier > 1)) ?
+            `<tr>
+                <td>Max Cards Multiplier</td>
+                <td>x${formatNumber((state.supporterCheckboxClicked ? 1.25 : 1) * state.achievementRewards.maxCardsMultiplier)}</td>
+            </tr>` : ''}
             <tr>
                 <td>${EFFECT_NAMES.cooldownDivider}</td>
                 <td>${formatNumber(state.effects.cooldownDivider)}</td>
@@ -193,7 +245,11 @@ function updateStatsUI() {
             </tr>
             <tr>
                 <td>${SPECIAL_EFFECT_NAMES.merchantPriceDivider}</td>
-                <td>${formatNumber(state.effects.merchantPriceDivider)}</td>
+                <td>${formatNumber(state.effects.merchantPriceDivider * state.achievementRewards.merchantPriceDivider)}</td>
+            </tr>
+            <tr>
+                <td>Merchant Max Stack Size</td>
+                <td>${state.merchantBulkMult > 1 ? `${state.merchantBulkMult} * ` : ``}${state.merchantBulkRoot}√qty</td>
             </tr>
             <tr>
                 <td>${EFFECT_NAMES.maxOfflineHours}</td>
@@ -315,7 +371,12 @@ function updateStatsUI() {
     // Second row: General Stats | Merchants
     const topRow2 = document.createElement('div');
     topRow2.className = 'stats-top-row';
-    topRow2.append(generalSection, merchantsSection);
+    topRow2.append(generalSection)
+    if (state.battle.critChance > 0) {
+      topRow2.className = 'stats-top-row-with-battles';
+      topRow2.append(battleStatsSection);
+    }
+    topRow2.append(merchantsSection);
     // Container for both rows
     const topContainer = document.createElement('div');
     topContainer.className = 'stats-top-container';
@@ -404,126 +465,128 @@ function updateStatsUI() {
 
     container.appendChild(realmContainer);
 
-    // --- Tier Progress Table ---
-    const tierProgressSection = document.createElement('section');
-    tierProgressSection.className = 'tier-progress-section';
-    tierProgressSection.innerHTML = `
-      <h3>Tier Progress (Experimental/Spoilers)</h3>
-    `;
-
-    const tierProgressTable = document.createElement('table');
-    tierProgressTable.className = 'tier-progress-table';
-    
-    // Create header row with tier numbers
-    const headerRow = document.createElement('tr');
-    headerRow.innerHTML = `
-      <th>Rarity</th>
-      <th></th>
-      ${Array(21).fill(0).map((_, i) => `<th>T${i}</th>`).join('')}
-    `;
-    
-    const thead = document.createElement('thead');
-    thead.appendChild(headerRow);
-    tierProgressTable.appendChild(thead);
-
-    // Create table body
-    const tbody = document.createElement('tbody');
-    
-    // Process each rarity
-    Object.entries(window.tierThresholds).forEach(([rarity, thresholds]) => {
-      // Count total cards of this rarity
-      const totalCards = cards.filter(c => c.rarity === rarity).length;
-      if (totalCards === 0) return;
-
-      // Count cards at each tier
-      const cardsByTier = Array(21).fill(0); // 0-20 tiers
-      const ownedCards = new Set();
-      cards.forEach(c => {
-        if (c.rarity === rarity && c.quantity > 0) {
-          cardsByTier[c.tier]++;
-          ownedCards.add(c.id);
-        }
-      });
-
-      // Calculate T0 (unowned cards)
-      const unownedCount = cards.filter(c => c.rarity === rarity && !ownedCards.has(c.id)).length;
-      cardsByTier[0] = unownedCount;
-
-      const row = document.createElement('tr');
-      
-      // Add rarity cell
-      const rarityCell = document.createElement('td');
-      rarityCell.className = 'rarity-cell';
-      rarityCell.style.color = getComputedStyle(document.documentElement)
-        .getPropertyValue(`--rarity-${rarity}`);
-      rarityCell.textContent = rarity.charAt(0).toUpperCase() + rarity.slice(1);
-      row.appendChild(rarityCell);
-
-      // Add legend cell
-      const legendCell = document.createElement('td');
-      legendCell.className = 'legend-cell';
-      legendCell.innerHTML = `
-        <div>↑ req</div>
-        <div>↓ owned</div>
+    if (realms[10].unlocked) {
+      // --- Tier Progress Table ---
+      const tierProgressSection = document.createElement('section');
+      tierProgressSection.className = 'tier-progress-section';
+      tierProgressSection.innerHTML = `
+        <h3>Tier Progress</h3>
       `;
-      row.appendChild(legendCell);
 
-      // Find the first tier with non-zero cards
-      let firstNonZeroTier = -1;
-      let lastNonZeroTier = -1;
-      for (let t = 1; t <= thresholds.length; t++) {
-        if (cardsByTier[t] > 0) {
-          if (firstNonZeroTier === -1) firstNonZeroTier = t;
-          lastNonZeroTier = t;
-        }
-      }
+      const tierProgressTable = document.createElement('table');
+      tierProgressTable.className = 'tier-progress-table';
+      
+      // Create header row with tier numbers
+      const headerRow = document.createElement('tr');
+      headerRow.innerHTML = `
+        <th>Rarity</th>
+        <th></th>
+        ${Array(21).fill(0).map((_, i) => `<th>T${i}</th>`).join('')}
+      `;
+      
+      const thead = document.createElement('thead');
+      thead.appendChild(headerRow);
+      tierProgressTable.appendChild(thead);
 
-      // Check if row is all zeros (except T0)
-      const isAllZeros = firstNonZeroTier === -1;
+      // Create table body
+      const tbody = document.createElement('tbody');
+      
+      // Process each rarity
+      Object.entries(window.tierThresholds).forEach(([rarity, thresholds]) => {
+        // Count total cards of this rarity
+        const totalCards = cards.filter(c => c.rarity === rarity).length;
+        if (totalCards === 0) return;
 
-      // Add cells for each tier
-      for (let tier = 0; tier <= 20; tier++) {
-        const cell = document.createElement('td');
-        cell.className = 'tier-cell';
+        // Count cards at each tier
+        const cardsByTier = Array(21).fill(0); // 0-20 tiers
+        const ownedCards = new Set();
+        cards.forEach(c => {
+          if (c.rarity === rarity && c.quantity > 0) {
+            cardsByTier[c.tier]++;
+            ownedCards.add(c.id);
+          }
+        });
+
+        // Calculate T0 (unowned cards)
+        const unownedCount = cards.filter(c => c.rarity === rarity && !ownedCards.has(c.id)).length;
+        cardsByTier[0] = unownedCount;
+
+        const row = document.createElement('tr');
         
-        if (tier === 0) {
-          // For tier 0, just show the count of unowned cards
-          const count = cardsByTier[0];
-          cell.innerHTML = `<span class="tier-count ${count > 0 ? 'unowned-count' : ''}">${count}</span>`;
-        } else if (tier <= thresholds.length) {
-          // For other tiers, show threshold and count
-          const threshold = thresholds[tier - 1];
-          const count = cardsByTier[tier];
+        // Add rarity cell
+        const rarityCell = document.createElement('td');
+        rarityCell.className = 'rarity-cell';
+        rarityCell.style.color = getComputedStyle(document.documentElement)
+          .getPropertyValue(`--rarity-${rarity}`);
+        rarityCell.textContent = rarity.charAt(0).toUpperCase() + rarity.slice(1);
+        row.appendChild(rarityCell);
+
+        // Add legend cell
+        const legendCell = document.createElement('td');
+        legendCell.className = 'legend-cell';
+        legendCell.innerHTML = `
+          <div>↑ req</div>
+          <div>↓ owned</div>
+        `;
+        row.appendChild(legendCell);
+
+        // Find the first tier with non-zero cards
+        let firstNonZeroTier = -1;
+        let lastNonZeroTier = -1;
+        for (let t = 1; t <= thresholds.length; t++) {
+          if (cardsByTier[t] > 0) {
+            if (firstNonZeroTier === -1) firstNonZeroTier = t;
+            lastNonZeroTier = t;
+          }
+        }
+
+        // Check if row is all zeros (except T0)
+        const isAllZeros = firstNonZeroTier === -1;
+
+        // Add cells for each tier
+        for (let tier = 0; tier <= 20; tier++) {
+          const cell = document.createElement('td');
+          cell.className = 'tier-cell';
           
-          let countClass = '';
-          if (count === 0) {
-            // Color red if all zeros or if to the right of last non-zero tier
-            if (isAllZeros || (lastNonZeroTier !== -1 && tier > lastNonZeroTier)) {
-              countClass = 'zero-count';
+          if (tier === 0) {
+            // For tier 0, just show the count of unowned cards
+            const count = cardsByTier[0];
+            cell.innerHTML = `<span class="tier-count ${count > 0 ? 'unowned-count' : ''}">${count}</span>`;
+          } else if (tier <= thresholds.length) {
+            // For other tiers, show threshold and count
+            const threshold = thresholds[tier - 1];
+            const count = cardsByTier[tier];
+            
+            let countClass = '';
+            if (count === 0) {
+              // Color red if all zeros or if to the right of last non-zero tier
+              if (isAllZeros || (lastNonZeroTier !== -1 && tier > lastNonZeroTier)) {
+                countClass = 'zero-count';
+              }
+            } else if (lastNonZeroTier !== -1 && tier < lastNonZeroTier) {
+              // Color yellow-orange if non-zero but to the left of last non-zero
+              countClass = 'behind-count';
             }
-          } else if (lastNonZeroTier !== -1 && tier < lastNonZeroTier) {
-            // Color yellow-orange if non-zero but to the left of last non-zero
-            countClass = 'behind-count';
+            
+            cell.innerHTML = `
+              <span class="tier-threshold">${formatNumber(threshold)}</span>
+              <span class="tier-count ${countClass}">${count}</span>
+            `;
+          } else {
+            // For tiers beyond the thresholds, show empty cell
+            cell.className += ' empty';
           }
           
-          cell.innerHTML = `
-            <span class="tier-threshold">${formatNumber(threshold)}</span>
-            <span class="tier-count ${countClass}">${count}</span>
-          `;
-        } else {
-          // For tiers beyond the thresholds, show empty cell
-          cell.className += ' empty';
+          row.appendChild(cell);
         }
-        
-        row.appendChild(cell);
-      }
 
-      tbody.appendChild(row);
-    });
+        tbody.appendChild(row);
+      });
 
-    tierProgressTable.appendChild(tbody);
-    tierProgressSection.appendChild(tierProgressTable);
-    container.appendChild(tierProgressSection);
+      tierProgressTable.appendChild(tbody);
+      tierProgressSection.appendChild(tierProgressTable);
+      container.appendChild(tierProgressSection);
+    }
 }
 
 window.updateStatsUI = updateStatsUI;

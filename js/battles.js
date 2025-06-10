@@ -56,14 +56,15 @@ function getNextEnemy() {
   if (enemy) {
     // Initialize enemy properties
     enemy.attack = enemy.power * 10;
-    enemy.maxHp = enemy.defense * 10000;
+    enemy.maxHp = enemy.defense * 20000;
     enemy.currentHp = enemy.maxHp;
+    enemy.stunTurns = 0;
   }
   return enemy;
 }
 
 // Show damage number animation
-function showDamageNumber(damage, target = 'enemy') {
+function showDamageNumber(damage, target = 'enemy', specialType = null) {
   const targetEl = target === 'enemy' ? 
     document.querySelector('.enemy-card .battle-card-face') : // Changed from card-outer
     document.querySelector('.battle-slot[data-slot="0"] .battle-card-face');
@@ -71,18 +72,22 @@ function showDamageNumber(damage, target = 'enemy') {
   
   const damageEl = document.createElement('div');
   damageEl.className = 'damage-number';
+  if (specialType) {
+    damageEl.className += ' ' + specialType;
+  }
   damageEl.textContent = formatNumber(damage);
+
+  if (specialType === 'dodge'){
+    damageEl.textContent = 'Dodge';
+  } else if (specialType === 'stun'){
+    damageEl.textContent = 'Stun';
+  }
   
   const bounds = targetEl.getBoundingClientRect();
   let offsetX, offsetY;
   
-  if (target === 'enemy') {
-    offsetX = bounds.width * (0.3 + Math.random() * 0.4); // 30-70% from left
-    offsetY = bounds.height * (0.2 + Math.random() * 0.3); // 20-50% from top
-  } else {
-    offsetX = bounds.width * 0.5; // Center horizontally
-    offsetY = bounds.height * 0.3; // 30% from top
-  }
+  offsetX = bounds.width * (0.15 + Math.random() * 0.35); // from left
+  offsetY = bounds.height * (0.3 + Math.random() * 0.35); // from top
   
   damageEl.style.left = `${offsetX}px`;
   damageEl.style.top = `${offsetY}px`;
@@ -104,9 +109,8 @@ function removeTopCard() {
   const willHaveRemainingCards = state.battle.slots[1] !== null;
 
   // Update the slots
-  state.battle.slots[0] = state.battle.slots[1];
-  state.battle.slots[1] = state.battle.slots[2];
-  state.battle.slots[2] = null;
+  state.battle.slots.shift();
+  state.battle.slots.push(null);
 
   // Only pause if no cards will remain
   if (!willHaveRemainingCards) {
@@ -166,7 +170,7 @@ function processVictory() {
   }
   
   // Clear battle slots
-  state.battle.slots = [null, null, null];
+  state.battle.slots = Array(state.battle.slotLimit).fill(null);
 
   // Get next enemy
   state.battle.currentEnemy = getNextEnemy();
@@ -243,33 +247,79 @@ function updateBattleUI() {
     <div class="battle-arena">
       <div class="battle-slots-container">
         <div class="battle-slots">
-          ${Array(3).fill(null).map((_, i) => `
-            <div class="battle-slot" data-slot="${2-i}">
-              ${state.battle.slots[2-i] ? `
-                <div class="card-outer">
-                  <div class="battle-card-face">
-                    <img class="card-frame" src="assets/images/frames/${state.battle.slots[2-i].rarity}_frame.jpg" />
-                    <img class="card-image" src="assets/images/cards/${state.battle.slots[2-i].realm}/${slugify(state.battle.slots[2-i].name)}.jpg" />
-                    ${state.battle.slots[2-i].tier > 0 ? `
-                      <img class="tier-badge" src="assets/images/tiers/tier_${state.battle.slots[2-i].tier}.png" alt="Tier ${state.battle.slots[2-i].tier}" />
-                    ` : ''}
-                    <div class="hp-container">
-                      <div class="hp-bar" style="width: ${(state.battle.slots[2-i].currentHp / state.battle.slots[2-i].maxHp) * 100}%"></div>
-                      <div class="hp-text">${formatNumber(state.battle.slots[2-i].currentHp)}</div>
-                    </div>
-                    <div class="battle-combat-stats">
-                      <div class="battle-combat-stat">
-                        <i class="fas fa-gavel"></i> ${formatNumber(state.battle.slots[2-i].attack)}
+          ${(() => {
+            const limit = state.battle.slotLimit;
+
+            // exactly your existing slot markup
+            const renderSlot = idx => {
+              const c = state.battle.slots[idx];
+              return `
+                <div class="battle-slot" data-slot="${idx}">
+                  ${c ? `
+                    <div class="card-outer">
+                      <div class="battle-card-face">
+                        <img class="card-frame"
+                            src="assets/images/frames/${c.rarity}_frame.jpg" />
+                        <img class="card-image"
+                            src="assets/images/cards/${c.realm}/${slugify(c.name)}.jpg" />
+                        ${c.tier > 0 ? `
+                          <img class="tier-badge"
+                              src="assets/images/tiers/tier_${c.tier}.png"
+                              alt="Tier ${c.tier}" />` : ''}
+                        <div class="hp-container">
+                          <div class="hp-bar"
+                              style="width:${(c.currentHp/c.maxHp)*100}%"></div>
+                          <div class="hp-text">${formatNumber(c.currentHp)}</div>
+                        </div>
+                        <div class="battle-combat-stats">
+                          <div class="battle-combat-stat">
+                            <i class="fas fa-gavel"></i> ${formatNumber(c.attack)}
+                          </div>
+                          <div class="battle-combat-stat">
+                            ${formatNumber(c.maxHp)} <i class="fas fa-heart"></i>
+                          </div>
+                        </div>
                       </div>
-                      <div class="battle-combat-stat">
-                        ${formatNumber(state.battle.slots[2-i].maxHp)} <i class="fas fa-heart"></i>
-                      </div>
                     </div>
-                  </div>
-                </div>
-              ` : '<div class="empty-slot">Empty Slot</div>'}
-            </div>
-          `).join('')}
+                  ` : '<div class="empty-slot">Empty Slot</div>'}
+                </div>`;
+            };
+
+            // 1) First row: slots 2→1→0
+            const baseRow = [2, 1, 0].slice(0, limit);
+            const firstRow = baseRow
+              .map((idx, i) =>
+                renderSlot(idx) +
+                (i < baseRow.length - 1 ? '<div class="slot-arrow">➡️</div>' : '')
+              ).join('');
+
+            // 2) Middle row: an ↑ under slot 2
+            let arrowUpRow = '';
+            if (limit > 3) {
+              arrowUpRow = baseRow
+                .map((_, i) =>
+                  i === 0
+                    ? `<div class="arrow-cell"><div class="slot-arrow arrow-up">⬆️</div></div>`
+                    : `<div class="arrow-cell"></div>`
+                ).join('');
+            }
+
+            // 3) Bottom row: slots 3←4←5…
+            let secondRow = '';
+            if (limit > 3) {
+              secondRow = Array.from({ length: limit - 3 }, (_, k) => 3 + k)
+                .map((idx, k) =>
+                  (k > 0 ? '<div class="slot-arrow arrow-left">⬅️</div>' : '') +
+                  renderSlot(idx)
+                ).join('');
+            }
+
+            return `
+              <div class="slots-row">${firstRow}</div>
+              ${arrowUpRow ? `<div class="slots-row arrow-up-row">${arrowUpRow}</div>` : ''}
+              ${secondRow  ? `<div class="slots-row bottom-row">${secondRow}</div>` : ''}
+            `;
+          })()}
         </div>
         <div class="battle-controls">
           <button class="battle-pause-btn ${state.battle.paused ? 'paused' : ''}"
@@ -334,10 +384,16 @@ function updateBattleUI() {
           </button>
         </div>
       </div>
-      <button class="battle-help-btn">
-        <i class="fas fa-question-circle"></i>
-        How do Battles work?
-      </button>
+      <div class="battle-header-buttons">
+        <button class="battle-help-btn">
+          <i class="fas fa-question-circle"></i>
+          How do Battles work?
+        </button>
+        <button class="battle-reset-btn">
+          <i class="fas fa-redo"></i>
+          Reset Battles
+        </button>
+      </div>
     </div>
     <div class="battle-card-grid"></div>
   `;
@@ -396,6 +452,12 @@ function updateBattleUI() {
     helpBtn.addEventListener('click', showBattleHelp);
   }
 
+  // Add reset battles button handler
+  const resetBtn = document.querySelector('.battle-reset-btn');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', showResetBattlesDialog);
+  }
+
   // Update card grid after filters are set
   const cardGrid = document.querySelector('.battle-card-grid');
   if (cardGrid) {
@@ -435,9 +497,8 @@ function updateBattleCardGrid(cardGrid) {
     const attack = calculateAttackPower(card);
     const maxHp = calculateHP(card);
 
-    return `
-      <div class="battle-card-grid-item" data-id="${card.id}">
-        <div class="battle-card-face">
+    return `      <div class="battle-card-grid-item" data-id="${card.id}">
+        <div class="battle-card-face" style="border-color: ${realmColors[card.realm]}">
           <img class="battle-card-image" 
                src="assets/images/cards/${card.realm}/${slugify(card.name)}.jpg" 
                alt="${card.name}"
@@ -585,7 +646,7 @@ function renderCardEffects(c, isSpecial = false) {
         baseValue = EFFECTS_RARITY_VALUES[c.rarity]?.cooldownDividerBaseValue || 0;
         const tierContribution = (c.tier * (c.tier + 1)) / 2;
         total = baseValue * c.level * tierContribution;
-        valueHtml = `×${formatNumber(total)}`;
+        valueHtml = `+${formatNumber(total)}`;
         break;
       default:
         if (def.type === "minCardsPerPoke") {
@@ -679,10 +740,15 @@ function showSacrificeDialog(cardId) {
   if (sacrificeBtn) {
     sacrificeBtn.addEventListener('click', () => {
       // Find first available slot
-      const availableSlot = state.battle.slots.findIndex(slot => slot === null);
+      const limit = state.battle.slotLimit;
+      // grow the slots array up to the current limit
+      while (state.battle.slots.length < limit) {
+        state.battle.slots.push(null);
+      }
       
+      const availableSlot = state.battle.slots.findIndex(slot => slot === null);
       if (availableSlot === -1) {
-        alert('没有可用的战斗槽位!');
+        alert('No available battle slots!');
         return;
       }
 
@@ -711,6 +777,18 @@ function showSacrificeDialog(cardId) {
 
       // Place battle copy in slot
       state.battle.slots[availableSlot] = battleCard;
+
+      
+      // Check for and apply battle tricks synchronously
+      if (state.battle.currentEnemy) {
+        checkBattleTrick(cardId, state.battle.currentEnemy);
+
+        if(cardId === 833){
+          triggerQuickGlitch();
+          setTimeout(() => showMatrixRain(), 2000);
+          setTimeout(() => unlockAchievement('secret8'), 10100);
+        }
+      }
 
       // Lock the card
       lockCard(cardId);
@@ -747,53 +825,6 @@ function renderSpecialEffects(effects, card) {
   return effects.map(def => {
     // ...special effect rendering logic from main.js...
   }).join('');
-}
-
-// Sacrifice card for battle
-function sacrificeCard(cardId, slotIndex) {
-  const card = cardMap[cardId];
-  if (!card) return;
-
-  // Calculate attack and HP before resetting stats
-  const attack = calculateAttackPower(card);
-  const maxHp = calculateHP(card);
-  const originalQuantity = card.quantity;
-
-  // Remove card effects
-  if (card.lastAppliedEffects) {
-    applyEffectsDelta(card.lastAppliedEffects, -1);
-  }
-  if (card.lastAppliedSpecialEffects) {
-    applyEffectsDelta(card.lastAppliedSpecialEffects, -1);
-  }
-
-  // Reset card stats
-  card.level = 1;
-  card.tier = 0;
-  card.quantity = 0;
-  card.lastAppliedEffects = null;
-  card.lastAppliedSpecialEffects = null;
-
-  // Create a battle slot version of the card
-  const battleCard = {
-    ...card,
-    attack,
-    currentHp: maxHp,
-    maxHp,
-    quantity: originalQuantity,
-    originalQuantity
-  };
-
-  // Add card to battle slot
-  state.battle.slots[slotIndex] = battleCard;
-
-  // Lock the card
-  lockCard(cardId);
-
-  // Save state and update UI
-  saveState();
-  updateBattleUI();
-  renderCardsCollection(); // Update collection view
 }
 
 // Add function to check and clear expired lockouts
@@ -847,36 +878,54 @@ function startBattleLoop() {
       if (state.battle.currentEnemy.currentHp <= 0) {
         defeatEnemy();
         return;
-      }
-
-      // Each card attacks
+      }      // Each card attacks
       state.battle.slots.forEach((card, index) => {
         if (!card) return;
 
-        const damage = card.attack;
+        let isCrit = false;
+
+        if (Math.random() < state.battle.critChance) {
+          isCrit = true;
+          damage = card.attack * state.battle.critDamage;
+        } else {
+          damage = card.attack;
+        }
         state.battle.currentEnemy.currentHp -= damage;
 
         // Show damage number
-        showDamageNumber(damage, 'enemy');
+        showDamageNumber(damage, 'enemy', isCrit ? 'crit' : null);
 
-        // Check if enemy is defeated
-        if (state.battle.currentEnemy.currentHp <= 0) {
-          defeatEnemy();
-          return;
+        if (Math.random() < state.battle.stunChance) {
+          state.battle.currentEnemy.stunTurns += 1;
+          showDamageNumber(0, 'enemy', 'stun');
         }
       });
 
+      // Check for enemy defeat after all attacks
+      if (state.battle.currentEnemy.currentHp <= 0) {
+        defeatEnemy();
+        return;
+      }
+
       // Top card takes damage only if enemy still alive
       if (!state.battle.paused && state.battle.currentEnemy && state.battle.slots[0]) {
-        const damage = state.battle.currentEnemy.attack;
-        state.battle.slots[0].currentHp -= damage;
+        if (state.battle.currentEnemy.stunTurns > 0) {
+          state.battle.currentEnemy.stunTurns--;
+        } else {
+          if (Math.random() < state.battle.dodgeChance) {
+            showDamageNumber(0, 'slot0', 'dodge');
+          } else {
+            const damage = state.battle.currentEnemy.attack;
+            state.battle.slots[0].currentHp -= damage;
 
-        // Show damage number on slot 0
-        showDamageNumber(damage, 'slot0');
+            // Show damage number on slot 0
+            showDamageNumber(damage, 'slot0');
 
-        // Check if top card is defeated
-        if (state.battle.slots[0].currentHp <= 0) {
-          removeTopCard();
+            // Check if top card is defeated
+            if (state.battle.slots[0].currentHp <= 0) {
+              removeTopCard();
+            }
+          }
         }
       }
 
@@ -887,19 +936,6 @@ function startBattleLoop() {
       }
     }, 500);
   }
-}
-
-// Update card placement logic to auto-start battle when 3 cards are placed
-function placeBattleCard(cardId, slotIndex) {
-  // ...existing placement code...
-
-  // After placing card, check if all slots are filled
-  if (state.battle.slots.every(slot => slot !== null)) {
-    state.battle.paused = false;
-    startBattleLoop();
-  }
-  
-  updateBattleUI();
 }
 
 // Add filter menu functions
@@ -966,11 +1002,12 @@ function showRarityFilterMenu(btn) {
 }
 
 function showFilterMenu(btn, menu, onSelect) {
-  // Position menu below button
+  // Position menu below button using fixed positioning
   const rect = btn.getBoundingClientRect();
-  menu.style.position = 'absolute';
+  menu.style.position = 'fixed';
   menu.style.top = `${rect.bottom + 4}px`;
   menu.style.left = `${rect.left}px`;
+  menu.style.zIndex = '1000'; // Ensure menu appears above other content
   
   // Add click handlers
   menu.querySelectorAll('.filter-option').forEach(option => {
@@ -1015,6 +1052,7 @@ function showBattleHelp() {
         <li>Sacrificing resets the card's level, tier, and quantity to 0.</li>
         <li>The sacrificed card is locked for 24 hours (can be reduced) after the battle. This prevents you from getting it from pokes and merchants.</li>
         <li>All effects from the sacrificed card are removed on sacrifice.</li>
+        <li>When enemy is defeated, all sacrificed cards are removed - so choose carefully.</li>
       </ul>
 
       <h3>Strategy Tips</h3>
@@ -1023,9 +1061,80 @@ function showBattleHelp() {
         <li>Use multiple cards to increase your total damage output.</li>
         <li>Consider the lockout timer when choosing cards to sacrifice.</li>
         <li>Check the enemy's stats to plan your strategy.</li>
+        <li>Enemies do not heal between battles, so don't hesitate to launch smaller attacks to chip at their HP.</li>
+      </ul>
+
+      <h3>Battle Tricks & Achievements</h3>
+      <ul>
+        <li>Be sure to check out <strong>Greek God Battle Tricks</strong> on the Achievements tab. It shows which bosses have special achievements.</li>
+        <li>These tricks activate when you sacrifice the correct card for the achievement—usually themed around Greek myth lore—and grant a bonus to that encounter.</li>
+        <li>The achievement itself only needs to be unlocked once, but you can reuse the effect multiple times (even within the same fight once the card’s lockout timer has expired).</li>
+        <li>If you missed unlocking any achievements, you can hit the <strong>Reset Battles</strong> button to try again.</li>
       </ul>
     </div>
   `;
+
+  // Handle click outside to close
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) {
+      dialog.remove();
+    }
+  });
+
+  document.body.appendChild(dialog);
+}
+
+// Add reset battles dialog function
+function showResetBattlesDialog() {
+  const dialog = document.createElement('div');
+  dialog.className = 'sacrifice-dialog';
+  dialog.innerHTML = `
+    <div class="sacrifice-content battle-help-modal">
+      <h2>Reset Battles</h2>
+      <p>This will reset all your Greek Gods enemies to fight all of them again. You will still keep your current quantities of Greek Gods cards you have unlocked.</p>
+      <p>The main (and only?) purpose for this would be achievement hunting.</p>
+      <div class="reset-buttons">
+        <button class="reset-confirm-btn">Reset Battles</button>
+        <button class="reset-cancel-btn">Cancel</button>
+      </div>
+    </div>
+  `;
+
+  // Add click handlers
+  const confirmBtn = dialog.querySelector('.reset-confirm-btn');
+  const cancelBtn = dialog.querySelector('.reset-cancel-btn');
+
+  confirmBtn.addEventListener('click', () => {
+    const bossCards = cards.filter(c => c.realm === 11);
+    
+    bossCards.forEach(card => {
+      card.locked = true;
+      delete state.battle.lockoutTimers[card.id];
+    });
+    
+    const firstBossRealm = realms.find(r => r.unlocked && r.id === 11);
+    if (firstBossRealm) {
+      const firstBoss = cards.find(c => c.realm === firstBossRealm.id && !c.cantBeEnemy);
+      if (firstBoss) {
+        state.battle.currentEnemy = {
+          ...firstBoss,
+          currentHp: firstBoss.defense * 20000,
+          maxHp: firstBoss.defense * 20000
+        };
+      }
+    }
+    
+    state.battle.slots = Array(state.battle.slotLimit).fill(null);
+    state.battle.paused = true;
+    
+    saveState();
+    updateBattleUI();
+    dialog.remove();
+  });
+
+  cancelBtn.addEventListener('click', () => {
+    dialog.remove();
+  });
 
   // Handle click outside to close
   dialog.addEventListener('click', (e) => {

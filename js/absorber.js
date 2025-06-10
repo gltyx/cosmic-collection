@@ -27,10 +27,22 @@ function updateAbsorberUI() {
     absorberButton.classList.toggle('maxed', state.absorberValue >= maxAbsorberValue && !absorberActive);
   }
 
+let absorber3 = 0;
+
 // Handle absorber button click
 function handleAbsorberClick() {
-  if (state.absorberValue == 1) return; // Don't allow activation if at 1x
+  if (state.absorberValue == 1 || absorberActive) return; // Don't allow activation if at 1x or already active
   
+  if (state.absorberValue > 2.9 && state.absorberValue < 3.1) {
+    absorber3++;
+    if (absorber3 == 3) {
+      unlockAchievement('secret4');
+      absorber3 = 0;
+    }
+  } else {
+    absorber3 = 0;
+  }
+
   absorberActive = true;
   updateAbsorberUI();
 }

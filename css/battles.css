@@ -37,9 +37,7 @@
 }
 
 .battle-slots {
-  display: grid;
-  grid-template-columns: repeat(3, 180px);
-  gap: 12px;
+  display: block;
 }
 
 /* Battle pause button styling */
@@ -101,6 +99,9 @@
   position: relative;
   width: 100%;
   height: 100%;
+  border: 4px solid;  /* Will use border-color from inline style */
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 /* Combat stat base */
@@ -375,7 +376,7 @@
 
 .damage-number {
   position: absolute;
-  color: #ff4444;
+  color: #a12626;
   font-weight: bold;
   font-size: 1.2em;
   text-shadow: 0 0 2px black;
@@ -383,6 +384,22 @@
   pointer-events: none;
   transform: translate(-50%, -50%);
   animation: damageNumber 0.8s ease-out forwards;
+}
+
+.damage-number.crit {
+  color: #ff4444;
+  font-size: 2em;
+}
+
+.damage-number.dodge {
+  color: #a45ec7;
+  font-size: 1.8em;
+}
+
+
+.damage-number.stun {
+  color: #060e0a;
+  font-size: 1.8em;
 }
 
 /* Card remove animation */
@@ -765,12 +782,18 @@
   margin-bottom: 16px;
 }
 
-.battle-help-btn {
+.battle-header-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.battle-help-btn,
+.battle-reset-btn {
   padding: 8px 16px;
   background: var(--dark);
   border: none;
   border-radius: 4px;
-  color: white;  /* Make text white */
+  color: white;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
@@ -779,7 +802,51 @@
   font-size: 0.9em;
 }
 
-.battle-help-btn:hover {
+.battle-reset-btn {
+  background: rgb(150, 0, 0);
+}
+
+.battle-help-btn:hover{
+  background: var(--accent);
+}
+
+.battle-reset-btn:hover {
+  background: rgb(50, 0, 0);
+}
+
+/* Reset buttons in dialog */
+.reset-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  justify-content: center;
+}
+
+.reset-confirm-btn,
+.reset-cancel-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reset-confirm-btn {
+  background: #ff4444;
+  color: white;
+}
+
+.reset-confirm-btn:hover {
+  background: #ff2222;
+}
+
+.reset-cancel-btn {
+  background: var(--dark);
+  color: white;
+}
+
+.reset-cancel-btn:hover {
   background: var(--accent);
 }
 
@@ -834,12 +901,59 @@
   margin-top: 0;
 }
 
+/* each row now flex-boxes the slots+arrows */
+.slots-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 8px; /* space between rows */
+}
+
+/* stack arrow+slot vertically */
+.slot-with-arrow-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px; /* space between arrow and slot */
+}
+
+
+.slots-row .battle-slot {
+  flex: none;
+  width: 160px;           /* same as your grid-template-columns */
+}
+
+.slots-row.bottom-row {
+  justify-content: flex-start;
+}
+
+/* arrow-up row: each cell same width as a slot */
+.arrow-up-row .arrow-cell {
+  flex: none;
+  width: 155px;
+  display: flex;
+  justify-content: left;
+}
+
+@media (max-height:800px) {
+  .arrow-up-row .arrow-cell { width: 180px; }
+}
+@media (max-height:500px) {
+  .arrow-up-row .arrow-cell { width: 105px; }
+}
+
+/* arrow styling */
+.slot-arrow {
+  font-size: 1.8em;      /* larger */
+  font-weight: bold;     /* thicker strokes */
+  color: var(--accent);
+  line-height: 1;
+}
+
 /* Responsive queries */
-@media (max-width: 1200px) {
-  .battle-slots {
-    grid-template-columns: repeat(3, 120px);
-  }
-  .battle-slot {
+@media (max-height: 800px) {
+  .slots-row .battle-slot {
     width: 120px;
   }
   .enemy-card {
@@ -847,12 +961,9 @@
   }
 }
 
-@media (max-width: 900px) {
-  .battle-slots {
-    grid-template-columns: repeat(3, 80px);
-  }
-  .battle-slot {
-    width: 80px;
+@media (max-height: 500px) {
+  .slots-row .battle-slot {
+    width: 90px;
   }
   .enemy-card {
     width: 180px;

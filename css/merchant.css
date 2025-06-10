@@ -6,9 +6,10 @@
     "bulkbuy offers"
     "buyout offers"
     "image offers"
+    "info offers"
     "message offers";
   grid-template-columns: 25% 1fr;
-  grid-template-rows: auto auto auto 1fr;
+  grid-template-rows: auto auto auto auto auto 1fr;
   gap: 8px 16px;
   align-items: start;
 }
@@ -20,6 +21,27 @@
   border-radius: 4px;
 }
 
+.merchant-info {
+  grid-area: info;
+  background: rgba(136, 136, 136, 0.5);
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.merchant-name {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: #fff;
+}
+
+.merchant-description {
+  font-size: 0.9em;
+  color: #ddd;
+  font-style: italic;
+}
+
 .merchant-message {
   grid-area: message;
   font-style: italic;
@@ -28,6 +50,7 @@
   background: rgba(136, 136, 136, 0.5);
   padding: 8px;
   border-radius: 4px;
+  margin-top: 0;
 }
 
 .merchant-offers {

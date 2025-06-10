@@ -43,11 +43,20 @@ window.state = {
   unlockedCurrencies: [],
   stats: {
     totalPokes: 0,
+    totalCardsDrawn: 0,
     merchantPurchases: 0,
+  },
+  achievementsUnlocked: new Set(),
+  achievementRewards: {
+    maxCardsMultiplier: 1.0, // Default multiplier for max cards
+    minCardsMultiplier: 1.0, // Default multiplier for min cards
+    merchantPriceDivider: 1.0, // Default price divider for merchant
+    minCardsPerPoke: 0, // Default minimum cards per poke
+    maxCardsPerPoke: 0, // Default maximum cards per poke
   },
   effects: {
     minCardsPerPoke: 1,
-    maxCardsPerPoke: 3,
+    maxCardsPerPoke: 4,
     currencyPerPoke: {},
     currencyPerSec:   {},
     cooldownDivider: 1,
@@ -67,12 +76,13 @@ window.state = {
   resourceGeneratorContribution: {},  // Track contributions for each resource
   harvesterValue: 0,
   absorberValue: 1,
-  interceptorValue: 0,     // Add interceptor value
-  interceptorActive: false, // Track if interceptor is active
-  timeCrunchValue: 0,     // Add Time Crunch value
+  interceptorValue: 0,
+  interceptorActive: false,
+  timeCrunchValue: 0,
   merchantBulkChance: 0.25,
   merchantBuyAllDiscount: 0.05,
   merchantBulkRoot: 3,
+  merchantBulkMult: 1,
   maxOfflineHours: 4, // Maximum hours to consider for offline earnings
   sacrificeLockoutTime: 24, // 24 hours lockout for sacrifices
   pokeRaritiesOmitted: [],
@@ -80,6 +90,8 @@ window.state = {
   hideLockedCards: true, // New variable for checkbox state
   remainingCooldown: 0,    // Add remaining cooldown to state
   timeCrunchMaxChargeTime: 300, // 5 minutes max charge time
+  donationButtonClicked: false,   // Track if donation button was clicked
+  supporterCheckboxClicked: false, // Track if supporter checkbox was clicked
   effectFilters: {
     activeGroups: new Set(),
     oddsRealms:      new Set(),    // <realmId>
@@ -89,6 +101,11 @@ window.state = {
   battle: {
     slots: [null, null, null], // 3 slots for cards in battle
     currentEnemy: null,
+    critChance: 0,
+    critDamage: 1.5,
+    dodgeChance: 0,
+    stunChance: 0,
+    slotLimit: 3,
     lockoutTimers: {}, // Keep this for temporary lockouts
     initialized: false,
     sortBy: 'power',
@@ -127,6 +144,13 @@ function loadState() {
         applySkill(Number(sid), /*skipCost=*/true);
       });
     }
+    // Load achievements
+    if (Array.isArray(obj.achievementsUnlocked)) {
+      state.achievementsUnlocked = new Set(obj.achievementsUnlocked);
+      state.achievementsUnlocked.forEach(achievementId => {
+        unlockAchievement(achievementId, duringLoad=true);
+      })
+    }
     Object.entries(obj.currencies).forEach(([cid,val])=>{
       state.currencies[cid] = new Decimal(val);
     });
@@ -136,10 +160,9 @@ function loadState() {
     state.interceptorValue = obj.interceptorValue || 0;
     state.interceptorActive = obj.interceptorActive || false;
     state.timeCrunchValue = obj.timeCrunchValue || 0;  // Load Time Crunch value
-    state.merchantBulkChance = obj.merchantBulkChance || 0.25;
     state.merchantRefreshTime = obj.merchantRefreshTime || 0;
-    state.maxOfflineHours = obj.maxOfflineHours || 4; // Load max offline hours
-    state.sacrificeLockoutTime = obj.sacrificeLockoutTime || 24; // Load sacrifice lockout time
+    state.supporterCheckboxClicked = obj.supporterCheckboxClicked || false;
+    state.donationButtonClicked = obj.donationButtonClicked || false;
         
     // === Determine whether any saved card actually has a `locked` property ===
     const savedOwned = obj.ownedCards || {};
@@ -158,6 +181,7 @@ function loadState() {
       }
     });
     state.stats.totalPokes = obj.stats.totalPokes || 0;
+    state.stats.totalCardsDrawn = obj.stats.totalCardsDrawn || 0;
     state.stats.merchantPurchases = obj.stats.merchantPurchases || 0;
     state.remainingCooldown = obj.remainingCooldown || 0;
     state.lastSaveTime = obj.lastSaveTime || null;
@@ -194,6 +218,7 @@ function loadState() {
         state.battle.currentEnemy.currentHp = obj.battle.currentEnemy.currentHp;
         state.battle.currentEnemy.maxHp = obj.battle.currentEnemy.maxHp;
         state.battle.currentEnemy.attack = obj.battle.currentEnemy.attack;
+        state.battle.currentEnemy.stunTurns = 0;
       }
       state.battle.lockoutTimers = obj.battle.lockoutTimers;
       state.battle.sortBy = obj.battle.sortBy || 'power';
@@ -231,17 +256,17 @@ function saveState() {
     purchasedSkills: skills.filter(s=>s.purchased).map(s=>s.id),
     currencies:      {},
     unlockedCurrencies: state.unlockedCurrencies,
+    achievementsUnlocked: Array.from(state.achievementsUnlocked),
     ownedCards:      {},
-    stats:           { totalPokes: state.stats.totalPokes, merchantPurchases: state.stats.merchantPurchases },
+    stats:           { totalPokes: state.stats.totalPokes, merchantPurchases: state.stats.merchantPurchases, totalCardsDrawn: state.stats.totalCardsDrawn },
     harvesterValue: state.harvesterValue,
     absorberValue: state.absorberValue,
     interceptorValue: state.interceptorValue,
     interceptorActive: state.interceptorActive,
     timeCrunchValue: state.timeCrunchValue,
-    merchantBulkChance: state.merchantBulkChance,
-    maxOfflineHours: state.maxOfflineHours,
-    sacrificeLockoutTime: state.sacrificeLockoutTime,
     currentMerchantId: state.currentMerchant?.id ?? null,
+    supporterCheckboxClicked: state.supporterCheckboxClicked,
+    donationButtonClicked: state.donationButtonClicked,
     merchantOffers: state.merchantOffers.map(o => ({
       cardId:   o.cardId,
       currency: o.currency,
@@ -272,7 +297,7 @@ function saveState() {
       } : null,
       lockoutTimers: state.battle.lockoutTimers,
       sortBy: state.battle.sortBy
-    }
+    },
   };
   currencies.forEach(c => {
     obj.currencies[c.id] = state.currencies[c.id].toString();
@@ -384,7 +409,7 @@ function updateCurrencyBar() {
 let currentTab = 'hole';
 
 function showTab(tab) {
-  const tabs = ['hole','cards','skills','merchant','battles','stats','settings'];
+  const tabs = ['hole','cards','skills','merchant','battles','achievements','stats','settings'];
   tabs.forEach(t=>{
     document.getElementById(`tab-content-${t}`)
       .style.display = (t===tab ? 'block' : 'none');
@@ -406,6 +431,8 @@ function showTab(tab) {
 }
 
 // --- POKE & REVEAL ---
+
+const ramsSet = new Set([1,4,7,9]);
 
 function performPoke() {
   if (!drawArea.classList.contains('hole-draw-area')) return;
@@ -433,14 +460,19 @@ function performPoke() {
   const e     = state.effects;
   const r = (Math.random() + Math.random()) / 2; // center-biased
   const draws = Math.floor(Math.floor(
-    ((r * (e.maxCardsPerPoke - e.minCardsPerPoke + 1)
-  ) + e.minCardsPerPoke))
+    ((r * ((e.maxCardsPerPoke + state.achievementRewards.maxCardsPerPoke) * (state.achievementRewards.maxCardsMultiplier) * (state.supporterCheckboxClicked ? 1.25 : 1) 
+          - ((e.minCardsPerPoke + state.achievementRewards.minCardsPerPoke) * state.achievementRewards.minCardsMultiplier)  + 1)
+          ) + e.minCardsPerPoke + state.achievementRewards.minCardsPerPoke))
   * absorberMultiplier);
 
   // Create and animate floating number
   const floatingNumber = document.createElement('div');
   floatingNumber.className = 'floating-number';
   floatingNumber.textContent = formatNumber(draws);
+
+  state.stats.totalCardsDrawn += draws;
+  checkAchievements('massivePoke', draws);
+  checkAchievements('inItForTheLongHaul');
   
   // Position it at the center of the black hole, accounting for scroll
   const holeRect = holeBtn.getBoundingClientRect();
@@ -460,6 +492,13 @@ function performPoke() {
     const r = realmMap[rid];
     if (r.unlocked) realmWeights[rid] = r.pokeWeight;
   });
+
+  if (state.selectedRealms.length === 1 && state.selectedRealms[0] === 4) {
+    unlockAchievement('secret3');
+  }
+  if (state.selectedRealms.length === 4 && [...state.selectedRealms].every(value => ramsSet.has(value))) {
+    unlockAchievement('secret5');
+  }
 
   // ————— BULK SAMPLING —————
   const picksCounts = {};
@@ -528,6 +567,7 @@ function performPoke() {
 
   //increment total pokes
   state.stats.totalPokes++;
+  checkAchievements('holePoker');
 
   //global per-poke currencies
   Object.entries(state.effects.currencyPerPoke).forEach(([curId, rate]) => {
@@ -677,7 +717,7 @@ function performPoke() {
         badge.textContent = 'NEW';
         front.append(badge);
         if (wasNew && state.interceptorActive && skillMap[12204].purchased) {
-          state.interceptorValue = state.interceptorValue + 30;
+          state.interceptorValue = state.interceptorValue + 15;
         }
       } else if (newTier > oldTier) {
         const badge = document.createElement('div');
@@ -685,7 +725,7 @@ function performPoke() {
         badge.textContent = 'TIER UP';
         front.append(badge);
         if (state.interceptorActive && skillMap[12204].purchased) {
-          state.interceptorValue = state.interceptorValue + 3;
+          state.interceptorValue = state.interceptorValue + 2;
         }
       }
     }
@@ -754,6 +794,9 @@ function performPoke() {
 
           if (revealedCount === currentPackCount - skippedCards) {
             state.flipsDone = true;
+            if ((currentPackCount - skippedCards) >= 250) {
+              unlockAchievement('secret9');
+            }
             tryEnableHole();
           }
         }
@@ -828,6 +871,9 @@ document.addEventListener('touchmove', (e) => {
 
       if (revealedCount === currentPackCount - skippedCards) {
         state.flipsDone = true;
+        if ((currentPackCount - skippedCards) >= 250) {
+          unlockAchievement('secret9');
+        }
         tryEnableHole();
       }
     }
@@ -1063,7 +1109,11 @@ function openModal(cardId) {
   bar.style.width = pct + '%';
   const thresholdLab = document.createElement('div');
   thresholdLab.className = 'threshold';
-  thresholdLab.textContent = `Next Tier at Qty ${formatNumber(nextThresh)}`;
+  if (c.tier === 20) {
+    thresholdLab.textContent = 'Max Tier';
+  } else {
+    thresholdLab.textContent = `Next Tier at Qty ${formatNumber(nextThresh)}`;
+  }
   barContainer.append(bar, thresholdLab);
   right.append(barContainer);
 
@@ -1313,7 +1363,7 @@ function openModal(cardId) {
       let valueHtml;
       switch (def.type) {
         case "merchantPriceDivider":
-          valueHtml = `x${formatNumber(def.value )}`;
+          valueHtml = `×${formatNumber(def.value )}`;
           break;
         case "flatCurrencyPerPoke":
         case "flatCurrencyPerSecond": {
@@ -1371,6 +1421,17 @@ function openModal(cardId) {
   mc.append(left, right);
   ov.append(mc);
   document.body.append(ov);
+
+  if(cardId === '1001') {
+    //i want to use the current code, but just check the visibility of cardImg
+    setTimeout(() => {
+      if (ov.isConnected) {
+        cardImg.style.display = 'none';
+        desc.textContent = 'There is no spoon.';
+        unlockAchievement('secret6');
+      }
+    }, 10000);
+  }
 }
 
 
@@ -1558,6 +1619,7 @@ function renderEffectFilters() {
         e.stopPropagation();
         if (submenu.style.display === 'none') {
           submenu.style.display = 'flex';
+          submenu.style.zIndex = '1000';
           setTimeout(() => document.addEventListener('click', closeSubmenu), 0);
         }
       };
@@ -1583,7 +1645,8 @@ function renderCardsCollection() {
   const list = document.getElementById('cards-list');
   list.innerHTML = '';
 
-  cards
+  // Get filtered cards first
+  const filteredCards = cards
     .filter(c => c.realm === currentCollectionRealm)
     .filter(c => {
       // If no effect filters are active, show all cards
@@ -1631,177 +1694,213 @@ function renderCardsCollection() {
           return effectTypes.some(type => hasEffect(c, type));
         }
       });
-    })
-    .forEach(c => {
-      const cardEl = document.createElement('div');
-      cardEl.className = 'card-outer';
-      if (c.quantity === 0) cardEl.classList.add('unfound');
+    });
 
-      const inner = document.createElement('div');
-      inner.className = 'card-inner revealed';
-      inner.dataset.id = c.id;
+  // Add Level All button if skill 25001 is purchased
+  if (skillMap[25001].purchased && currentCollectionRealm !== null) {
+    const levelAllBtn = document.createElement('button');
+    levelAllBtn.className = 'level-all-btn';
+    levelAllBtn.textContent = 'Level All';
+    levelAllBtn.addEventListener('click', () => {
+      // Get all visible cards in current realm with quantity > 0
+      const cardsToLevel = filteredCards.filter(c => c.quantity > 0);
 
-      const front = document.createElement('div');
-      front.className = 'card-face front';
-      front.style.borderColor = realmColors[c.realm];
+      if (skillMap[25002]?.purchased) {
+        cardsToLevel.reverse();
+      }
 
-      // frame & artwork
-      const frameImg = document.createElement('img');
-      frameImg.className = 'card-frame';
-      const framePath = `assets/images/frames/${c.rarity}_frame.jpg`;
-      imageCache.getImage('frames', framePath).then(img => {
-          if (img) frameImg.src = img.src;
+      // Level up each card to its max affordable level
+      cardsToLevel.forEach(card => {
+        const result = calculateMaxAffordableLevel(card.id);
+        const increment = result.maxLevel - card.level;
+        
+        if (increment > 0 && result.totalCost.greaterThan(0)) {
+          // Subtract cost and level up
+          state.currencies[card.levelCost.currency] = 
+            (state.currencies[card.levelCost.currency] || new Decimal(0))
+              .minus(result.totalCost);
+          levelUp(card.id, increment);
+        }
       });
+      
+      updateCurrencyBar();
+      renderCardsCollection();
+    });
 
-      const contentImg = document.createElement('img');
-      contentImg.className = 'card-image';
-      const cardPath = `assets/images/cards/${c.realm}/${slugify(c.name)}.jpg`;
-      imageCache.getImage('cards', cardPath).then(img => {
-          if (img) contentImg.src = img.src;
+    list.appendChild(levelAllBtn);
+  }
+
+  // Render the filtered cards
+  filteredCards.forEach(c => {
+    const cardEl = document.createElement('div');
+    cardEl.className = 'card-outer';
+    if (c.quantity === 0) cardEl.classList.add('unfound');
+
+    const inner = document.createElement('div');
+    inner.className = 'card-inner revealed';
+    inner.dataset.id = c.id;
+
+    const front = document.createElement('div');
+    front.className = 'card-face front';
+    front.style.borderColor = realmColors[c.realm];
+
+    // frame & artwork
+    const frameImg = document.createElement('img');
+    frameImg.className = 'card-frame';
+    const framePath = `assets/images/frames/${c.rarity}_frame.jpg`;
+    imageCache.getImage('frames', framePath).then(img => {
+        if (img) frameImg.src = img.src;
+    });
+
+    const contentImg = document.createElement('img');
+    contentImg.className = 'card-image';
+    const cardPath = `assets/images/cards/${c.realm}/${slugify(c.name)}.jpg`;
+    imageCache.getImage('cards', cardPath).then(img => {
+        if (img) contentImg.src = img.src;
+    });
+
+    // Special Effects S indicator
+    if (Array.isArray(c.specialEffects) && c.specialEffects.length > 0) {
+      // Check if all requirements are met
+      const allMet = c.specialEffects.every(def => isSpecialEffectRequirementMet(c, def.requirement));
+      const sSpan = document.createElement('span');
+      sSpan.className = 'special-s-indicator' + (allMet ? ' special-s-glow' : ' special-s-dull');
+      sSpan.textContent = 'S';
+      front.appendChild(sSpan);
+    }
+
+    front.append(frameImg, contentImg);
+
+    // tier icon + level label
+    if (c.tier > 0) {
+      const tierIcon = document.createElement('img');
+      tierIcon.className = 'tier-icon';
+      const tierPath = `assets/images/tiers/tier_${c.tier}.png`;
+      imageCache.getImage('tiers', tierPath).then(img => {
+          if (img) tierIcon.src = img.src;
       });
+      tierIcon.alt = `Tier ${c.tier}`;
+      front.appendChild(tierIcon);
 
-      // Special Effects S indicator
-      if (Array.isArray(c.specialEffects) && c.specialEffects.length > 0) {
-        // Check if all requirements are met
-        const allMet = c.specialEffects.every(def => isSpecialEffectRequirementMet(c, def.requirement));
-        const sSpan = document.createElement('span');
-        sSpan.className = 'special-s-indicator' + (allMet ? ' special-s-glow' : ' special-s-dull');
-        sSpan.textContent = 'S';
-        front.appendChild(sSpan);
-      }
+      const lvlLabel = document.createElement('div');
+      lvlLabel.className = 'level-label';
+      lvlLabel.textContent = `Lvl: ${formatNumber(c.level)}`;
+      front.appendChild(lvlLabel);
+    }
 
-      front.append(frameImg, contentImg);
+    const btn = document.createElement('button');
+    btn.className = 'card-level-up-btn';
 
-      // tier icon + level label
-      if (c.tier > 0) {
-        const tierIcon = document.createElement('img');
-        tierIcon.className = 'tier-icon';
-        const tierPath = `assets/images/tiers/tier_${c.tier}.png`;
-        imageCache.getImage('tiers', tierPath).then(img => {
-            if (img) tierIcon.src = img.src;
+    if (c.quantity > 0) {
+      const baseCost  = new Decimal(c.levelCost.amount);
+      const rawCost   = baseCost.times(Decimal.pow(c.levelScaling, c.level - 1));
+      const cost      = floorTo3SigDigits(rawCost);
+      const curAmt    = state.currencies[c.levelCost.currency] || new Decimal(0);
+      const canAfford = curAmt.greaterThanOrEqualTo(cost);
+
+      btn.classList.add(canAfford ? 'affordable' : 'unaffordable');
+      btn.disabled = !canAfford;
+
+      btn.innerHTML = `
+        Level Up<br>
+        <span class="level-cost">
+          ${formatNumber(cost)}
+          <img class="icon" alt="${c.levelCost.currency}"/>
+        </span>
+      `;
+
+      const iconEl = btn.querySelector('img.icon');
+      const currencyPath = `assets/images/currencies/${c.levelCost.currency}.png`;
+      iconEl.src = currencyPath;                 // fallback immediately
+      imageCache
+        .getImage('currencies', currencyPath)
+        .then(cachedImg => {
+          if (cachedImg) iconEl.src = cachedImg.src;
         });
-        tierIcon.alt = `Tier ${c.tier}`;
-        front.appendChild(tierIcon);
 
-        const lvlLabel = document.createElement('div');
-        lvlLabel.className = 'level-label';
-        lvlLabel.textContent = `Lvl: ${formatNumber(c.level)}`;
-        front.appendChild(lvlLabel);
-      }
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const freshAmt  = state.currencies[c.levelCost.currency] || new Decimal(0);
+        const freshCost = floorTo3SigDigits(
+          new Decimal(c.levelCost.amount)
+            .times(Decimal.pow(c.levelScaling, c.level - 1))
+        );
+        if (freshAmt.lessThan(freshCost)) return;
+        state.currencies[c.levelCost.currency] = freshAmt.minus(freshCost);
+        levelUp(c.id);
+        updateCurrencyBar();
+        renderCardsCollection();  // re-render to update costs & button states
+      });
+    }
+    else {
+      btn.disabled = true;
+      btn.textContent = 'Level Up';
+    }
 
-      const btn = document.createElement('button');
-      btn.className = 'card-level-up-btn';
+    front.appendChild(btn);
 
-      if (c.quantity > 0) {
-        const baseCost  = new Decimal(c.levelCost.amount);
-        const rawCost   = baseCost.times(Decimal.pow(c.levelScaling, c.level - 1));
-        const cost      = floorTo3SigDigits(rawCost);
-        const curAmt    = state.currencies[c.levelCost.currency] || new Decimal(0);
-        const canAfford = curAmt.greaterThanOrEqualTo(cost);
+    // quantity badge
+    if (c.quantity >= 1) {
+      const badge = document.createElement('div');
+      badge.className = 'count-badge';
+      badge.innerHTML = formatQuantity(c.quantity);
+      front.appendChild(badge);
+    }
 
-        btn.classList.add(canAfford ? 'affordable' : 'unaffordable');
-        btn.disabled = !canAfford;
+    // NEW banner persists until opened
+    if (c.isNew) {
+      const badge = document.createElement('div');
+      badge.className = 'reveal-badge new-badge';
+      badge.textContent = 'NEW';
+      front.appendChild(badge);
+    } else if (c.hasTierUp) {
+      const badge = document.createElement('div');
+      badge.className = 'reveal-badge tierup-badge';
+      badge.textContent = 'TIER UP';
+      front.appendChild(badge);
+    }
 
-        btn.innerHTML = `
-          Level Up<br>
-          <span class="level-cost">
-            ${formatNumber(cost)}
-            <img class="icon" alt="${c.levelCost.currency}"/>
-          </span>
-        `;
+    // Update locked overlay logic
+    if (c.locked) {
+      if (state.battle.currentEnemy && c.id === state.battle.currentEnemy.id) {
+        // Show battle overlay for current enemy
+        const battleOverlay = document.createElement('div');
+        battleOverlay.className = 'card-battle-overlay';
+        const battleImg = document.createElement('img');
+        battleImg.src = 'assets/images/card_battle.png';
+        battleOverlay.appendChild(battleImg);
+        front.appendChild(battleOverlay);
+      } else {
+        // Show locked overlay for other locked cards
+        const lockedOverlay = document.createElement('div');
+        lockedOverlay.className = 'card-locked-overlay';
+        const lockedImg = document.createElement('img');
+        lockedImg.src = 'assets/images/card_locked.png';
+        lockedOverlay.appendChild(lockedImg);
+        front.appendChild(lockedOverlay);
 
-        const iconEl = btn.querySelector('img.icon');
-        const currencyPath = `assets/images/currencies/${c.levelCost.currency}.png`;
-        iconEl.src = currencyPath;                 // fallback immediately
-        imageCache
-          .getImage('currencies', currencyPath)
-          .then(cachedImg => {
-            if (cachedImg) iconEl.src = cachedImg.src;
-          });
-
-        btn.addEventListener('click', e => {
-          e.stopPropagation();
-          const freshAmt  = state.currencies[c.levelCost.currency] || new Decimal(0);
-          const freshCost = floorTo3SigDigits(
-            new Decimal(c.levelCost.amount)
-              .times(Decimal.pow(c.levelScaling, c.level - 1))
-          );
-          if (freshAmt.lessThan(freshCost)) return;
-          state.currencies[c.levelCost.currency] = freshAmt.minus(freshCost);
-          levelUp(c.id);
-          updateCurrencyBar();
-          renderCardsCollection();  // re-render to update costs & button states
-        });
-      }
-      else {
-        btn.disabled = true;
-        btn.textContent = 'Level Up';
-      }
-
-      front.appendChild(btn);
-
-      // quantity badge
-      if (c.quantity >= 1) {
-        const badge = document.createElement('div');
-        badge.className = 'count-badge';
-        badge.innerHTML = formatQuantity(c.quantity);
-        front.appendChild(badge);
-      }
-
-      // NEW banner persists until opened
-      if (c.isNew) {
-        const badge = document.createElement('div');
-        badge.className = 'reveal-badge new-badge';
-        badge.textContent = 'NEW';
-        front.appendChild(badge);
-      } else if (c.hasTierUp) {
-        const badge = document.createElement('div');
-        badge.className = 'reveal-badge tierup-badge';
-        badge.textContent = 'TIER UP';
-        front.appendChild(badge);
-      }
-
-      // Update locked overlay logic
-      if (c.locked) {
-        if (state.battle.currentEnemy && c.id === state.battle.currentEnemy.id) {
-          // Show battle overlay for current enemy
-          const battleOverlay = document.createElement('div');
-          battleOverlay.className = 'card-battle-overlay';
-          const battleImg = document.createElement('img');
-          battleImg.src = 'assets/images/card_battle.png';
-          battleOverlay.appendChild(battleImg);
-          front.appendChild(battleOverlay);
-        } else {
-          // Show locked overlay for other locked cards
-          const lockedOverlay = document.createElement('div');
-          lockedOverlay.className = 'card-locked-overlay';
-          const lockedImg = document.createElement('img');
-          lockedImg.src = 'assets/images/card_locked.png';
-          lockedOverlay.appendChild(lockedImg);
-          front.appendChild(lockedOverlay);
-
-          
-          // Add countdown if card is in lockoutTimers
-          if (state.battle.lockoutTimers[c.id]) {
-            const countdownEl = document.createElement('div');
-            countdownEl.className = 'lock-countdown';
-            const remainingTime = state.battle.lockoutTimers[c.id] - Date.now();
-            countdownEl.innerHTML = `Locked for<br>${formatDuration(remainingTime / 1000)}`;
-            front.append(countdownEl);
-          }
+        
+        // Add countdown if card is in lockoutTimers
+        if (state.battle.lockoutTimers[c.id]) {
+          const countdownEl = document.createElement('div');
+          countdownEl.className = 'lock-countdown';
+          const remainingTime = state.battle.lockoutTimers[c.id] - Date.now();
+          countdownEl.innerHTML = `Locked for<br>${formatDuration(remainingTime / 1000)}`;
+          front.append(countdownEl);
         }
       }
+    }
 
-      inner.append(front);
-      cardEl.append(inner);
+    inner.append(front);
+    cardEl.append(inner);
 
-      // open modal on click
-      if (c.quantity >= 1) {
-        cardEl.addEventListener('click', () => openModal(c.id));
-      }
+    // open modal on click
+    if (c.quantity >= 1) {
+      cardEl.addEventListener('click', () => openModal(c.id));
+    }
 
-      list.appendChild(cardEl);
-    });
+    list.appendChild(cardEl);
+  });
 }
 
 
@@ -1862,6 +1961,7 @@ function updateGeneratorRates() {
   }
 
   // Resource Generator 8 (skill 10008)
+
   if (skillMap[10008].purchased) {
     const discoveredCount = cards.filter(c => c.realm === 8 && c.quantity > 0).length;
     const newContribution = discoveredCount * discoveredCount * state.effects.allGeneratorMultiplier;
@@ -1946,6 +2046,9 @@ function giveCard(cardId, amount = 1) {
     applyEffectsDelta(specialEffs, +1);
     c.lastAppliedEffects = newEffs;
     c.lastAppliedSpecialEffects = specialEffs;
+    if (newTier === 20) {
+      checkAchievements('tierFanatic', c.rarity);
+    }
   } 
 
   // Update generator rates if this is a new card discovery
@@ -1955,6 +2058,8 @@ function giveCard(cardId, amount = 1) {
     updateGeneratorRates();
     checkForNewCards();
     processNewCardDiscovered();
+    checkAchievements('cosmicCollector', c.realm);
+    checkAchievements('thrillOfDiscovery');
     updatePokeFilterStats();
   }
 }
@@ -1989,22 +2094,24 @@ function levelUp(cardId, increment = 1) {
   }
 }
 
-// Helper function to calculate max affordable level
+// Helper function to calculate max affordable level and total cost
 function calculateMaxAffordableLevel(cardId) {
   const c = cardMap[cardId];
   const baseCost = new Decimal(c.levelCost.amount);
-  const currency = state.currencies[c.levelCost.currency] || new Decimal(0);
-  let totalCost = new Decimal(0);
+  const availableCurrency = state.currencies[c.levelCost.currency] || new Decimal(0);
   let maxLevel = c.level;
+  let totalCost = new Decimal(0);
+  let currentCost = baseCost.times(Decimal.pow(c.levelScaling, maxLevel - 1));
+  currentCost = Decimal(floorTo3SigDigits(currentCost));
   
-  while (true) {
-    const nextLevelCost = baseCost.times(Decimal.pow(c.levelScaling, maxLevel));
-    if (totalCost.plus(nextLevelCost).greaterThan(currency)) {
-      break;
-    }
-    totalCost = totalCost.plus(nextLevelCost);
+  while (totalCost.plus(currentCost).lessThanOrEqualTo(availableCurrency)) {
+    totalCost = totalCost.plus(currentCost);
     maxLevel++;
+    currentCost = baseCost.times(Decimal.pow(c.levelScaling, maxLevel - 1));
+    currentCost = Decimal(floorTo3SigDigits(currentCost));
   }
+  
+  return { maxLevel, totalCost };
   
   return maxLevel;
 }
@@ -2128,7 +2235,12 @@ function resumeCooldown() {
 
   clearInterval(blackHoleTimer);
   if (fillAnim) anime.remove(globalFill);
-  globalFill.style.width = '0%';
+
+  const totalCooldown = calculateCooldown();
+  const progressPercent = ((totalCooldown - state.remainingCooldown) / totalCooldown) * 100;
+  
+  // Set initial width to match current progress
+  globalFill.style.width = `${progressPercent}%`;
 
   // 2) Recreate countdown
   countdownEl = holeBtn.querySelector('.countdown')
@@ -2156,10 +2268,10 @@ function resumeCooldown() {
     }
   }, 100);
 
-  // 4) Visual animation for the fill bar
+  // 4) Visual animation for the fill bar - start from current progress
   fillAnim = anime({
     targets: globalFill,
-    width: ['0%', '100%'],
+    width: [`${progressPercent}%`, '100%'],
     duration: state.remainingCooldown * 1000,
     easing: 'linear'
   });
@@ -2343,7 +2455,7 @@ let lastFullyDiscoveredRealms = 0;
 function processNewCardDiscovered() {
   if (skillMap[16001].purchased){
     //compute total discovered cards
-    let totalDiscovered = cards.filter(c => c.quantity > 0).length ;
+    let totalDiscovered = cards.filter(c => c.quantity > 0).length;
     if (skillMap[16002].purchased){
       totalDiscovered *= totalDiscovered;
     }
@@ -2642,7 +2754,6 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   showTab('hole');
   updateCurrencyBar();
   initSkillsFilters();
-  renderSkillsTab();
   updateStatsUI();
   checkForNewCards();
   updatePokeFilterStats();
@@ -2706,7 +2817,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     saveState();
   }
 
-  ['hole','cards','skills','merchant','battles','stats','settings'].forEach(t=>{
+  ['hole','cards','skills','merchant','battles','achievements','stats','settings'].forEach(t=>{
     document.getElementById(`tab-btn-${t}`).onclick = ()=> showTab(t);
   });
   
@@ -2719,7 +2830,6 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
   updateCurrencyBar();
   initSkillsFilters();
-  renderSkillsTab();
   updateStatsUI();
   checkForNewCards();
   updatePokeFilterStats();
@@ -2785,6 +2895,8 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     setTimeCrunchValue(state.timeCrunchValue);
   }
   initTimeCrunchCollector();
+
+  renderAchievements();
 
   initializeSettingsTab();
 });

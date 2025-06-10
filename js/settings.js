@@ -13,6 +13,64 @@ function initializeSettingsTab() {
     const saveToClipboardBtn = document.getElementById('saveToClipboardBtn');
     const loadFromClipboardBtn = document.getElementById('loadFromClipboardBtn');
 
+    // Community & Support buttons
+    const discordButton = document.getElementById('discordButton');
+    const donationButton = document.getElementById('donationButton');
+    const supporterCheckbox = document.getElementById('supporterCheckbox');
+    const supporterCheckboxContainer = document.getElementById('supporterCheckboxContainer');
+    
+    // Game tips button
+    const gameTipsBtn = document.getElementById('gameTipsBtn');
+
+    // Create game tips modal
+    const gameTipsModal = document.createElement('div');
+    gameTipsModal.id = 'gameTipsModal';
+    gameTipsModal.className = 'modal-overlay';
+    gameTipsModal.style.display = 'none';
+    gameTipsModal.innerHTML = `
+        <div class="modal-content tips-modal-content">
+            <h2>Game Tips</h2>
+            <div class="tips-section">
+                <h3>Early Game Tips</h3>
+                <ul>
+                    <li><strong>Realm Filters:</strong> The "Per Poke" reward is not affected by realm filter selections. Early on, choosing only Rocks (and later any combination of realms with short cooldown) will speed up resource production for active play.</li>
+                    <li><strong>Purchase Order Matters:</strong> Focus resource spending on skills and card effects that are most helpful to you.</li>
+                    <li><strong>Offline Production:</strong> Don't underestimate offline resource production!
+                        <ul>
+                            <li>Before going offline, do a poke with a longer cooldown that's more likely to get you new cards.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Odds Reduction Effects:</strong> These may seem small at first, but they scale linearly with card level and exponentially with card tier. They also stack multiplicatively with other cards having the same effect!</li>
+                    <li><strong>Merchant Refresh:</strong> Purchasing all merchant cards reduces time until the merchant leaves.</li>
+                </ul>
+            </div>
+            <div class="tips-section">
+                <h3>Early-Mid Game Tips</h3>
+                <ul>
+                    <li><strong>Absorber (bottom right):</strong> A good strategy is to charge with quick cooldowns and use on long cooldowns.</li>
+                    <li><strong>Stuck before Mythical Beasts?:</strong> The easiest way to get the Rune resource is to unlock Fine/Rare cards from Rocks realm. Focus your resources on leveling cards that lower odds of low rarity Rocks cards (use the Odds filter in Collection), then swap to Rocks and get to poking.</li>
+                    <li><strong>Interceptor (top left):</strong> Note that it charges fairly quickly by doing manual card flips (while it is not active).</li>
+                    <li><strong>Interceptor & Harvester Combo:</strong> 
+                        <ul>
+                            <li>Interceptor (top left) and Harvester (bottom left) work great together when you've saved up some time.</li>
+                            <li>Activate interceptor and spam harvester for best results.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Reference Stats Odds Tables:</strong> Target farming high rarity cards from previous realms can very quickly multiply both your income and cards per poke.</li>
+                </ul>
+            </div>
+            <div class="tips-section">
+                <h3>To be continued...</h3>
+                <p>If you are struggling with a particular aspect of the game, hop in Discord - there is a great community there to help you!</p>
+                <p>On the other hand, if you have any other tips or suggestions, please also drop them in Discord and @Kuzzi to get them included in here!</p>
+            </div> 
+            <div class="modal-buttons">
+                <button id="closeTipsBtn" class="settings-button safe-button">Got it!</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(gameTipsModal);
+
     // Create unstuck warning modal
     const unstuckWarningModal = document.createElement('div');
     unstuckWarningModal.id = 'unstuckWarningModal';
@@ -78,7 +136,7 @@ function initializeSettingsTab() {
     saveToFileBtn.addEventListener('click', function() {
         const saveData = localStorage.getItem('ccgSave');
         if (!saveData) {
-            alert('没有找到保存数据!');
+            alert('No save data found!');
             return;
         }
 
@@ -123,10 +181,10 @@ function initializeSettingsTab() {
                     // Validate the save data
                     JSON.parse(saveData);
                     localStorage.setItem('ccgSave', saveData);
-                    alert('存档数据加载成功!');
+                    alert('Save data loaded successfully!');
                     window.location.reload();
                 } catch (error) {
-                    alert('无效的存档文件!');
+                    alert('Invalid save file!');
                     // Resume the interval if load fails
                     currencyInterval = setInterval(updateCurrencyAndSave, 1000);
                 }
@@ -141,14 +199,14 @@ function initializeSettingsTab() {
     saveToClipboardBtn.addEventListener('click', function() {
         const saveData = localStorage.getItem('ccgSave');
         if (!saveData) {
-            alert('未找到存档数据!');
+            alert('No save data found!');
             return;
         }
 
         navigator.clipboard.writeText(saveData).then(() => {
-            alert('存档数据已保存到剪贴板!');
+            alert('Save data copied to clipboard!');
         }).catch(err => {
-            alert('复制到剪贴板失败: ' + err);
+            alert('Failed to copy to clipboard: ' + err);
         });
     });
 
@@ -164,15 +222,15 @@ function initializeSettingsTab() {
                 // Validate the save data
                 JSON.parse(text);
                 localStorage.setItem('ccgSave', text);
-                alert('存档数据加载成功!');
+                alert('Save data loaded successfully!');
                 window.location.reload();
             } catch (error) {
-                alert('剪贴板中的存档数据无效!');
+                alert('Invalid save data in clipboard!');
                 // Resume the interval if load fails
                 currencyInterval = setInterval(updateCurrencyAndSave, 1000);
             }
         }).catch(err => {
-            alert('从剪贴板读取失败: ' + err);
+            alert('Failed to read from clipboard: ' + err);
             // Resume the interval if clipboard read fails
             currencyInterval = setInterval(updateCurrencyAndSave, 1000);
         });
@@ -194,7 +252,7 @@ function initializeSettingsTab() {
         
         if (state.lastUnstuck && (now - parseInt(state.lastUnstuck)) < 24 * 60 * 60 * 1000) {
             const hoursLeft = Math.ceil((24 * 60 * 60 * 1000 - (now - parseInt(state.lastUnstuck))) / (60 * 60 * 1000));
-            alert(`每日只能使用1次摆脱卡死。请在 ${hoursLeft} 小时后再试.`);
+            alert(`You can only use Get Unstuck once per day. Please try again in ${hoursLeft} hours.`);
             return;
         }
         
@@ -234,7 +292,7 @@ function initializeSettingsTab() {
         unstuckWarningModal.style.display = 'none';
         
         // Show confirmation
-        alert('成功重置冷却时间和货币。您可以在24小时后再次使用此功能。');
+        alert('Successfully reset cooldown and currencies. You can use this feature again in 24 hours.');
 
         saveState();
     });
@@ -287,7 +345,47 @@ function initializeSettingsTab() {
             '<i class="fas fa-check"></i> Auto-Use Max Absorber' : 
             '<i class="fas fa-times"></i> Auto-Use Max Absorber';
         saveState();
+    });    // Game tips button handler
+    gameTipsBtn.addEventListener('click', function() {
+        gameTipsModal.style.display = 'flex';
     });
+
+    // Close game tips handlers
+    document.getElementById('closeTipsBtn').addEventListener('click', function() {
+        gameTipsModal.style.display = 'none';
+    });
+
+    // Close game tips modal when clicking outside
+    gameTipsModal.addEventListener('click', function(event) {
+        if (event.target === gameTipsModal) {
+            gameTipsModal.style.display = 'none';
+        }
+    });
+
+    // Initialize Discord button
+    discordButton.addEventListener('click', () => {
+        window.open('https://discord.gg/3r9HvqhCuJ', '_blank');
+    });
+
+    // Initialize Donation button
+    donationButton.addEventListener('click', () => {
+        window.open('https://coff.ee/ssiatkowski', '_blank');
+        state.donationButtonClicked = true;
+        supporterCheckboxContainer.style.display = 'block';
+        saveState();
+    });
+
+    // Initialize Supporter checkbox
+    supporterCheckbox.addEventListener('change', (e) => {
+        state.supporterCheckboxClicked = e.target.checked;
+        saveState();
+    });
+
+    // Initialize supporter checkbox state
+    if (state.donationButtonClicked) {
+        supporterCheckboxContainer.style.display = 'block';
+        supporterCheckbox.checked = state.supporterCheckboxClicked;
+    }
 }
 
 // Add this new function
@@ -305,3 +403,4 @@ function updateCardSize() {
     valueDisplay.textContent = Math.round(state.cardSizeScale * 100) + '%';
   }
 }
+

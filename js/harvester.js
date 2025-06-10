@@ -54,6 +54,11 @@ function handleHarvesterClick() {
   if (fillAnim) anime.remove(globalFill);
 
   if (state.harvesterValue >= state.remainingCooldown) {
+
+    if (state.remainingCooldown >= 68 && state.remainingCooldown <= 70) {
+      unlockAchievement('secret');
+    }
+
     // 4a) We can pay off the cooldown entirely
     clearInterval(blackHoleTimer);
     state.harvesterValue -= state.remainingCooldown;

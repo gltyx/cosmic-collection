@@ -348,6 +348,11 @@ function renderSkillsTab() {
     noSkillsMessage.className = 'no-skills-message';
     noSkillsMessage.textContent = 'No skills match the current filters.';
     grid.appendChild(noSkillsMessage);
+
+    if(loadFinished && skillFilterState.purchased === 'unpurchased' && skillFilterState.lock === 'unlocked' && skillFilterState.affordability !== 'affordable') {
+      console.log('No skills match the current filters.');
+      unlockAchievement('secret7');
+    }
   }
 
   list.appendChild(grid);
