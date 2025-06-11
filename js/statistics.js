@@ -60,9 +60,9 @@ function updateStatsUI() {
     generalSection.className = 'stats-section realm-section';
     generalSection.innerHTML = `
       <h3 style="border-bottom:2px solid var(--dark); padding-bottom:4px;">General Stats</h3>
-      <p><strong>Black Hole Pokes:</strong> ${s.totalPokes}</p>
-      <p><strong>Total Cards Drawn:</strong> ${s.totalCardsDrawn}</p>
-      <p><strong>Merchant Purchases:</strong> ${s.merchantPurchases || 0}</p>
+      <p><strong>Black Hole Pokes:</strong> ${formatNumber(s.totalPokes)}</p>
+      <p><strong>Total Cards Drawn:</strong> ${formatNumber(s.totalCardsDrawn)}</p>
+      <p><strong>Merchant Purchases:</strong> ${formatNumber(s.merchantPurchases || 0)}</p>
     `;    
     generalSection.appendChild(tblR);
 

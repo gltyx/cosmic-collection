@@ -57,12 +57,14 @@ function initializeSettingsTab() {
                         </ul>
                     </li>
                     <li><strong>Reference Stats Odds Tables:</strong> Target farming high rarity cards from previous realms can very quickly multiply both your income and cards per poke.</li>
+                    <li><strong>Realm Deselect Multiplier:</strong> Keep in mind the deselect multiplier is only applied if a higher realm is selected.</li>
                 </ul>
             </div>
             <div class="tips-section">
                 <h3>To be continued...</h3>
                 <p>If you are struggling with a particular aspect of the game, hop in Discord - there is a great community there to help you!</p>
                 <p>On the other hand, if you have any other tips or suggestions, please also drop them in Discord and @Kuzzi to get them included in here!</p>
+                <p>Lastly, be sure to refresh game regularly as updates are frequent. Announcments channel in Discord has all the latest news!</p>
             </div> 
             <div class="modal-buttons">
                 <button id="closeTipsBtn" class="settings-button safe-button">Got it!</button>
