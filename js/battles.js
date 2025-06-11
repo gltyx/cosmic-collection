@@ -882,22 +882,59 @@ function startBattleLoop() {
       state.battle.slots.forEach((card, index) => {
         if (!card) return;
 
-        let isCrit = false;
-
-        if (Math.random() < state.battle.critChance) {
-          isCrit = true;
-          damage = card.attack * state.battle.critDamage;
-        } else {
-          damage = card.attack;
+        let numAttacks = 1;
+        while(Math.random() < state.battle.extraAttackChance) {
+          numAttacks += 1;
         }
-        state.battle.currentEnemy.currentHp -= damage;
 
-        // Show damage number
-        showDamageNumber(damage, 'enemy', isCrit ? 'crit' : null);
+        for (let i = 0; i < numAttacks; i++) {
+          let isCrit = false;
+          
+          let specialDamageType = null;
 
-        if (Math.random() < state.battle.stunChance) {
-          state.battle.currentEnemy.stunTurns += 1;
-          showDamageNumber(0, 'enemy', 'stun');
+          if (Math.random() < state.battle.critChance) {
+            isCrit = true;
+            damage = Math.ceil(card.attack * state.battle.critDamage);
+            if (state.battle.weakPointRealms.has(card.realm) && Math.random() < state.battle.weakPointChance) {
+              const weakPointDamage = Math.floor(state.battle.currentEnemy.currentHp * 0.01);
+              state.battle.currentEnemy.currentHp -= weakPointDamage;
+              showDamageNumber(weakPointDamage, 'enemy', 'weakPoint');
+            }
+            if (state.battle.dismemberRealms.has(card.realm) && Math.random() < state.battle.dismemberChance) {
+              state.battle.currentEnemy.attack = Math.floor(state.battle.currentEnemy.attack * 0.99);
+              updateBattleUI();
+            }
+          } else {
+            damage = card.attack;
+          }
+
+          if (index != 0 && state.battle.empowermentRealms.has(state.battle.slots[index-1].realm) && state.battle.empowerment > 0) {
+            damage = Math.ceil(damage * (1 + state.battle.empowerment));
+            specialDamageType = 'empowerment';
+          }
+
+          state.battle.currentEnemy.currentHp -= damage;
+
+          // Show damage number
+          showDamageNumber(damage, 'enemy', isCrit ? 'crit' : specialDamageType);
+
+          if (state.battle.stunRealms.has(card.realm) && Math.random() < state.battle.stunChance) {
+            state.battle.currentEnemy.stunTurns += 1;
+            showDamageNumber(0, 'enemy', 'stun');
+          }
+
+          if (state.battle.evolutionRealms.has(card.realm) && Math.random() < state.battle.evolutionChance) {
+            card.attack = Math.ceil(card.attack * (1 + (state.battle.evolutionChance / 2)));
+            updateBattleUI();
+          }
+
+          if (state.battle.resourcefulAttackRealms.has(card.realm) && state.battle.resourcefulAttack > 0) {
+              Object.entries(state.effects.currencyPerPoke).forEach(([curId, rate]) => {
+                if (!rate || state.currencies[curId] == null) return;
+                const gain = new Decimal(rate * state.effects.currencyPerPokeMultiplier[curId] * state.battle.resourcefulAttack);
+                state.currencies[curId] = state.currencies[curId].plus(gain);
+              });
+          }
         }
       });
 
@@ -912,14 +949,27 @@ function startBattleLoop() {
         if (state.battle.currentEnemy.stunTurns > 0) {
           state.battle.currentEnemy.stunTurns--;
         } else {
-          if (Math.random() < state.battle.dodgeChance) {
+          if (state.battle.dodgeRealms.has(state.battle.slots[0].realm) && Math.random() < state.battle.dodgeChance) {
             showDamageNumber(0, 'slot0', 'dodge');
           } else {
-            const damage = state.battle.currentEnemy.attack;
+            let damage = state.battle.currentEnemy.attack;
+
+            let specialDamageType = null;
+
+            if (state.battle.damageAbsorptionRealms.has(state.battle.slots[0].realm) && state.battle.damageAbsorption > 0) {
+              damage *= (1 - state.battle.damageAbsorption);
+              specialDamageType = 'absorb';
+            }
+
+            if (state.battle.slots[1] && state.battle.protectionRealms.has(state.battle.slots[1].realm) && Math.random() < state.battle.protectionChance) {
+              damage *= (0.5);
+              specialDamageType = 'protect';
+            }
+
             state.battle.slots[0].currentHp -= damage;
 
             // Show damage number on slot 0
-            showDamageNumber(damage, 'slot0');
+            showDamageNumber(damage, 'slot0', specialDamageType);
 
             // Check if top card is defeated
             if (state.battle.slots[0].currentHp <= 0) {

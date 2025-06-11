@@ -1543,28 +1543,28 @@ window.skills = [
     {
       id: 19501,
       name: "Larger Card Stacks",
-      description: "Increase max card bulk offer from 3√qty to 2.5√qty.",
+      description: "Increase max card bulk offer from <sup>3</sup>√qty to <sup>2.5</sup>√qty.",
       cost: { realmId: 4, currencyId: "coral", amount: 1e7},
       purchased: false
     },
     {
       id: 19502,
       name: "Larger Card Stacks 2",
-      description: "Increase max card bulk offer from 2.5√qty to 2√qty.",
+      description: "Increase max card bulk offer from <sup>2.5</sup>√qty to √qty.",
       cost: { realmId: 6, currencyId: "coral", amount: 2e8},
       purchased: false
     },
     {
       id: 19503,
       name: "Larger Card Stacks 3",
-      description: "Increase max card bulk offer from 2√qty to 10 * 2√qty",
+      description: "Increase max card bulk offer from √qty to 10 * √qty",
       cost: { realmId: 10, currencyId: "coral", amount: 1e12},
       purchased: false
     },
     {
       id: 19504,
       name: "Larger Card Stacks 4",
-      description: "Increase max card bulk offer from 10 * 2√qty to 100 * 2√qty.",
+      description: "Increase max card bulk offer from 10 * √qty to 100 * √qty.",
       cost: { realmId: 11, currencyId: "coral", amount: 2.5e18},
       purchased: false
     },
@@ -1887,35 +1887,35 @@ window.skills = [
       id: 24001,
       name: "Shorter Sacrifice",
       description: "Reduce sacrifice lockout time by 2 hours.",
-      cost: { realmId: 11, currencyId: "stone", amount: 1e16 },
+      cost: { realmId: 11, currencyId: "stone", amount: 1e15 },
       purchased: false
     },
     {
       id: 24002,
       name: "Shorter Sacrifice 2",
       description: "Reduce sacrifice lockout time by 2 hours.",
-      cost: { realmId: 11, currencyId: "coral", amount: 2e17 },
+      cost: { realmId: 11, currencyId: "coral", amount: 2e16 },
       purchased: false
     },
     {
       id: 24003,
       name: "Shorter Sacrifice 3",
       description: "Reduce sacrifice lockout time by 2 hours.",
-      cost: { realmId: 11, currencyId: "pollen", amount: 4e17 },
+      cost: { realmId: 11, currencyId: "pollen", amount: 4e16 },
       purchased: false
     },
     {
       id: 24004,
       name: "Shorter Sacrifice 4",
       description: "Reduce sacrifice lockout time by 2 hours.",
-      cost: { realmId: 11, currencyId: "egg", amount: 8e17 },
+      cost: { realmId: 11, currencyId: "egg", amount: 8e16 },
       purchased: false
     },
     {
       id: 24005,
       name: "Shorter Sacrifice 5",
       description: "Reduce sacrifice lockout time by 2 hours.",
-      cost: { realmId: 11, currencyId: "crystal", amount: 1.5e18 },
+      cost: { realmId: 11, currencyId: "crystal", amount: 1.5e17 },
       purchased: false
     },
     {
@@ -1998,7 +1998,7 @@ window.skills = [
     {
       id: 26001,
       name: "Crit Chance",
-      description: "Unlock battle Critical Hit Chance and set it to 5%.",
+      description: "Unlock battle Critical Hit Chance for all cards and set it to 5%.",
       cost: { realmId: 11, currencyId: "zeal", amount: 3e7 },
       purchased: false
     },
@@ -2138,80 +2138,767 @@ window.skills = [
     {
       id: 26301,
       name: "Spiritual Dodge",
-      description: "Unlock battle dodge mechanic and set dodge chance to 0.5%.",
-      cost: { realmId: 11, currencyId: "spirit", amount: 3e15 },
+      description: "Unlock battle dodge mechanic for Spirit Familiars cards and set dodge chance to 2.5%.",
+      cost: { realmId: 11, currencyId: "spirit", amount: 3e13 },
       purchased: false
     },
     {
       id: 26302,
       name: "Spiritual Dodge 2",
-      description: "Increase dodge chance by +0.5%.",
-      cost: { realmId: 11, currencyId: "spirit", amount: 9e15 },
+      description: "Increase Spirit Familiars dodge chance by +2.5%.",
+      cost: { realmId: 11, currencyId: "spirit", amount: 3e14 },
       purchased: false
     },
     {
       id: 26303,
       name: "Spiritual Dodge 3",
-      description: "Increase dodge chance by +0.5%.",
-      cost: { realmId: 11, currencyId: "spirit", amount: 2.7e16 },
+      description: "Increase Spirit Familiars dodge chance by +2.5%.",
+      cost: { realmId: 11, currencyId: "spirit", amount: 2.7e15 },
       purchased: false
     },
     {
       id: 26304,
       name: "Spiritual Dodge 4",
-      description: "Increase dodge chance by +0.5%.",
+      description: "Increase Spirit Familiars dodge chance by +2.5%.",
       cost: { realmId: 11, currencyId: "spirit", amount: 8.1e16 },
       purchased: false
     },
     {
       id: 26305,
       name: "Spiritual Dodge 5",
-      description: "Increase dodge chance by +0.5%.",
+      description: "Increase Spirit Familiars dodge chance by +2.5%.",
       cost: { realmId: 11, currencyId: "spirit", amount: 2.4e17 },
       purchased: false
     },
     {
       id: 26306,
       name: "Spiritual Dodge 6",
-      description: "Increase dodge chance by +0.5%.",
+      description: "Increase Spirit Familiars dodge chance by +2.5%.",
       cost: { realmId: 11, currencyId: "spirit", amount: 7.3e17 },
+      purchased: false
+    },
+    {
+      id: 26307,
+      name: "Spiritual Dodge 7",
+      description: "Increase Spirit Familiars dodge chance by +2.5%.",
+      cost: { realmId: 11, currencyId: "spirit", amount: 2.1e18 },
+      purchased: false
+    },
+    {
+      id: 26308,
+      name: "Spiritual Dodge 8",
+      description: "Increase Spirit Familiars dodge chance by +2.5%.",
+      cost: { realmId: 11, currencyId: "spirit", amount: 6.3e18 },
+      purchased: false
+    },
+    {
+      id: 26309,
+      name: "Spiritual Dodge 9",
+      description: "Increase Spirit Familiars dodge chance by +2.5%.",
+      cost: { realmId: 11, currencyId: "spirit", amount: 1.9e19 },
+      purchased: false
+    },
+    {
+      id: 26310,
+      name: "Spiritual Dodge 10",
+      description: "Increase Spirit Familiars dodge chance by +2.5%.",
+      cost: { realmId: 11, currencyId: "spirit", amount: 5.9e19 },
       purchased: false
     },
     {
       id: 26401,
       name: "Cosmic Stun",
-      description: "Unlock battle stun mechanic and set stun chance to 0.2%.",
-      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 1e15 },
+      description: "Unlock battle stun mechanic for Celestial Bodies cards and set stun chance to 1%.",
+      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 5e13 },
       purchased: false
     },
     {
       id: 26402,
       name: "Cosmic Stun 2",
-      description: "Increase stun chance by +0.2%.",
-      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 5e15 },
+      description: "Increase Celestial Bodies stun chance by +1%.",
+      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 5e14 },
       purchased: false
     },
     {
       id: 26403,
       name: "Cosmic Stun 3",
-      description: "Increase stun chance by +0.2%.",
-      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 2.5e16 },
+      description: "Increase Celestial Bodies stun chance by +1%.",
+      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 2.5e15 },
       purchased: false
     },
     {
       id: 26404,
       name: "Cosmic Stun 4",
-      description: "Increase stun chance by +0.2%.",
-      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 1.25e17 },
+      description: "Increase Celestial Bodies stun chance by +1%.",
+      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 2.25e16 },
       purchased: false
     },
     {
       id: 26405,
       name: "Cosmic Stun 5",
-      description: "Increase stun chance by +0.2%.",
-      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 6.25e17 },
+      description: "Increase Celestial Bodies stun chance by +1%.",
+      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 4.25e17 },
       purchased: false
-    }
+    },
+    {
+      id: 26406,
+      name: "Cosmic Stun 6",
+      description: "Increase Celestial Bodies stun chance by +1%.",
+      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 3.1e18 },
+      purchased: false
+    },
+    {
+      id: 26407,
+      name: "Cosmic Stun 7",
+      description: "Increase Celestial Bodies stun chance by +1%.",
+      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 1.55e19 },
+      purchased: false
+    },
+    {
+      id: 26408,
+      name: "Cosmic Stun 8",
+      description: "Increase Celestial Bodies stun chance by +1%.",
+      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 7.75e19 },
+      purchased: false
+    },
+    {
+      id: 26409,
+      name: "Cosmic Stun 9",
+      description: "Increase Celestial Bodies stun chance by +1%.",
+      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 1.9e20 },
+      purchased: false
+    },
+    {
+      id: 26410,
+      name: "Cosmic Stun 10",
+      description: "Increase Celestial Bodies stun chance by +1%.",
+      cost: { realmId: 11, currencyId: "cosmic_ray", amount: 1e21 },
+      purchased: false
+    },
+    {
+      id: 26501,
+      name: "Rock Hard",
+      description: "Unlock damage reduction mechanic for Rocks cards and set reduction to 10%.",
+      cost: { realmId: 11, currencyId: "stone", amount: 5e16 },
+      purchased: false
+    },
+    {
+      id: 26502,
+      name: "Rock Hard 2",
+      description: "Increase Rocks damage reduction by +10%.",
+      cost: { realmId: 11, currencyId: "stone", amount: 5e18 },
+      purchased: false
+    },
+    {
+      id: 26503,
+      name: "Rock Hard 3",
+      description: "Increase Rocks damage reduction by +10%.",
+      cost: { realmId: 11, currencyId: "stone", amount: 5e20 },
+      purchased: false
+    },
+    {
+      id: 26504,
+      name: "Rock Hard 4",
+      description: "Increase Rocks damage reduction by +10%.",
+      cost: { realmId: 11, currencyId: "stone", amount: 5e22 },
+      purchased: false
+    },
+    {
+      id: 26505,
+      name: "Rock Hard 5",
+      description: "Increase Rocks damage reduction by +10%.",
+      cost: { realmId: 11, currencyId: "stone", amount: 5e24 },
+      purchased: false
+    },
+    {
+      id: 26601,
+      name: "Protective Bubble",
+      description: "Unlock protection mechanic for Sea World cards. 5% chance to protect card in front of it and reduce damage taken by 50%.",
+      cost: { realmId: 11, currencyId: "coral", amount: 7.5e14 },
+      purchased: false
+    },
+    {
+      id: 26602,
+      name: "Protective Bubble 2",
+      description: "Increase Protective Bubble chance by 5%.",
+      cost: { realmId: 11, currencyId: "coral", amount: 5.6e15 },
+      purchased: false
+    },
+    {
+      id: 26603,
+      name: "Protective Bubble 3",
+      description: "Increase Protective Bubble chance by 5%.",
+      cost: { realmId: 11, currencyId: "coral", amount: 4.2e16 },
+      purchased: false
+    },
+    {
+      id: 26604,
+      name: "Protective Bubble 4",
+      description: "Increase Protective Bubble chance by 5%.",
+      cost: { realmId: 11, currencyId: "coral", amount: 3.2e17 },
+      purchased: false
+    },
+    {
+      id: 26605,
+      name: "Protective Bubble 5",
+      description: "Increase Protective Bubble chance by 5%.",
+      cost: { realmId: 11, currencyId: "coral", amount: 2.4e18 },
+      purchased: false
+    },
+    {
+      id: 26606,
+      name: "Protective Bubble 6",
+      description: "Increase Protective Bubble chance by 5%.",
+      cost: { realmId: 11, currencyId: "coral", amount: 1.8e19 },
+      purchased: false
+    },
+    {
+      id: 26607,
+      name: "Protective Bubble 7",
+      description: "Increase Protective Bubble chance by 5%.",
+      cost: { realmId: 11, currencyId: "coral", amount: 1.3e20 },
+      purchased: false
+    },
+    {
+      id: 26608,
+      name: "Protective Bubble 8",
+      description: "Increase Protective Bubble chance by 5%.",
+      cost: { realmId: 11, currencyId: "coral", amount: 1e21 },
+      purchased: false
+    },
+    {
+      id: 26609,
+      name: "Protective Bubble 9",
+      description: "Increase Protective Bubble chance by 5%.",
+      cost: { realmId: 11, currencyId: "coral", amount: 7.5e21 },
+      purchased: false
+    },
+    {
+      id: 26610,
+      name: "Protective Bubble 10",
+      description: "Increase Protective Bubble chance by 5%.",
+      cost: { realmId: 11, currencyId: "coral", amount: 5.6e22 },
+      purchased: false
+    },
+    {
+      id: 27701,
+      name: "Metamorphing Evolution",
+      description: "Unlock evolution mechanic for Bugdom cards. 1% chance to increase attack by 0.5% (multiplicatively stackable).",
+      cost: { realmId: 11, currencyId: "pollen", amount: 4e15 },
+      purchased: false
+    },
+    {
+      id: 27702,
+      name: "Metamorphing Evolution 2",
+      description: "Increase evolution chance by +1% and damage by +0.5%.",
+      cost: { realmId: 11, currencyId: "pollen", amount: 4e16 },
+      purchased: false
+    },
+    {
+      id: 27703,
+      name: "Metamorphing Evolution 3",
+      description: "Increase evolution chance by +1% and damage by +0.5%.",
+      cost: { realmId: 11, currencyId: "pollen", amount: 4e17 },
+      purchased: false
+    },
+    {
+      id: 27704,
+      name: "Metamorphing Evolution 4",
+      description: "Increase evolution chance by +1% and damage by +0.5%.",
+      cost: { realmId: 11, currencyId: "pollen", amount: 4e18 },
+      purchased: false
+    },
+    {
+      id: 27705,
+      name: "Metamorphing Evolution 5",
+      description: "Increase evolution chance by +1% and damage by +0.5%.",
+      cost: { realmId: 11, currencyId: "pollen", amount: 4e19 },
+      purchased: false
+    },
+    {
+      id: 27706,
+      name: "Metamorphing Evolution 6",
+      description: "Increase evolution chance by +1% and damage by +0.5%.",
+      cost: { realmId: 11, currencyId: "pollen", amount: 4e20 },
+      purchased: false
+    },
+    {
+      id: 27707,
+      name: "Metamorphing Evolution 7",
+      description: "Increase evolution chance by +1% and damage by +0.5%.",
+      cost: { realmId: 11, currencyId: "pollen", amount: 4e21 },
+      purchased: false
+    },
+    {
+      id: 27708,
+      name: "Metamorphing Evolution 8",
+      description: "Increase evolution chance by +1% and damage by +0.5%.",
+      cost: { realmId: 11, currencyId: "pollen", amount: 4e22 },
+      purchased: false
+    },
+    {
+      id: 27709,
+      name: "Metamorphing Evolution 9",
+      description: "Increase evolution chance by +1% and damage by +0.5%.",
+      cost: { realmId: 11, currencyId: "pollen", amount: 4e23 },
+      purchased: false
+    },
+    {
+      id: 27710,
+      name: "Metamorphing Evolution 10",
+      description: "Increase evolution chance by +1% and damage by +0.5%.",
+      cost: { realmId: 11, currencyId: "pollen", amount: 4e24 },
+      purchased: false
+    },
+    {
+      id: 27801,
+      name: "Extra Attack",
+      description: "Unlock extra attack chance for Aviary cards. 4% chance to attack again (can proc multiple times).",
+      cost: { realmId: 11, currencyId: "egg", amount: 6e17 },
+      purchased: false
+    },
+    {
+      id: 27802,
+      name: "Extra Attack 2",
+      description: "Increase extra attack chance by 4%.",
+      cost: { realmId: 11, currencyId: "egg", amount: 6.6e18 },
+      purchased: false
+    },
+    {
+      id: 27803,
+      name: "Extra Attack 3",
+      description: "Increase extra attack chance by 4%.",
+      cost: { realmId: 11, currencyId: "egg", amount: 7.3e19 },
+      purchased: false
+    },
+    {
+      id: 27804,
+      name: "Extra Attack 4",
+      description: "Increase extra attack chance by 4%.",
+      cost: { realmId: 11, currencyId: "egg", amount: 8e20 },
+      purchased: false
+    },
+    {
+      id: 27805,
+      name: "Extra Attack 5",
+      description: "Increase extra attack chance by 4%.",
+      cost: { realmId: 11, currencyId: "egg", amount: 8.8e21 },
+      purchased: false
+    },
+    {
+      id: 27806,
+      name: "Extra Attack 6",
+      description: "Increase extra attack chance by 4%.",
+      cost: { realmId: 11, currencyId: "egg", amount: 9.7e22 },
+      purchased: false
+    },
+    {
+      id: 27807,
+      name: "Extra Attack 7",
+      description: "Increase extra attack chance by 4%.",
+      cost: { realmId: 11, currencyId: "egg", amount: 1.1e24 },
+      purchased: false
+    },
+    {
+      id: 27808,
+      name: "Extra Attack 8",
+      description: "Increase extra attack chance by 4%.",
+      cost: { realmId: 11, currencyId: "egg", amount: 1.2e25 },
+      purchased: false
+    },
+    {
+      id: 27809,
+      name: "Extra Attack 9",
+      description: "Increase extra attack chance by 4%.",
+      cost: { realmId: 11, currencyId: "egg", amount: 1.3e26 },
+      purchased: false
+    },
+    {
+      id: 27810,
+      name: "Extra Attack 10",
+      description: "Increase extra attack chance by 4%.",
+      cost: { realmId: 11, currencyId: "egg", amount: 1.4e27 },
+      purchased: false
+    },
+    {
+      id: 27901,
+      name: "Resourceful Attack",
+      description: "Unlock resourceful attack for Incremental Games cards. Each time a card attacks, gain 0.5 pokes worth of all resources.",
+      cost: { realmId: 11, currencyId: "coin", amount: 7.77e16 },
+      purchased: false
+    },
+    {
+      id: 27902,
+      name: "Resourceful Attack 2",
+      description: "Increase resourceful attack pokes by 0.5.",
+      cost: { realmId: 11, currencyId: "coin", amount: 7.77e17 },
+      purchased: false
+    },
+    {
+      id: 27903,
+      name: "Resourceful Attack 3",
+      description: "Increase resourceful attack pokes by 0.5.",
+      cost: { realmId: 11, currencyId: "coin", amount: 7.77e18 },
+      purchased: false
+    },
+    {
+      id: 27904,
+      name: "Resourceful Attack 4",
+      description: "Increase resourceful attack pokes by 0.5.",
+      cost: { realmId: 11, currencyId: "coin", amount: 7.77e19 },
+      purchased: false
+    },
+    {
+      id: 27905,
+      name: "Resourceful Attack 5",
+      description: "Increase resourceful attack pokes by 0.5.",
+      cost: { realmId: 11, currencyId: "coin", amount: 7.77e20 },
+      purchased: false
+    },
+    {
+      id: 27906,
+      name: "Resourceful Attack 6",
+      description: "Increase resourceful attack pokes by 0.5.",
+      cost: { realmId: 11, currencyId: "coin", amount: 7.77e21 },
+      purchased: false
+    },
+    {
+      id: 27907,
+      name: "Resourceful Attack 7",
+      description: "Increase resourceful attack pokes by 0.5.",
+      cost: { realmId: 11, currencyId: "coin", amount: 7.77e22 },
+      purchased: false
+    },
+    {
+      id: 27908,
+      name: "Resourceful Attack 8",
+      description: "Increase resourceful attack pokes by 0.5.",
+      cost: { realmId: 11, currencyId: "coin", amount: 7.77e23 },
+      purchased: false
+    },
+    {
+      id: 27909,
+      name: "Resourceful Attack 9",
+      description: "Increase resourceful attack pokes by 0.5.",
+      cost: { realmId: 11, currencyId: "coin", amount: 7.77e24 },
+      purchased: false
+    },
+    {
+      id: 27910,
+      name: "Resourceful Attack 10",
+      description: "Increase resourceful attack pokes by 0.5.",
+      cost: { realmId: 11, currencyId: "coin", amount: 7.77e25 },
+      purchased: false
+    },
+    {
+      id: 28001,
+      name: "Ancient Empowerment",
+      description: "Unlock empower mechanic for Ancient Relics cards. Boost damage of card in slot behind this card by 2.5%.",
+      cost: { realmId: 11, currencyId: "crystal", amount: 2.5e14 },
+      purchased: false
+    },
+    {
+      id: 28002,
+      name: "Ancient Empowerment 2",
+      description: "Increase empower boost by 2.5%.",
+      cost: { realmId: 11, currencyId: "crystal", amount: 2.5e15 },
+      purchased: false
+    },
+    {
+      id: 28003,
+      name: "Ancient Empowerment 3",
+      description: "Increase empower boost by 2.5%.",
+      cost: { realmId: 11, currencyId: "crystal", amount: 2.5e16 },
+      purchased: false
+    },
+    {
+      id: 28004,
+      name: "Ancient Empowerment 4",
+      description: "Increase empower boost by 2.5%.",
+      cost: { realmId: 11, currencyId: "crystal", amount: 2.5e17 },
+      purchased: false
+    },
+    {
+      id: 28005,
+      name: "Ancient Empowerment 5",
+      description: "Increase empower boost by 2.5%.",
+      cost: { realmId: 11, currencyId: "crystal", amount: 2.5e18 },
+      purchased: false
+    },
+    {
+      id: 28006,
+      name: "Ancient Empowerment 6",
+      description: "Increase empower boost by 2.5%.",
+      cost: { realmId: 11, currencyId: "crystal", amount: 2.5e19 },
+      purchased: false
+    },
+    {
+      id: 28007,
+      name: "Ancient Empowerment 7",
+      description: "Increase empower boost by 2.5%.",
+      cost: { realmId: 11, currencyId: "crystal", amount: 2.5e20 },
+      purchased: false
+    },
+    {
+      id: 28008,
+      name: "Ancient Empowerment 8",
+      description: "Increase empower boost by 2.5%.",
+      cost: { realmId: 11, currencyId: "crystal", amount: 2.5e21 },
+      purchased: false
+    },
+    {
+      id: 28009,
+      name: "Ancient Empowerment 9",
+      description: "Increase empower boost by 2.5%.",
+      cost: { realmId: 11, currencyId: "crystal", amount: 2.5e22 },
+      purchased: false
+    },
+    {
+      id: 28010,
+      name: "Ancient Empowerment 10",
+      description: "Increase empower boost by 2.5%.",
+      cost: { realmId: 11, currencyId: "crystal", amount: 2.5e23 },
+      purchased: false
+    },
+    {
+      id: 28101,
+      name: "Weak Point Exploitation",
+      description: "Unlock weak point mechanic for Mythical Beasts cards. On critical hit, 1% chance to do additional damage equal to 1% of enemy current health.",
+      cost: { realmId: 11, currencyId: "tooth", amount: 3e16 },
+      purchased: false
+    },
+    {
+      id: 28102,
+      name: "Weak Point Exploitation 2",
+      description: "Increase weak point chance by 1%.",
+      cost: { realmId: 11, currencyId: "tooth", amount: 9e17 },
+      purchased: false
+    },
+    {
+      id: 28103,
+      name: "Weak Point Exploitation 3",
+      description: "Increase weak point chance by 1%.",
+      cost: { realmId: 11, currencyId: "tooth", amount: 2.7e19 },
+      purchased: false
+    },
+    {
+      id: 28104,
+      name: "Weak Point Exploitation 4",
+      description: "Increase weak point chance by 1%.",
+      cost: { realmId: 11, currencyId: "tooth", amount: 8.1e20 },
+      purchased: false
+    },
+    {
+      id: 28105,
+      name: "Weak Point Exploitation 5",
+      description: "Increase weak point chance by 1%.",
+      cost: { realmId: 11, currencyId: "tooth", amount: 2.4e22 },
+      purchased: false
+    },
+    {
+      id: 28106,
+      name: "Weak Point Exploitation 6",
+      description: "Increase weak point chance by 1%.",
+      cost: { realmId: 11, currencyId: "tooth", amount: 7.3e23 },
+      purchased: false
+    },
+    {
+      id: 28107,
+      name: "Weak Point Exploitation 7",
+      description: "Increase weak point chance by 1%.",
+      cost: { realmId: 11, currencyId: "tooth", amount: 2.2e25 },
+      purchased: false
+    },
+    {
+      id: 28108,
+      name: "Weak Point Exploitation 8",
+      description: "Increase weak point chance by 1%.",
+      cost: { realmId: 11, currencyId: "tooth", amount: 6.6e26 },
+      purchased: false
+    },
+    {
+      id: 28109,
+      name: "Weak Point Exploitation 9",
+      description: "Increase weak point chance by 1%.",
+      cost: { realmId: 11, currencyId: "tooth", amount: 2e28 },
+      purchased: false
+    },
+    {
+      id: 28110,
+      name: "Weak Point Exploitation 10",
+      description: "Increase weak point chance by 1%.",
+      cost: { realmId: 11, currencyId: "tooth", amount: 6e29 },
+      purchased: false
+    },
+    {
+      id: 28201,
+      name: "Gruesome Dismemberment",
+      description: "Unlock dismember mechanic for Weapons cards. On critical hit, 1% chance to reduce enemy attack by 1%.",
+      cost: { realmId: 11, currencyId: "royal_jelly", amount: 2e14 },
+      purchased: false
+    },
+    {
+      id: 28202,
+      name: "Gruesome Dismemberment 2",
+      description: "Increase dismember chance by 1%.",
+      cost: { realmId: 11, currencyId: "royal_jelly", amount: 1.2e16 },
+      purchased: false
+    },
+    {
+      id: 28203,
+      name: "Gruesome Dismemberment 3",
+      description: "Increase dismember chance by 1%.",
+      cost: { realmId: 11, currencyId: "royal_jelly", amount: 7.2e17 },
+      purchased: false
+    },
+    {
+      id: 28204,
+      name: "Gruesome Dismemberment 4",
+      description: "Increase dismember chance by 1%.",
+      cost: { realmId: 11, currencyId: "royal_jelly", amount: 4.3e19 },
+      purchased: false
+    },
+    {
+      id: 28205,
+      name: "Gruesome Dismemberment 5",
+      description: "Increase dismember chance by 1%.",
+      cost: { realmId: 11, currencyId: "royal_jelly", amount: 2.6e21 },
+      purchased: false
+    },
+    {
+      id: 28206,
+      name: "Gruesome Dismemberment 6",
+      description: "Increase dismember chance by 1%.",
+      cost: { realmId: 11, currencyId: "royal_jelly", amount: 1.6e23 },
+      purchased: false
+    },
+    {
+      id: 28207,
+      name: "Gruesome Dismemberment 7",
+      description: "Increase dismember chance by 1%.",
+      cost: { realmId: 11, currencyId: "royal_jelly", amount: 9.3e24 },
+      purchased: false
+    },
+    {
+      id: 28208,
+      name: "Gruesome Dismemberment 8",
+      description: "Increase dismember chance by 1%.",
+      cost: { realmId: 11, currencyId: "royal_jelly", amount: 5.6e26 },
+      purchased: false
+    },
+    {
+      id: 28209,
+      name: "Gruesome Dismemberment 9",
+      description: "Increase dismember chance by 1%.",
+      cost: { realmId: 11, currencyId: "royal_jelly", amount: 3.4e28 },
+      purchased: false
+    },
+    {
+      id: 28210,
+      name: "Gruesome Dismemberment 10",
+      description: "Increase dismember chance by 1%.",
+      cost: { realmId: 11, currencyId: "royal_jelly", amount: 2e30 },
+      purchased: false
+    },
+    {
+      id: 28301,
+      name: "Zealous Resources",
+      description: "Increase stone per second and per poke multipliers by 3x.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 3e9 },
+      purchased: false
+    },
+    {
+      id: 28302,
+      name: "Zealous Resources 2",
+      description: "Increase coral per second and per poke multipliers by 3x.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 9e9 },
+      purchased: false
+    },
+    {
+      id: 28303,
+      name: "Zealous Resources 3",
+      description: "Increase pollen per second and per poke multipliers by 3x.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 3e10 },
+      purchased: false
+    },
+    {
+      id: 28304,
+      name: "Zealous Resources 4",
+      description: "Increase egg per second and per poke multipliers by 3x.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 9e10 },
+      purchased: false
+    },
+    {
+      id: 28305,
+      name: "Zealous Resources 5",
+      description: "Increase crystal per second and per poke multipliers by 3x.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 3e11 },
+      purchased: false
+    },
+    {
+      id: 28306,
+      name: "Zealous Resources 6",
+      description: "Increase tooth per second and per poke multipliers by 3x.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 9e11 },
+      purchased: false
+    },
+    {
+      id: 28307,
+      name: "Zealous Resources 7",
+      description: "Increase rune per second and per poke multipliers by 3x.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 3e12 },
+      purchased: false
+    },
+    {
+      id: 28308,
+      name: "Zealous Resources 8",
+      description: "Increase pearl per second and per poke multipliers by 3x.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 9e12 },
+      purchased: false
+    },
+    {
+      id: 28309,
+      name: "Zealous Resources 9",
+      description: "Increase royal jelly per second and per poke multipliers by 3x.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 3e13 },
+      purchased: false
+    },
+    {
+      id: 28310,
+      name: "Zealous Resources 10",
+      description: "Increase feather per second and per poke multipliers by 3x.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 9e13 },
+      purchased: false
+    },
+    {
+      id: 28311,
+      name: "Zealous Resources 11",
+      description: "Increase coin per second and per poke multipliers by 3x.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 3e14 },
+      purchased: false
+    },
+    {
+      id: 28312,
+      name: "Zealous Resources 12",
+      description: "Increase cosmic ray per second and per poke multipliers by 3x.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 9e14 },
+      purchased: false
+    },
+    {
+      id: 28313,
+      name: "Zealous Resources 13",
+      description: "Increase spirit per second and per poke multipliers by 3x.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 3e15 },
+      purchased: false
+    },
+    {
+      id: 28314,
+      name: "Zealous Resources 14",
+      description: "Increase zeal per second and per poke multipliers by 3x.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 9e15 },
+      purchased: false
+    },
+
   ];
 
   // --- PURCHASE LOGIC ---
@@ -2995,6 +3682,7 @@ function applySkill(id, skipCost = false) {
         state.sacrificeLockoutTime -= 1; // 2 hours
         break;
       case 25001: // Card Leveler
+      case 25002: // Card Leveler 2
         break;
       case 26001: // Crit Chance
       case 26002:
@@ -3030,16 +3718,173 @@ function applySkill(id, skipCost = false) {
       case 26304:
       case 26305:
       case 26306:
-        state.battle.dodgeChance += 0.005;
+      case 26307:
+      case 26308:
+      case 26309:
+      case 26310:
+        state.battle.dodgeChance += 0.025;
         break;
       case 26401: // Stun Chance
       case 26402:
       case 26403:
       case 26404:
       case 26405:
-        state.battle.stunChance += 0.002;
+      case 26406:
+      case 26407:
+      case 26408:
+      case 26409:
+      case 26410:
+        state.battle.stunChance += 0.01;
         break;
-
+      case 26501: // Rock Hard
+      case 26502:
+      case 26503:
+      case 26504:
+      case 26505:
+        state.battle.damageAbsorption += 0.1;
+        break;
+      case 26601: // Protective Bubble
+      case 26602:
+      case 26603:
+      case 26604:
+      case 26605:
+      case 26606:
+      case 26607:
+      case 26608:
+      case 26609:
+      case 26610:
+        state.battle.protectionChance += 0.05;
+        break;
+      case 27701:
+      case 27702:
+      case 27703:
+      case 27704:
+      case 27705:
+      case 27706:
+      case 27707:
+      case 27708:
+      case 27709:
+      case 27710:
+        state.battle.evolutionChance += 0.01;
+        break;
+      case 27801:
+      case 27802:
+      case 27803:
+      case 27804:
+      case 27805:
+      case 27806:
+      case 27807:
+      case 27808:
+      case 27809:
+      case 27810:
+        state.battle.extraAttackChance += 0.04;
+        break;
+      case 27901:
+      case 27902:
+      case 27903:
+      case 27904:
+      case 27905:
+      case 27906:
+      case 27907:
+      case 27908:
+      case 27909:
+      case 27910:
+        state.battle.resourcefulAttack += 0.5;
+        break;
+      case 28001:
+      case 28002:
+      case 28003:
+      case 28004:
+      case 28005:
+      case 28006:
+      case 28007:
+      case 28008:
+      case 28009:
+      case 28010:
+        state.battle.empowerment += 0.025;
+        break;
+      case 28101:
+      case 28102:
+      case 28103:
+      case 28104:
+      case 28105:
+      case 28106:
+      case 28107:
+      case 28108:
+      case 28109:
+      case 28110:
+        state.battle.weakPointChance += 0.01;
+        break;
+      case 28201:
+      case 28202:
+      case 28203:
+      case 28204:
+      case 28205:
+      case 28206:
+      case 28207:
+      case 28208:
+      case 28209:
+      case 28210:
+        state.battle.dismemberChance += 0.01;
+        break;
+      case 28301:
+        state.effects.currencyPerSecMultiplier['stone'] *= 3;
+        state.effects.currencyPerPokeMultiplier['stone'] *= 3;
+        break;
+      case 28302:
+        state.effects.currencyPerSecMultiplier['coral'] *= 3;
+        state.effects.currencyPerPokeMultiplier['coral'] *= 3;
+        break;
+      case 28303:
+        state.effects.currencyPerSecMultiplier['pollen'] *= 3;
+        state.effects.currencyPerPokeMultiplier['pollen'] *= 3;
+        break;
+      case 28304:
+        state.effects.currencyPerSecMultiplier['egg'] *= 3;
+        state.effects.currencyPerPokeMultiplier['egg'] *= 3;
+        break;
+      case 28305:
+        state.effects.currencyPerSecMultiplier['crystal'] *= 3;
+        state.effects.currencyPerPokeMultiplier['crystal'] *= 3;
+        break;
+      case 28306:
+        state.effects.currencyPerSecMultiplier['tooth'] *= 3;
+        state.effects.currencyPerPokeMultiplier['tooth'] *= 3;
+        break;
+      case 28307:
+        state.effects.currencyPerSecMultiplier['rune'] *= 3;
+        state.effects.currencyPerPokeMultiplier['rune'] *= 3;
+        break;
+      case 28308:
+        state.effects.currencyPerSecMultiplier['pearl'] *= 3;
+        state.effects.currencyPerPokeMultiplier['pearl'] *= 3;
+        break;
+      case 28309:
+        state.effects.currencyPerSecMultiplier['royal_jelly'] *= 3;
+        state.effects.currencyPerPokeMultiplier['royal_jelly'] *= 3;
+        break;
+      case 28310:
+        state.effects.currencyPerSecMultiplier['feather'] *= 3;
+        state.effects.currencyPerPokeMultiplier['feather'] *= 3;
+        break;
+      case 28311:
+        state.effects.currencyPerSecMultiplier['coin'] *= 3;
+        state.effects.currencyPerPokeMultiplier['coin'] *= 3;
+        break;
+      case 28312:
+        state.effects.currencyPerSecMultiplier['cosmic_ray'] *= 3;
+        state.effects.currencyPerPokeMultiplier['cosmic_ray'] *= 3;
+        break;
+      case 28313:
+        state.effects.currencyPerSecMultiplier['spirit'] *= 3;
+        state.effects.currencyPerPokeMultiplier['spirit'] *= 3;
+        break;
+      case 28314:
+        state.effects.currencyPerSecMultiplier['zeal'] *= 3;
+        state.effects.currencyPerPokeMultiplier['zeal'] *= 3;
+        break;
+      default:
+        console.log('Unknown skill ID: ' + id);
 
     }
 
