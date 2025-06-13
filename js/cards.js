@@ -58,7 +58,7 @@ window.cards = [
       "currency": "stone",
       "amount": 10.0
     },
-    "description": "Some stone fragments contain tiny fossils that are millions of years old!",
+    "description": "Some stone fragments were used as early knives before metal tools ever existed.",
     "power": 1,
     "defense": 1,
     "baseEffects": [
@@ -113,7 +113,7 @@ window.cards = [
       "currency": "stone",
       "amount": 20.0
     },
-    "description": "Coal is formed from ancient plants that lived over 300 million years ago!",
+    "description": "Coal fueled the Industrial Revolution—powering trains, factories, and empires.",
     "power": 1,
     "defense": 1,
     "baseEffects": [
@@ -214,7 +214,7 @@ window.cards = [
       "currency": "stone",
       "amount": 25.0
     },
-    "description": "Limestone makes up most coral reefs and contains the skeletons of ancient sea life.",
+    "description": "Limestone is a key ingredient in cement and building materials around the world.",
     "power": 1,
     "defense": 1,
     "baseEffects": [
@@ -292,7 +292,7 @@ window.cards = [
       "currency": "stone",
       "amount": 50.0
     },
-    "description": "Granite makes up most of Earth’s continental crust and can be over a billion years old.",
+    "description": "Granite is so tough it's used in kitchen counters, monuments, and ancient temples.",
     "power": 2,
     "defense": 2,
     "baseEffects": [
@@ -577,7 +577,7 @@ window.cards = [
       "currency": "stone",
       "amount": 25.0
     },
-    "description": "Fossils can reveal creatures that roamed Earth over 65 million years ago.",
+    "description": "Fossils help scientists reconstruct entire extinct species from a single bone.",
     "power": 5,
     "defense": 4,
     "baseEffects": [
@@ -633,7 +633,7 @@ window.cards = [
       "currency": "stone",
       "amount": 20.0
     },
-    "description": "Geodes form when minerals deposit inside gas bubbles in rocks over eons.",
+    "description": "Crack open a geode and you might find glittering ruby crystals hiding inside.",
     "power": 5,
     "defense": 4,
     "baseEffects": [
@@ -792,7 +792,7 @@ window.cards = [
       "currency": "stone",
       "amount": 500.0
     },
-    "description": "Meteorites can be up to 4.5 billion years old—older than Earth!",
+    "description": "Some ancient blades were forged from meteorite iron—literally weapons from space.",
     "power": 5,
     "defense": 4,
     "baseEffects": [
@@ -927,7 +927,7 @@ window.cards = [
       "currency": "coral",
       "amount": 5.0
     },
-    "description": "Seaweed produces about 80% of Earth’s oxygen through photosynthesis.",
+    "description": "Seaweed farms are being used today to fight climate change and feed the future.",
     "power": 1,
     "defense": 1,
     "baseEffects": [
@@ -1045,7 +1045,7 @@ window.cards = [
       "currency": "coral",
       "amount": 50.0
     },
-    "description": "Ancient footwear found in rivers helps archaeologists date human settlements.",
+    "description": "Every old boot tells a tale—lost at sea or tossed by a storm, now part of ocean junk lore.",
     "power": 1,
     "defense": 1,
     "baseEffects": [
@@ -2426,7 +2426,7 @@ window.cards = [
       "currency": "pollen",
       "amount": 80.0
     },
-    "description": "Cicadas emerge in synchronized broods every 13 or 17 years.",
+    "description": "Cicada shells mark the arrival of massive broods that appear once a generation.",
     "power": 8,
     "defense": 6,
     "baseEffects": [
@@ -2567,7 +2567,7 @@ window.cards = [
       "currency": "pollen",
       "amount": 50.0
     },
-    "description": "Praying mantises can rotate their heads 180° to scan for prey.",
+    "description": "The only insect that can turn its head—and sometimes bite it off in romance.",
     "power": 50,
     "defense": 5,
     "baseEffects": [
@@ -2927,7 +2927,7 @@ window.cards = [
       "currency": "royal_jelly",
       "amount": 1.0
     },
-    "description": "Celestial cicadas emerge in synchronized swarms once every century.",
+    "description": "Said to sing only once per century—hearing it may mean you’re part of something cosmic.",
     "power": 50,
     "defense": 8,
     "baseEffects": [
@@ -3072,7 +3072,7 @@ window.cards = [
           "amount": 20
         },
         "currency": "royal_jelly",
-        "value": 100000.0
+        "value": 200000.0
       }
     ]
   },
@@ -3090,7 +3090,7 @@ window.cards = [
       "currency": "egg",
       "amount": 10.0
     },
-    "description": "Sparrows can swim short distances by flapping their wings and hopping across the water.",
+    "description": "Sparrows thrive in cities around the world, nesting in buildings and living alongside humans.",
     "power": 2,
     "defense": 2,
     "baseEffects": [
@@ -4212,7 +4212,7 @@ window.cards = [
       "currency": "feather",
       "amount": 25.0
     },
-    "description": "Articuno is an Ice-type Legendary Pokémon inspired by arctic birds.",
+    "description": "Articuno is said to appear only to doomed travelers—its wings turn the air to ice and the skies to silence.",
     "power": 250,
     "defense": 7,
     "baseEffects": [
@@ -4290,7 +4290,7 @@ window.cards = [
       "currency": "feather",
       "amount": 25.0
     },
-    "description": "Zapdos is an Electric-type Legendary Pokémon with powers over storms.",
+    "description": "When Zapdos takes flight, lightning strikes follow—its presence alone can split clouds and shatter silence.",
     "power": 250,
     "defense": 7,
     "baseEffects": [
@@ -4376,7 +4376,7 @@ window.cards = [
       "currency": "feather",
       "amount": 25.0
     },
-    "description": "Moltres is a Fire-type Legendary Pokémon with wings of flame.",
+    "description": "Moltres blazes through the sky like a comet—its fiery wings are said to ignite spring itself.",
     "power": 250,
     "defense": 7,
     "baseEffects": [
@@ -4456,7 +4456,7 @@ window.cards = [
       "currency": "crystal",
       "amount": 10.0
     },
-    "description": "Writing tools like these were essential for scribes across ancient civilizations.",
+    "description": "Some believed the right feather could channel divine words onto the page.",
     "power": 2,
     "defense": 1,
     "baseEffects": [
@@ -4481,7 +4481,7 @@ window.cards = [
       "currency": "crystal",
       "amount": 10.0
     },
-    "description": "Ancient texts were often recorded on parchment made from animal skins.",
+    "description": "Scrolls once sealed in tombs have survived thousands of years—some whispering secrets in lost tongues.",
     "power": 1,
     "defense": 1,
     "baseEffects": [
@@ -4546,7 +4546,7 @@ window.cards = [
       "currency": "rune",
       "amount": 1.0
     },
-    "description": "Wax seals were used to authenticate important documents.",
+    "description": "Seals bore the mark of kings, guilds—or sorcerers hiding forbidden texts.",
     "power": 1,
     "defense": 1,
     "baseEffects": [
@@ -5456,7 +5456,7 @@ window.cards = [
       "currency": "rune",
       "amount": 75.0
     },
-    "description": "A powerful shield carried by Athena and Zeus.",
+    "description": "Athena’s Aegis was the ultimate party trick—flash Medusa’s face, freeze foes into statues!",
     "power": 50,
     "defense": 15,
     "baseEffects": [
@@ -5882,7 +5882,7 @@ window.cards = [
       "currency": "stone",
       "amount": 10.0
     },
-    "description": "Asteroids in our solar system are remnants from its formation over 4.6 billion years ago.",
+    "description": "Some asteroids hold clues to how life began—and others could end it.",
     "power": 5,
     "defense": 2,
     "baseEffects": [
@@ -5912,7 +5912,7 @@ window.cards = [
       "currency": "stone",
       "amount": 25.0
     },
-    "description": "Some comets complete their orbits around the Sun in thousands of years.",
+    "description": "Ancient cultures saw comets as omens—fiery messengers streaking through the heavens.",
     "power": 5,
     "defense": 2,
     "baseEffects": [
@@ -5975,7 +5975,7 @@ window.cards = [
       "currency": "stone",
       "amount": 200.0
     },
-    "description": "Earth is the only known planet with liquid water on its surface and life.",
+    "description": "The only known cradle of life—our pale blue dot in the vast dark.",
     "power": 10,
     "defense": 5,
     "baseEffects": [
@@ -6089,7 +6089,7 @@ window.cards = [
       "currency": "stone",
       "amount": 100.0
     },
-    "description": "Saturn's rings are made mostly of ice particles with some rocky debris and dust.",
+    "description": "Saturn’s rings are wide enough to stretch from Earth to the Moon—yet only meters thick.",
     "power": 10,
     "defense": 5,
     "baseEffects": [
@@ -6189,7 +6189,7 @@ window.cards = [
       "currency": "stone",
       "amount": 80.0
     },
-    "description": "Proxima Centauri is the closest star to our solar system at just 4.2 light-years away.",
+    "description": "Our closest stellar neighbor—yet its light still takes 4 years to reach us.",
     "power": 100,
     "defense": 4,
     "baseEffects": [
@@ -8962,7 +8962,7 @@ window.cards = [
       "currency": "coin",
       "amount": 15.0
     },
-    "description": "Digging for profit... endlessly.",
+    "description": "Drill. Wait. Forget why you started.",
     "power": 1,
     "defense": 1,
     "baseEffects": [
@@ -8992,7 +8992,7 @@ window.cards = [
       "currency": "coin",
       "amount": 25.0
     },
-    "description": "Mine coins, time travel, repeat. How long before you uninstall?",
+    "description": "Crypto, upgrades, regret.",
     "power": 1,
     "defense": 1,
     "baseEffects": [
@@ -9022,7 +9022,7 @@ window.cards = [
       "currency": "coin",
       "amount": 25.0
     },
-    "description": "Just flick your screen and get rich! Pure nonsense.",
+    "description": "Swipe to simulate finance. 0% APR on fun.",
     "power": 1,
     "defense": 1,
     "baseEffects": [
@@ -9137,7 +9137,7 @@ window.cards = [
       "currency": "coin",
       "amount": 20.0
     },
-    "description": "Basic fantasy idle with light RPG elements.",
+    "description": "Standard fantasy idle with basic stats and gear loops.",
     "power": 2,
     "defense": 2,
     "baseEffects": [
@@ -9177,7 +9177,7 @@ window.cards = [
       "currency": "coin",
       "amount": 20.0
     },
-    "description": "Collection-based idle RPG with gacha elements and paywalls.",
+    "description": "Gacha-heavy idle RPG with tiered heroes and slow paywalled progress.",
     "power": 2,
     "defense": 2,
     "baseEffects": [
@@ -9217,7 +9217,7 @@ window.cards = [
       "currency": "coin",
       "amount": 20.0
     },
-    "description": "Post-apocalyptic tower-themed idle. An attempt was made.",
+    "description": "Build a demon tower, summon weird stuff, then realize nothing matters.",
     "power": 2,
     "defense": 2,
     "baseEffects": [
@@ -9302,7 +9302,7 @@ window.cards = [
       "currency": "coin",
       "amount": 50.0
     },
-    "description": "Physics-based ball dropper meets idle scaling.",
+    "description": "Drop balls. Watch numbers. Kind of hypnotic.",
     "power": 2,
     "defense": 2,
     "baseEffects": [
@@ -9337,7 +9337,7 @@ window.cards = [
       "currency": "coin",
       "amount": 25.0
     },
-    "description": "Math-driven idle focused on equation growth.",
+    "description": "Abstract math sim with satisfying equation growth and graphs.",
     "power": 2,
     "defense": 2,
     "baseEffects": [
@@ -9388,7 +9388,7 @@ window.cards = [
       "currency": "coin",
       "amount": 25.0
     },
-    "description": "Multi-layered idle with lots of systems. Oddly disjointed.",
+    "description": "Dozens of systems layered like cake. Feels like five games taped together.",
     "power": 2,
     "defense": 2,
     "baseEffects": [
@@ -9421,7 +9421,7 @@ window.cards = [
       "currency": "coin",
       "amount": 50.0
     },
-    "description": "Dig and upgrade through oddities underground. Basic stuff.",
+    "description": "Dig, mine, upgrade, repeat. Nothing new, but somehow comforting.",
     "power": 2,
     "defense": 2,
     "baseEffects": [
@@ -9459,7 +9459,7 @@ window.cards = [
       "currency": "coin",
       "amount": 25.0
     },
-    "description": "Civ-building with deep resource strategy.",
+    "description": "Deep resource strategy wrapped in ASCII and absurdity.",
     "power": 3,
     "defense": 3,
     "baseEffects": [
@@ -9494,7 +9494,7 @@ window.cards = [
       "currency": "coin",
       "amount": 25.0
     },
-    "description": "Narrative-driven idle with eerie tone.",
+    "description": "Text-based idle wrapped in mystery, survival, and subtle narrative.",
     "power": 3,
     "defense": 3,
     "baseEffects": [
@@ -9529,7 +9529,7 @@ window.cards = [
       "currency": "coin",
       "amount": 25.0
     },
-    "description": "From paperclip to AI dominance.",
+    "description": "Convert the universe into paperclips. Unironically gripping.",
     "power": 3,
     "defense": 3,
     "baseEffects": [
@@ -9564,7 +9564,7 @@ window.cards = [
       "currency": "coin",
       "amount": 20.0
     },
-    "description": "Evolution from DNA to tech singularity.",
+    "description": "Tap through evolution, science, and the end of humanity.",
     "power": 3,
     "defense": 3,
     "baseEffects": [
@@ -9609,7 +9609,7 @@ window.cards = [
       "currency": "coin",
       "amount": 20.0
     },
-    "description": "Align with factions and go deeper in this snoozefest.",
+    "description": "Faction-based progression with exponential depth... if you stay awake.",
     "power": 3,
     "defense": 3,
     "baseEffects": [
@@ -9644,7 +9644,7 @@ window.cards = [
       "currency": "coin",
       "amount": 25.0
     },
-    "description": "Flashy clicker with sword-wielding heroes.",
+    "description": "Flashy sword-clicker with auto-progression and hero stacking.",
     "power": 3,
     "defense": 3,
     "baseEffects": [
@@ -9682,7 +9682,7 @@ window.cards = [
       "currency": "coin",
       "amount": 25.0
     },
-    "description": "Absurdist idle about downloading RAM.",
+    "description": "Satirical idle game about downloading more RAM. Yes, it’s real.",
     "power": 3,
     "defense": 3,
     "baseEffects": [
@@ -9720,7 +9720,7 @@ window.cards = [
       "currency": "coin",
       "amount": 10.0
     },
-    "description": "Blow leaves and ascend. Yes, really.",
+    "description": "Absurd concept, shockingly layered. Blow leaves, ascend, repeat.",
     "power": 3,
     "defense": 3,
     "baseEffects": [
@@ -9758,7 +9758,7 @@ window.cards = [
       "currency": "coin",
       "amount": 10.0
     },
-    "description": "Strategic idle with evolutionary theme.",
+    "description": "Survival meets loops idle, with tight planning and no wasted moves.",
     "power": 5,
     "defense": 4,
     "baseEffects": [
@@ -9809,7 +9809,7 @@ window.cards = [
       "currency": "coin",
       "amount": 10.0
     },
-    "description": "RuneScape-style idle with stats and skills.",
+    "description": "RuneScape meets idle. Skills, dungeons, and stat mastery.",
     "power": 5,
     "defense": 4,
     "baseEffects": [
@@ -9849,7 +9849,7 @@ window.cards = [
       "currency": "coin",
       "amount": 10.0
     },
-    "description": "Choose magic paths, climb spell trees.",
+    "description": "Magical specialization paths and spell trees across multiple ascensions.",
     "power": 5,
     "defense": 4,
     "baseEffects": [
@@ -9889,7 +9889,7 @@ window.cards = [
       "currency": "coin",
       "amount": 10.0
     },
-    "description": "Darkness and rituals in idle form.",
+    "description": "Grim tone, occult themes, and a surprisingly haunting gameplay loop.",
     "power": 5,
     "defense": 4,
     "baseEffects": [
@@ -9940,7 +9940,7 @@ window.cards = [
       "currency": "coin",
       "amount": 20.0
     },
-    "description": "FPS meets idle with color-coded chaos.",
+    "description": "FPS-style visuals fused with rapid-fire idle progression.",
     "power": 5,
     "defense": 4,
     "baseEffects": [
@@ -9996,7 +9996,7 @@ window.cards = [
       "currency": "coin",
       "amount": 20.0
     },
-    "description": "Brick-breaking arcade merges with idle.",
+    "description": "Classic brick breaker reimagined as an idle upgrade grinder.",
     "power": 5,
     "defense": 4,
     "baseEffects": [
@@ -10041,7 +10041,7 @@ window.cards = [
       "currency": "coin",
       "amount": 10.0
     },
-    "description": "Horror-themed idle with deep digging.",
+    "description": "Dark digging idle with creepy vibes and incremental depth.",
     "power": 5,
     "defense": 4,
     "baseEffects": [
@@ -10134,7 +10134,7 @@ window.cards = [
         "type": "flatMaxCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 30
+          "amount": 28
         },
         "value": 1000000.0
       }
@@ -10154,7 +10154,7 @@ window.cards = [
       "currency": "coin",
       "amount": 15.0
     },
-    "description": "Platforming and idle? It works.",
+    "description": "Idle meets action-platformer. Upgrade mid-run and go again.",
     "power": 20,
     "defense": 5,
     "baseEffects": [
@@ -10210,7 +10210,7 @@ window.cards = [
       "currency": "coin",
       "amount": 15.0
     },
-    "description": "Swarm up. Multiply. Exponentiate.",
+    "description": "Build exponential biomass. Simple interface, massive scaling.",
     "power": 10,
     "defense": 5,
     "baseEffects": [
@@ -10275,7 +10275,7 @@ window.cards = [
       "currency": "coin",
       "amount": 20.0
     },
-    "description": "It’s weird. It’s good.",
+    "description": "Farming, fighting, and a whole lot of potato math.",
     "power": 10,
     "defense": 5,
     "baseEffects": [
@@ -10330,7 +10330,7 @@ window.cards = [
       "currency": "coin",
       "amount": 50.0
     },
-    "description": "Math-heavy idle with corruption.",
+    "description": "Multiple currencies, deep trees, corruption layers—big brain required.",
     "power": 10,
     "defense": 5,
     "baseEffects": [
@@ -10383,7 +10383,7 @@ window.cards = [
       "currency": "coin",
       "amount": 40.0
     },
-    "description": "Time loop idle built around code.",
+    "description": "Code your way through time loops and unlock recursive automation.",
     "power": 10,
     "defense": 5,
     "baseEffects": [
@@ -10431,7 +10431,7 @@ window.cards = [
       "currency": "coin",
       "amount": 40.0
     },
-    "description": "An idle empire under the sea.",
+    "description": "Rule the ocean economy. Eat, evolve, dominate.",
     "power": 20,
     "defense": 5,
     "baseEffects": [
@@ -10485,7 +10485,7 @@ window.cards = [
       "currency": "coin",
       "amount": 10.0
     },
-    "description": "Build the chicken egg multiverse.",
+    "description": "Chicken capitalism at galactic scale. Farm until the universe cracks.",
     "power": 20,
     "defense": 6,
     "baseEffects": [
@@ -10546,7 +10546,7 @@ window.cards = [
       "currency": "coin",
       "amount": 25.0
     },
-    "description": "Train, fight, gather. Repeat.",
+    "description": "Fight, gather, research, repeat. Addictively strategic and brutally slow.",
     "power": 20,
     "defense": 6,
     "baseEffects": [
@@ -10612,7 +10612,7 @@ window.cards = [
       "currency": "coin",
       "amount": 50.0
     },
-    "description": "The cookie godfather of all idles.",
+    "description": "The one that started it all. Pure cookie chaos, endless upgrades.",
     "power": 20,
     "defense": 6,
     "baseEffects": [
@@ -10679,7 +10679,7 @@ window.cards = [
       "currency": "coin",
       "amount": 10.0
     },
-    "description": "12 dimensions of math and pain.",
+    "description": "12-dimensional math simulator. Mind-bending and punishing.",
     "power": 150,
     "defense": 7,
     "baseEffects": [
@@ -10750,7 +10750,7 @@ window.cards = [
       "currency": "coin",
       "amount": 10.0
     },
-    "description": "Scientific breakthrough simulator.",
+    "description": "Boil science into upgrades. Complex systems and satisfying unlocks.",
     "power": 50,
     "defense": 7,
     "baseEffects": [
@@ -10816,7 +10816,7 @@ window.cards = [
       "currency": "coin",
       "amount": 30.0
     },
-    "description": "Classic monster-clicking progression.",
+    "description": "Classic clicker formula. Still holds up with long-form scaling.",
     "power": 100,
     "defense": 7,
     "baseEffects": [
@@ -10880,7 +10880,7 @@ window.cards = [
       "currency": "coin",
       "amount": 10.0
     },
-    "description": "Infinite layers. Infinite resets.",
+    "description": "Endless layers of prestige. Reset reality to push a single number.",
     "power": 250,
     "defense": 8,
     "baseEffects": [
@@ -10951,7 +10951,7 @@ window.cards = [
       "currency": "coin",
       "amount": 25.0
     },
-    "description": "Deep space meets deep systems.",
+    "description": "Galactic-scale idle with deep system networks and hidden lore.",
     "power": 250,
     "defense": 8,
     "baseEffects": [
@@ -11027,7 +11027,7 @@ window.cards = [
       "currency": "coin",
       "amount": 30.0
     },
-    "description": "Hilarious and complex in equal parts.",
+    "description": "Nonsense, grind, upgrades. A chaotic masterpiece that never takes itself seriously.",
     "power": 200,
     "defense": 8,
     "baseEffects": [
@@ -11101,7 +11101,7 @@ window.cards = [
       "currency": "coin",
       "amount": 20.0
     },
-    "description": "Strategic roguelite meets incremental.",
+    "description": "A roguelite incremental that rewards smart risk-taking and planning.",
     "power": 1000,
     "defense": 9,
     "baseEffects": [
@@ -11190,7 +11190,7 @@ window.cards = [
       "currency": "coin",
       "amount": 10.0
     },
-    "description": "Hack and code your way through idle.",
+    "description": "Script your way to power. Idle hacking meets real coding.",
     "power": 500,
     "defense": 9,
     "baseEffects": [
@@ -11269,7 +11269,7 @@ window.cards = [
       "currency": "coin",
       "amount": 10.0
     },
-    "description": "The pinnacle of incremental design.",
+    "description": "A layered, ever-evolving idle masterpiece. Bold, broken, beautiful. Truly the pinnacle of incremental design.",
     "power": 2000,
     "defense": 15,
     "baseEffects": [
@@ -14063,7 +14063,7 @@ window.cards = [
           "amount": 15
         },
         "currency": "spirit",
-        "value": 50000.0
+        "value": 500000.0
       },
       {
         "type": "currencyPerSecMultiplier",
@@ -14795,10 +14795,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
         "currency": "stone",
-        "value": 20.0
+        "value": 18.0
       }
     ]
   },
@@ -14848,10 +14848,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
         "currency": "coral",
-        "value": 20.0
+        "value": 18.0
       }
     ]
   },
@@ -14901,10 +14901,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
         "currency": "pollen",
-        "value": 20.0
+        "value": 18.0
       }
     ]
   },
@@ -14954,10 +14954,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
         "currency": "egg",
-        "value": 20.0
+        "value": 18.0
       }
     ]
   },
@@ -15012,10 +15012,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
         "currency": "crystal",
-        "value": 20.0
+        "value": 18.0
       }
     ]
   },
@@ -15070,10 +15070,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
         "currency": "tooth",
-        "value": 20.0
+        "value": 18.0
       }
     ]
   },
@@ -15128,10 +15128,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
         "currency": "coin",
-        "value": 20.0
+        "value": 18.0
       }
     ]
   },
@@ -15186,10 +15186,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
         "currency": "spirit",
-        "value": 20.0
+        "value": 18.0
       }
     ]
   },
@@ -15252,10 +15252,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
         "currency": "rune",
-        "value": 20.0
+        "value": 18.0
       }
     ]
   },
@@ -15315,10 +15315,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
         "currency": "pearl",
-        "value": 20.0
+        "value": 18.0
       }
     ]
   },
@@ -15378,10 +15378,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
         "currency": "royal_jelly",
-        "value": 20.0
+        "value": 18.0
       }
     ]
   },
@@ -15446,10 +15446,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
         "currency": "feather",
-        "value": 20.0
+        "value": 18.0
       }
     ]
   },
@@ -15517,10 +15517,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
         "currency": "cosmic_ray",
-        "value": 20.0
+        "value": 18.0
       }
     ]
   },
@@ -15585,7 +15585,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
         "currency": "zeal",
         "value": 3.0
@@ -15652,7 +15652,7 @@ window.cards = [
         "type": "merchantPriceDivider",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
         "value": 3.0
       }
@@ -15718,9 +15718,9 @@ window.cards = [
         "type": "flatMaxCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
-        "value": 1500000.0
+        "value": 1800000.0
       }
     ]
   },
@@ -15787,9 +15787,9 @@ window.cards = [
         "type": "flatMinCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
-        "value": 150000.0
+        "value": 180000.0
       }
     ]
   },
@@ -15864,7 +15864,7 @@ window.cards = [
         "type": "allGeneratorMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 18
         },
         "value": 5.0
       }
@@ -15922,7 +15922,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 16
+          "amount": 15
         },
         "currency": "zeal",
         "value": 2.0
@@ -15994,7 +15994,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 16
+          "amount": 15
         },
         "currency": "zeal",
         "value": 2.0
@@ -16062,7 +16062,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 16
+          "amount": 15
         },
         "currency": "zeal",
         "value": 2.0
@@ -16138,7 +16138,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 16
+          "amount": 15
         },
         "currency": "zeal",
         "value": 2.0
@@ -16222,7 +16222,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 16
+          "amount": 15
         },
         "currency": "zeal",
         "value": 2.0
@@ -16704,7 +16704,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 20
         },
         "currency": "zeal",
         "value": 4.0
@@ -16713,10 +16713,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 44
+          "amount": 40
         },
         "currency": "pearl",
-        "value": 44.0
+        "value": 40.0
       }
     ]
   },
@@ -16782,7 +16782,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 20
         },
         "currency": "zeal",
         "value": 4.0
@@ -16791,10 +16791,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 44
+          "amount": 40
         },
         "currency": "royal_jelly",
-        "value": 44.0
+        "value": 40.0
       }
     ]
   },
@@ -16863,7 +16863,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 20
         },
         "currency": "zeal",
         "value": 4.0
@@ -16872,10 +16872,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 44
+          "amount": 40
         },
         "currency": "feather",
-        "value": 44.0
+        "value": 40.0
       }
     ]
   },
@@ -16942,7 +16942,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 20
         },
         "currency": "zeal",
         "value": 4.0
@@ -16951,10 +16951,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 44
+          "amount": 40
         },
         "currency": "cosmic_ray",
-        "value": 44.0
+        "value": 40.0
       }
     ]
   },
@@ -17026,7 +17026,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 22
+          "amount": 20
         },
         "currency": "zeal",
         "value": 4.0
@@ -17035,10 +17035,10 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 44
+          "amount": 40
         },
         "currency": "zeal",
-        "value": 44.0
+        "value": 40.0
       }
     ]
   },
@@ -17107,7 +17107,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 27
+          "amount": 25
         },
         "currency": "zeal",
         "value": 5.0
@@ -17116,10 +17116,10 @@ window.cards = [
         "type": "currencyPerSecMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 52
+          "amount": 50
         },
         "currency": "zeal",
-        "value": 520.0
+        "value": 500.0
       }
     ]
   },
@@ -17186,7 +17186,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 27
+          "amount": 25
         },
         "currency": "zeal",
         "value": 5.0
@@ -17195,9 +17195,9 @@ window.cards = [
         "type": "flatCooldownDivider",
         "requirement": {
           "type": "level",
-          "amount": 52
+          "amount": 50
         },
-        "value": 520.0
+        "value": 500.0
       }
     ]
   },
@@ -17269,7 +17269,7 @@ window.cards = [
         "type": "currencyPerPokeMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 27
+          "amount": 25
         },
         "currency": "zeal",
         "value": 5.0
@@ -17278,7 +17278,7 @@ window.cards = [
         "type": "flatMaxCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 52
+          "amount": 50
         },
         "value": 1000000000.0
       }

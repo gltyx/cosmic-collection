@@ -46,6 +46,16 @@ const BATTLE_TRICKS = {    // Philosopher's Stone → Mnemosyne
         tidbit: "Hephaestus marvels at the craftsmanship of the legendary hammer.<br><br>[Stunned for 6 turns]",
         achievement: "greekGodBattleTricks5",
     },
+      // Caduceus of Hermes → Hermes
+    "521": {
+        targetEnemy: "Hermes",
+        effect: (enemy) => {            
+            enemy.stunTurns += 3;
+            enemy.attack = Math.floor(enemy.attack * 0.8);
+        },
+        tidbit: "Hermes is demoralized by you having the Caduceus.<br><br>[Stunned for 3 turns and Reduces attack by 20%]",
+        achievement: "greekGodBattleTricks6",
+    },
       // Mars → Ares
     "605": {
         targetEnemy: "Ares",
@@ -54,26 +64,44 @@ const BATTLE_TRICKS = {    // Philosopher's Stone → Mnemosyne
             enemy.currentHp -= enemy.currentHp * 0.1;
         },
         tidbit: "Ares recognizes his Roman counterpart, momentarily confused by the duality and saddened by the wrong name being chosen to name a planet.<br><br>[Stunned for 5 turns and Reduces current HP by 10%]",
-        achievement: "greekGodBattleTricks6",
+        achievement: "greekGodBattleTricks7",
+    },
+      // Wolf → Artemis
+    "706": {
+        targetEnemy: "Artemis",
+        effect: (enemy) => {
+            enemy.attack = Math.floor(enemy.attack * 0.65);
+        },
+        tidbit: "Artemis has a soft spot for wolves. She cannot use her full power against them.<br><br>[Reduces attack by 35%]",
+        achievement: "greekGodBattleTricks8",
     },
       // Enchanted Mirror → Apollo
     "512": {
         targetEnemy: "Apollo",
         effect: (enemy) => {
-            enemy.stunTurns = 7;
+            enemy.stunTurns += 7;
         },
         tidbit: "Apollo catches his own reflection and becomes entranced by his beauty.<br><br>[Stunned for 7 turns]",
-        achievement: "greekGodBattleTricks7",
+        achievement: "greekGodBattleTricks9",
+    },
+      // Aegis Shield → Athena
+    "522": {
+        targetEnemy: "Athena",
+        effect: (enemy) => {
+            enemy.stunTurns += 8;
+        },
+        tidbit: "Athena falls for her own party trick. Looking at the shield temporarily petrifies her.<br><br>[Stunned for 8 turns]",
+        achievement: "greekGodBattleTricks10",
     },
       // Cerberus → Hades
     "719": {
         targetEnemy: "Hades",
         effect: (enemy) => {
             enemy.attack = Math.floor(enemy.attack * 0.9);
-            enemy.stunTurns = 4;
+            enemy.stunTurns += 4;
         },
         tidbit: "Hades sees his faithful hound and momentarily drops his guard. How could you turn a dog against his master? Pure evil.<br><br>[Reduces attack by 10% and Stunned for 4 turns]",
-        achievement: "greekGodBattleTricks8",
+        achievement: "greekGodBattleTricks11",
     },
       // Poseidon's Trident → Poseidon
     "220": {
@@ -82,7 +110,7 @@ const BATTLE_TRICKS = {    // Philosopher's Stone → Mnemosyne
             enemy.attack = Math.floor(enemy.attack * 0.75);
         },
         tidbit: "Poseidon reaches for his trident, realizing he's lost it. His power is diminished.<br><br>[Reduces attack by 25%]",
-        achievement: "greekGodBattleTricks9",
+        achievement: "greekGodBattleTricks12",
     },
       // Phoenix → Tartarus
     "420": {
@@ -92,7 +120,7 @@ const BATTLE_TRICKS = {    // Philosopher's Stone → Mnemosyne
             enemy.currentHp -= enemy.currentHp * 0.2;
         },
         tidbit: "The Phoenix's eternal cycle of rebirth paradoxically conflicts with the depths of Tartarus.<br><br>[Reduces attack and current HP by 20%]",
-        achievement: "greekGodBattleTricks10",
+        achievement: "greekGodBattleTricks13",
     },
       // Kraken → Typhon
     "731": {
@@ -102,7 +130,7 @@ const BATTLE_TRICKS = {    // Philosopher's Stone → Mnemosyne
             enemy.currentHp -= enemy.currentHp * 0.3;
         },
         tidbit: "Typhon recognizes a fellow monster of the deep, and switches to a more aggressive stance.[Increases attack by 50% but reduces current HP by 30%]",    
-        achievement: "greekGodBattleTricks11",
+        achievement: "greekGodBattleTricks14",
     },
     
     // Sun → Nyx
@@ -112,7 +140,7 @@ const BATTLE_TRICKS = {    // Philosopher's Stone → Mnemosyne
             enemy.attack = Math.floor(enemy.attack * 0.75);
         },
         tidbit: "The Sun's radiance pierces Nyx's eternal darkness, momentarily banishing the night and suppresses her nocturnal powers.<br><br>[Reduces attack by 25%]",
-        achievement: "greekGodBattleTricks12",
+        achievement: "greekGodBattleTricks15",
     }
 };
 

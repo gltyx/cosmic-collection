@@ -108,10 +108,9 @@
 .battle-combat-stat {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 2px 6px;
-  border-radius: 3px;
-  background: rgba(0, 0, 0, 0.3);
+  background: transparent;
+  flex-shrink: 1;               /* allow pill to shrink if needed */
+  min-width: 0;                 /* so text can actually shrink */
 }
 
 .battle-combat-stat:first-child {
@@ -148,22 +147,6 @@
 .enemy-details h3 {
   font-size: 1.5em;
   margin-bottom: 12px;
-}
-
-/* Enemy card combat stats */
-.enemy-card .battle-combat-stats {
-  position: absolute;
-  bottom: 5px;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  padding: 4px 8px;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  font-size: 0.8em;
-  font-weight: bold;
-  z-index: 1;
 }
 
 /* HP bar for both enemy and slots */
@@ -289,30 +272,6 @@
   overflow: hidden;
   text-overflow: clip;
   transform: scale(var(--text-scale, 1));
-  transform-origin: center;
-}
-
-/* Combat stats inside grid items */
-.battle-card-grid-item .battle-combat-stats {
-  position: absolute;
-  bottom: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90%;
-  display: flex;
-  justify-content: space-between;
-  padding: 2px 4px;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 4px;
-  z-index: 3;
-}
-
-.battle-card-grid-item .battle-combat-stat {
-  gap: 2px;
-  color: white;
-  font-size: clamp(8px, 2vw, 12px);
-  white-space: nowrap;
-  transform: scale(var(--stat-scale, 1));
   transform-origin: center;
 }
 
@@ -616,19 +575,33 @@
   bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
-  width: 85%;
+  width: 85%;                      /* or whatever fits your card */
   display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 4px 8px;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6));
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-direction: column;
+  gap: 4px;                        /* space between rows */
+  padding: 4px 2px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 4px;
   color: white;
   font-size: 0.8em;
   font-weight: bold;
   z-index: 2;
-  border-radius: 4px;
   backdrop-filter: blur(2px);
+  box-sizing: border-box;
+}
+
+/* row for the base attack/HP stats */
+.battle-combat-stats .stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+/* row for the special effects icons/text */
+.battle-combat-stats .effects-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
 }
 
 /* Fix sacrifice modal card name */
@@ -646,35 +619,6 @@
   z-index: 2;
 }
 
-/* Combat stats positioning for all card types */
-.battle-slot .battle-combat-stats,
-.enemy-card .battle-combat-stats,
-.battle-card-grid-item .battle-combat-stats {
-  position: absolute;
-  bottom: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 85%;
-  display: flex;
-  justify-content: center;
-  gap: min(12px, 3%);
-  padding: 4px;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 4px;
-  z-index: 3;
-  font-size: clamp(8px, 1.8vw, 12px);
-}
-
-/* Combat stats for battle slots */
-.battle-slot .battle-combat-stats {
-  font-size: clamp(6px, 1.5vw, 10px);
-}
-
-/* Combat stats for enemy card */
-.enemy-card .battle-combat-stats {
-  font-size: clamp(12px, 2vw, 16px);
-}
-
 /* Fix tier badge positioning */
 .sacrifice-card-preview .battle-tier-badge {
   position: absolute;
@@ -682,15 +626,6 @@
   left: 4px;
   width: 32px;
   height: 32px;
-}
-
-/* Fix combat stats positioning in modal */
-.sacrifice-card-preview .battle-combat-stats {
-  position: absolute;
-  bottom: 5%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
 }
 
 /* Ensure card frame and image stay within preview */
@@ -718,18 +653,19 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.filter-option {
-  padding: 6px 12px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  border-radius: 2px;
+.filter-menu .filter-option {
+  display: flex;            /* or “block” if you don’t care about centering */
+  align-items: center;      /* only applies if you use flex */
+  width: 100%;              /* span the full menu width */
+  padding: 6px 12px;        /* same as before */
+  gap: 8px;                 /* space between the box and label text */
 }
 
-.filter-option:hover {
+.filter-menu .filter-option:hover {
   background: var(--tab-hover);
 }
 
-.filter-option.active {
+.filter-menu .filter-option.active {
   background: var(--accent);
   color: white !important;
 }
@@ -986,13 +922,5 @@
   }
   .enemy-card {
     width: 180px;
-  }
-}
-
-@media (max-height: 600px) {
-  .battle-slot .battle-combat-stats {
-    font-size: clamp(3.5px, 1.2vw, 8px);
-    padding: 1px 2px;
-    gap: min(2px, 1%);
   }
 }

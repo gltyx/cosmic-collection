@@ -1152,7 +1152,7 @@ window.skills = [
       id: 12001,
       name: "Hawking Radiation Harvester",
       description: "Unlocks a device that can passively harvest Hawking radiation from the black hole to reduce its cooldown. (10x slower offline)",
-      cost: { realmId: 2, currencyId: "coral", amount: 25000 },
+      cost: { realmId: 2, currencyId: "coral", amount: 20000 },
       purchased: false
     },
     {
@@ -1180,7 +1180,7 @@ window.skills = [
       id: 12101,
       name: "Gravitational Wave Absorber",
       description: "Unlocks a device that absorbs gravitational waves each time black hole is poked. Can be activated to multiply card count for next poke. (Max 5x)",
-      cost: { realmId: 3, currencyId: "pollen", amount: 500000 },
+      cost: { realmId: 3, currencyId: "pollen", amount: 400000 },
       purchased: false
     },
     {
@@ -1222,7 +1222,7 @@ window.skills = [
       id: 12201,
       name: "Space Bending Interceptor",
       description: "Unlocks a device that intercepts space bending (both passivly and when you flip over cards), which can be activated automate flipping over cards.",
-      cost: { realmId: 5, currencyId: "egg", amount: 1e7 },
+      cost: { realmId: 5, currencyId: "egg", amount: 8e6 },
       purchased: false
     },
     {
@@ -1257,7 +1257,7 @@ window.skills = [
       id: 12301,
       name: "Time Crunch Collector",
       description: "Unlocks a device that can passively collect time particles to release 25x pokes worth of currency when used.",
-      cost: { realmId: 7, currencyId: "tooth", amount: 1e8 },
+      cost: { realmId: 7, currencyId: "tooth", amount: 9e7 },
       purchased: false
     },
     {
@@ -1607,21 +1607,21 @@ window.skills = [
       id: 20006,
       name: "Resourceful Pokes 6",
       description: "2x tooth gained from pokes.",
-      cost: { realmId: 12, currencyId: "rune", amount: 2e16},
+      cost: { realmId: 11, currencyId: "rune", amount: 2e16},
       purchased: false
     },
     {
       id: 20007,
       name: "Resourceful Pokes 7",
       description: "2x coin gained from pokes.",
-      cost: { realmId: 13, currencyId: "pearl", amount: 2e16},
+      cost: { realmId: 11, currencyId: "pearl", amount: 2e16},
       purchased: false
     },
     {
       id: 20008,
       name: "Resourceful Pokes 8",
       description: "2x spirit gained from pokes.",
-      cost: { realmId: 14, currencyId: "royal_jelly", amount: 2e16},
+      cost: { realmId: 11, currencyId: "royal_jelly", amount: 2e16},
       purchased: false
     },
     {
@@ -2005,15 +2005,36 @@ window.skills = [
     {
       id: 26002,
       name: "Crit Chance 2",
-      description: "+5% Critical Hit Chance.",
-      cost: { realmId: 11, currencyId: "zeal", amount: 8e9 },
+      description: "+2% Critical Hit Chance.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 2.3e10 },
       purchased: false
     },
     {
       id: 26003,
       name: "Crit Chance 3",
-      description: "+5% Critical Hit Chance.",
-      cost: { realmId: 11, currencyId: "zeal", amount: 2e11 },
+      description: "+2% Critical Hit Chance.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 1.7e13 },
+      purchased: false
+    },
+    {
+      id: 26004,
+      name: "Crit Chance 4",
+      description: "+2% Critical Hit Chance.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 1.3e16 },
+      purchased: false
+    },
+    {
+      id: 26005,
+      name: "Crit Chance 5",
+      description: "+2% Critical Hit Chance.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 9.5e18 },
+      purchased: false
+    },
+    {
+      id: 26006,
+      name: "Crit Chance 6",
+      description: "+2% Critical Hit Chance.",
+      cost: { realmId: 11, currencyId: "zeal", amount: 7.1e21 },
       purchased: false
     },
     {
@@ -3685,9 +3706,14 @@ function applySkill(id, skipCost = false) {
       case 25002: // Card Leveler 2
         break;
       case 26001: // Crit Chance
-      case 26002:
-      case 26003:
         state.battle.critChance += 0.05;
+        break;
+      case 26002: // Crit Chance 2
+      case 26003:
+      case 26004:
+      case 26005:
+      case 26006:
+        state.battle.critChance += 0.02;
         break;
       case 26101: // Crit Damage
       case 26102:
