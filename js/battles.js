@@ -591,8 +591,8 @@ function updateBattleUI() {
     // Click to remove
     cardOuter.addEventListener('click', () => {
       const ok = confirm(
-        "Are you sure you want to remove this card from battle? " +
-        "The card will still remain sacrificed."
+        "你确定要从战斗中移除这张卡吗？ " +
+        "这张卡仍然会被献祭。"
       );
       if (!ok) return;
 
