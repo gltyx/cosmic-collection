@@ -39,6 +39,7 @@ window.realms = [
   { id: 9, name: "Spirit Familiars",  unlocked: false, cooldown: 310, deselectMultiplier: 5, pokeWeight: 3e9 },
   { id: 10, name: "Weapons",          unlocked: false, cooldown: 900, deselectMultiplier: 5, pokeWeight: 1e9 },
   { id: 11, name: "Greek Gods",       unlocked: false, cooldown: 5400, deselectMultiplier: 5, pokeWeight: 2e8 },
+  { id: 12, name: "Bosses",           unlocked: false, cooldown: 2397652, deselectMultiplier: 5, pokeWeight: 1e7}
 ];
 
 // 3) give every realm its own copy of the default weights for both capped and uncapped

@@ -11,7 +11,7 @@
   <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon_32.png">
   <link rel="icon" type="image/png" sizes="64x64" href="assets/images/favicon_64.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/6.0.0/css/all.min.css" />
   <link rel="stylesheet" href="css/merchant.css" />
   <link rel="stylesheet" href="css/skills.css" />
   <link rel="stylesheet" href="css/statistics.css" />
@@ -132,7 +132,6 @@
     </div>
   </div>
   
-  
 
   <div id="tab-content-cards" class="tab-content">
     <h2>Card Collection</h2>
@@ -168,7 +167,7 @@
   </div>
   <div id="tab-content-settings" class="tab-content" style="display:none;">
     <div class="settings-container">
-      <div class="version">Game Version: v0.184</div>
+      <div class="version">Game Version: v0.61</div>
       <div class="settings-section">
         <h2>Save & Load</h2>
         <div class="settings-buttons">
@@ -202,6 +201,9 @@
           <button id="autoAbsorberToggle" class="settings-button toggle-button" style="display: none;">
             <i class="fas fa-times"></i> Auto-Use Max Absorber
           </button>
+          <button id="skipSacrificeDialogToggle" class="settings-button toggle-button" style="display: none;">
+            <i class="fas fa-times"></i> Skip Sacrifice Dialog
+          </button>
         </div>      </div>
       <div class="settings-section">
         <h2>Community & Support</h2>
@@ -214,6 +216,9 @@
           </button>
           <button id="donationButton" class="settings-button">
             <i class="fas fa-heart"></i> Support Development
+          </button>
+          <button id="kuzziGamesButton" class="settings-button kuzzi-games-button">
+            <i class="fas fa-gamepad"></i> Kuzzi Games
           </button>
         </div>
         <div id="supporterCheckboxContainer" class="settings-row" style="display: none;">
@@ -274,8 +279,8 @@
   </div>
 
   <!-- Libs -->
-  <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/decimal.js/10.3.1/decimal.min.js"></script>
-  <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/animejs/3.2.1/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/decimal.js@10.3.1/decimal.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
 
   <!-- Core Data -->
   <script src="js/image_cache.js"></script>
@@ -295,6 +300,7 @@
   <script src="js/interceptor.js"></script>
   <script src="js/time_crunch.js"></script>
   <script src="js/battle_tricks.js"></script>
+  <script src="js/battles_helpers.js"></script>
   <script src="js/battles.js"></script>
   <script src="js/achievements.js"></script>
   <!-- Main Behavior -->

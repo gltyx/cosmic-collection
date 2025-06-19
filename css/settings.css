@@ -393,6 +393,15 @@
     color: #000;
 }
 
+#kuzziGamesButton {
+    background-color: #28a745;
+    color: white;
+}
+
+#kuzziGamesButton:hover {
+    background-color: #218838;
+}
+
 /* Tips modal styles */
 .tips-modal-content {
     max-width: 800px !important;

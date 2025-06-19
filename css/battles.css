@@ -92,6 +92,12 @@
   width: 100%;
   aspect-ratio: 5/7;
   position: relative;
+  transition: opacity 0.2s;
+}
+
+.battle-slot .card-outer:hover {
+  cursor: pointer;
+  opacity: 0.9;
 }
 
 /* Common card face styling */
@@ -131,7 +137,24 @@
   padding: 16px;
   align-items: start;
   height: fit-content;
+  position: relative;
 }
+
+.no-enemy-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.75);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 1.1em;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 10;
+}
+
 
 .enemy-card {
   width: 240px;
@@ -378,6 +401,41 @@
 .damage-number.weakPoint {
   color: #6c0000;
   font-size: 2.5em;
+}
+
+.damage-number.heal {
+  color: #00901f;
+  font-size: 1.3em;
+}
+
+.damage-number.papercut {
+  color: #7b7b7b;
+  font-size: 1.3em;
+}
+
+.damage-number.reflect {
+  color: #8e6100;
+  font-size: 1.3em;
+}
+
+.damage-number.fart {
+  color: #482600;
+  font-size: 1.3em;
+}
+
+.damage-number.snap {
+  color: #eeff00;
+  font-size: 2.5em;
+}
+
+.damage-number.revived {
+  color: #00901f;
+  font-size: 2.5em;
+}
+
+.damage-number.confused {
+  color: #ce36ad;
+  font-size: 1.5em;
 }
 
 /* Card remove animation */
@@ -891,6 +949,45 @@
   justify-content: left;
 }
 
+/* Battles tab — realm switcher */
+.battle-realm-switch {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.battle-realm-switch .realm-btn {
+  padding: 6px 14px;
+  font-size: 1.5em;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  background: var(--tab-hover);
+  color: var(--font-color);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.battle-realm-switch .realm-btn:hover {
+  background: var(--tab-active);
+}
+
+.battle-realm-switch .realm-btn.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.boss-mechanics {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+}
+.boss-mechanics div {
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
 @media (max-height:800px) {
   .arrow-up-row .arrow-cell { width: 180px; }
 }
@@ -922,5 +1019,38 @@
   }
   .enemy-card {
     width: 180px;
+  }
+}
+
+/* Responsive queries for smaller screens (width-based) */
+@media (max-width: 768px) {
+  .slot-arrow {
+    font-size: 1.4em;     /* smaller arrows on mobile */
+  }
+
+  .slots-row {
+    gap: 8px;             /* reduce gap between slots */
+  }
+
+  .slot-with-arrow-col {
+    gap: 2px;             /* reduce gap between arrow and slot */
+  }
+}
+
+@media (max-width: 480px) {
+  .slot-arrow {
+    font-size: 1.2em;     /* even smaller arrows on very small screens */
+  }
+
+  .slots-row {
+    gap: 6px;             /* further reduce gap between slots */
+  }
+
+  .slot-with-arrow-col {
+    gap: 1px;             /* minimal gap between arrow and slot */
+  }
+
+  .arrow-up-row .arrow-cell {
+    width: 80px;          /* adjust arrow cell width for small screens */
   }
 }

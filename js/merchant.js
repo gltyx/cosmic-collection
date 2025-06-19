@@ -159,9 +159,23 @@ const merchants = [
       rarityScaling: 2.5,
       guaranteedRealm: 11,
       guaranteedCount: 1,
-      description: 'Nobody knows just how old this guy is. He is the only merchant who sells Greek Gods cards - always has one. And he does not sell junk.',
+      description: 'Nobody knows just how old this guy is. Unlike other merchants so far, he sells Greek Gods cards - always has one. And he does not sell junk.',
       unlocked: false
     },
+    {
+      id: 14,
+      name: 'Erevan Dreadveil',
+      cardMultiplier: 2,
+      refreshTime: 1,
+      merchantOdds: 50,
+      raritiesSkipped: [],
+      priceMultiplier: 0.2,
+      rarityScaling: 5,
+      guaranteedRealm: 12,
+      guaranteedCount: 1,
+      description: 'The ultimate merchant. Always has 1 boss card. 2x cards, 1/5 price, and +2.5 to rarity scaling.',
+      unlocked: false
+    }
     
     
 
@@ -298,7 +312,7 @@ const merchants = [
     }
   
     const offers = [];
-    const unlockedRealms = realms.filter(r => r.unlocked && r.id !== 11).map(r => r.id);
+    const unlockedRealms = realms.filter(r => r.unlocked && r.id !== 11 && r.id !== 12).map(r => r.id);
   
     // precompute totals per realm
     const totalByRealm = {}, discByRealm = {};
@@ -581,18 +595,35 @@ const merchants = [
       combined.sort((a, b) => {
         const cardA = cardMap[a.offer.cardId];
         const cardB = cardMap[b.offer.cardId];
-        
-        // First sort by rarity (reverse order)
+
+        if (skillMap[19302].purchased) {
+          // Priority order: realm 12 first, then realm 11, then everything else
+          const getPriority = (realm) => {
+            if (realm === 12) return 0; // Highest priority
+            if (realm === 11) return 1; // Second priority
+            return 2; // All other realms
+          };
+
+          const priorityA = getPriority(cardA.realm);
+          const priorityB = getPriority(cardB.realm);
+
+          // First sort by priority (realm 12, then 11, then others)
+          if (priorityA !== priorityB) {
+            return priorityA - priorityB;
+          }
+        }
+
+        // For cards in the same priority group, sort by rarity (reverse order)
         const rarityIndexA = rarities.indexOf(cardA.rarity);
         const rarityIndexB = rarities.indexOf(cardB.rarity);
         if (rarityIndexA !== rarityIndexB) {
           return rarityIndexB - rarityIndexA; // Reverse order
         }
-        
+
         // Then sort by realm (reverse order)
         return cardB.realm - cardA.realm; // Reverse order
       });
-      
+
       // Update both arrays with sorted values
       offersToRender = combined.map(item => item.offer);
       originalIndices = combined.map(item => item.originalIndex);

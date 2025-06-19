@@ -16,6 +16,7 @@ function initializeSettingsTab() {
     // Community & Support buttons
     const discordButton = document.getElementById('discordButton');
     const donationButton = document.getElementById('donationButton');
+    const kuzziGamesButton = document.getElementById('kuzziGamesButton');
     const supporterCheckbox = document.getElementById('supporterCheckbox');
     const supporterCheckboxContainer = document.getElementById('supporterCheckboxContainer');
     
@@ -335,19 +336,43 @@ function initializeSettingsTab() {
     // Initialize auto absorber toggle
     const autoAbsorberToggle = document.getElementById('autoAbsorberToggle');
     autoAbsorberToggle.classList.toggle('active', state.autoUseAbsorber);
-    autoAbsorberToggle.innerHTML = state.autoUseAbsorber ? 
-        '<i class="fas fa-check"></i> Auto-Use Max Absorber' : 
+    autoAbsorberToggle.innerHTML = state.autoUseAbsorber ?
+        '<i class="fas fa-check"></i> Auto-Use Max Absorber' :
         '<i class="fas fa-times"></i> Auto-Use Max Absorber';
+
+    // Initialize skip sacrifice dialog toggle
+    const skipSacrificeDialogToggle = document.getElementById('skipSacrificeDialogToggle');
+    skipSacrificeDialogToggle.classList.toggle('active', state.skipSacrificeDialog);
+    skipSacrificeDialogToggle.innerHTML = state.skipSacrificeDialog ?
+        '<i class="fas fa-check"></i> Skip Sacrifice Dialog' :
+        '<i class="fas fa-times"></i> Skip Sacrifice Dialog';
+
+    // Show skip sacrifice dialog toggle only if realms[10] is unlocked (Weapons realm)
+    if (realms[10].unlocked) {
+        skipSacrificeDialogToggle.style.display = 'flex';
+    }
 
     // Add click handler
     autoAbsorberToggle.addEventListener('click', function() {
         state.autoUseAbsorber = !state.autoUseAbsorber;
         this.classList.toggle('active');
-        this.innerHTML = state.autoUseAbsorber ? 
-            '<i class="fas fa-check"></i> Auto-Use Max Absorber' : 
+        this.innerHTML = state.autoUseAbsorber ?
+            '<i class="fas fa-check"></i> Auto-Use Max Absorber' :
             '<i class="fas fa-times"></i> Auto-Use Max Absorber';
         saveState();
-    });    // Game tips button handler
+    });
+
+    // Add click handler for skip sacrifice dialog toggle
+    skipSacrificeDialogToggle.addEventListener('click', function() {
+        state.skipSacrificeDialog = !state.skipSacrificeDialog;
+        this.classList.toggle('active');
+        this.innerHTML = state.skipSacrificeDialog ?
+            '<i class="fas fa-check"></i> Skip Sacrifice Dialog' :
+            '<i class="fas fa-times"></i> Skip Sacrifice Dialog';
+        saveState();
+    });
+
+    // Game tips button handler
     gameTipsBtn.addEventListener('click', function() {
         gameTipsModal.style.display = 'flex';
     });
@@ -375,6 +400,11 @@ function initializeSettingsTab() {
         state.donationButtonClicked = true;
         supporterCheckboxContainer.style.display = 'block';
         saveState();
+    });
+
+    // Initialize Kuzzi Games button
+    kuzziGamesButton.addEventListener('click', () => {
+        window.open('https://kuzzigames.com/', '_blank');
     });
 
     // Initialize Supporter checkbox

@@ -55,6 +55,7 @@ window.state = {
     merchantPriceDivider: 1.0, // Default price divider for merchant
     minCardsPerPoke: 0, // Default minimum cards per poke
     maxCardsPerPoke: 0, // Default maximum cards per poke
+    sacrificeTimeDivider: 1,
   },
   effects: {
     minCardsPerPoke: 1,
@@ -90,6 +91,7 @@ window.state = {
   pokeRaritiesOmitted: [],
   hideOmittedRarities: true,  // New variable for checkbox state
   hideLockedCards: true, // New variable for checkbox state
+  hideCappedCards: true, // New variable for checkbox state
   remainingCooldown: 0,    // Add remaining cooldown to state
   timeCrunchMaxChargeTime: 300, // 5 minutes max charge time
   donationButtonClicked: false,   // Track if donation button was clicked
@@ -134,10 +136,15 @@ window.state = {
     sortBy: 'power',
     sortDirection: 'desc',
     filterRealms: [],
-    filterRarities: []
+    filterRarities: [],
+    globalAttackMult: 1,
+    globalHPMult: 1,
+    globalMaxCardsMult: 1,
+    vegetaEvolutions: 0,
   },
   showTierUps: true,  // Add this line
   autoUseAbsorber: false,  // Add this line
+  skipSacrificeDialog: false,  // Add this line
   lastUnstuck: null, // Track last unstuck time
   cardSizeScale: 1, // Track card size scale
 };
@@ -244,6 +251,10 @@ function loadState() {
       }
       state.battle.lockoutTimers = obj.battle.lockoutTimers;
       state.battle.sortBy = obj.battle.sortBy || 'power';
+      state.battle.globalAttackMult = obj.battle.globalAttackMult || 1;
+      state.battle.globalHPMult = obj.battle.globalHPMult || 1;
+      state.battle.globalMaxCardsMult = obj.battle.globalMaxCardsMult || 1;
+      state.battle.vegetaEvolutions = obj.battle.vegetaEvolutions || 0;
 
       // Update lockout timer checking
       const now = Date.now();
@@ -265,6 +276,7 @@ function loadState() {
     }
     state.showTierUps = obj.showTierUps ?? true; // Add this line with default true
     state.autoUseAbsorber = obj.autoUseAbsorber ?? false; // Add this line with default false
+    state.skipSacrificeDialog = obj.skipSacrificeDialog ?? false; // Add this line with default false
     state.cardSizeScale = obj.cardSizeScale || 1;
     state.lastUnstuck = obj.lastUnstuck ? new Date(obj.lastUnstuck) : null;
   } catch(e){
@@ -300,6 +312,7 @@ function saveState() {
     remainingCooldown: state.remainingCooldown,
     showTierUps: state.showTierUps,  // Add this line
     autoUseAbsorber: state.autoUseAbsorber,
+    skipSacrificeDialog: state.skipSacrificeDialog,
     cardSizeScale: state.cardSizeScale,
     lastUnstuck: state.lastUnstuck,
     battle: {
@@ -319,7 +332,11 @@ function saveState() {
         attack: state.battle.currentEnemy.attack
       } : null,
       lockoutTimers: state.battle.lockoutTimers,
-      sortBy: state.battle.sortBy
+      sortBy: state.battle.sortBy,
+      globalAttackMult: state.battle.globalAttackMult,
+      globalHPMult: state.battle.globalHPMult,
+      globalMaxCardsMult: state.battle.globalMaxCardsMult,
+      vegetaEvolutions: state.battle.vegetaEvolutions
     },
   };
   currencies.forEach(c => {
@@ -483,9 +500,9 @@ function performPoke() {
   const e     = state.effects;
   const r = (Math.random() + Math.random()) / 2; // center-biased
   const draws = Math.floor(Math.floor(
-    ((r * ((e.maxCardsPerPoke + state.achievementRewards.maxCardsPerPoke) * (state.achievementRewards.maxCardsMultiplier) * (state.supporterCheckboxClicked ? 1.25 : 1) 
+    ((r * ((e.maxCardsPerPoke + state.achievementRewards.maxCardsPerPoke) * (state.achievementRewards.maxCardsMultiplier) * (state.battle.globalMaxCardsMult) * (state.supporterCheckboxClicked ? 1.25 : 1) 
           - ((e.minCardsPerPoke + state.achievementRewards.minCardsPerPoke) * state.achievementRewards.minCardsMultiplier)  + 1)
-          ) + e.minCardsPerPoke + state.achievementRewards.minCardsPerPoke))
+          ) + (e.minCardsPerPoke + state.achievementRewards.minCardsPerPoke) * state.achievementRewards.minCardsMultiplier))
   * absorberMultiplier);
 
   // Create and animate floating number
@@ -613,6 +630,14 @@ function performPoke() {
     const oldTier = c.tier;
     
     if (state.hideLockedCards && skillMap[18101].purchased && c.locked) {
+      skippedCards++;
+      if (currentPackCount === skippedCards) {
+        state.flipsDone = true;
+      }
+      return;
+    }
+
+    if (state.hideCappedCards && skillMap[18102].purchased && c.tier === 20) {
       skippedCards++;
       if (currentPackCount === skippedCards) {
         state.flipsDone = true;
@@ -984,16 +1009,16 @@ function openModal(cardId) {
     }
   };
 
+  // helper to tear down this modal's keyboard listener + overlay (available to all parts of modal)
+  const closeThisModal = () => {
+    if (ov._handleKey) document.removeEventListener('keydown', ov._handleKey);
+    ov.remove();
+  };
+
   // Add navigation arrows if we're in the cards tab
   if (currentTab === 'cards') {
     const scrollableCardsList = lastCollectionCardIds.filter(id => cardMap[id].quantity > 0);
     const idx  = scrollableCardsList.indexOf(cardId);
-
-    // helper to tear down this modal's keyboard listener + overlay
-    const closeThisModal = () => {
-      if (ov._handleKey) document.removeEventListener('keydown', ov._handleKey);
-      ov.remove();
-    };
 
     // left arrow
     const leftArrow = document.createElement('div');
@@ -1033,8 +1058,26 @@ function openModal(cardId) {
 
     // keyboard handler
     const handleKey = e => {
-      if (e.key === 'ArrowLeft'  && idx > 0)          leftArrow.click();
-      if (e.key === 'ArrowRight' && idx < scrollableCardsList.length - 1) rightArrow.click();
+      // Get fresh scrollable cards list and current index
+      const freshScrollableCardsList = lastCollectionCardIds.filter(id => cardMap[id].quantity > 0);
+      const freshIdx = freshScrollableCardsList.indexOf(cardId);
+
+      if (e.key === 'ArrowLeft' && freshIdx > 0) {
+        closeThisModal();
+        if (wasNew) {
+          initCardsFilters();
+          renderCardsCollection();
+        }
+        openModal(freshScrollableCardsList[freshIdx - 1]);
+      }
+      if (e.key === 'ArrowRight' && freshIdx < freshScrollableCardsList.length - 1) {
+        closeThisModal();
+        if (wasNew) {
+          initCardsFilters();
+          renderCardsCollection();
+        }
+        openModal(freshScrollableCardsList[freshIdx + 1]);
+      }
     };
     ov._handleKey = handleKey;
     document.addEventListener('keydown', handleKey);
@@ -1219,8 +1262,8 @@ function openModal(cardId) {
         state.currencies[costCurrency] = state.currencies[costCurrency].minus(nextLevelCost);
         levelUp(cardId, 1);
         updateCurrencyBar();
+        closeThisModal();
         openModal(cardId);
-        ov.remove();
       });
     }
 
@@ -1232,8 +1275,8 @@ function openModal(cardId) {
           state.currencies[costCurrency] = state.currencies[costCurrency].minus(totalMaxCost);
           levelUp(cardId, maxLevelIncrement);
           updateCurrencyBar();
+          closeThisModal();
           openModal(cardId);
-          ov.remove();
         });
       }
     }
@@ -1263,82 +1306,138 @@ function openModal(cardId) {
 
 
   if (realms[9].unlocked) {
-    // Add power and defense stats along with combat calculations
     const statsContainer = document.createElement('div');
-    const attack = c.power * c.tier * Math.sqrt(c.level);
-    const hp = c.defense * Math.sqrt(c.quantity);
+    const attack = Math.floor(c.power * c.tier * Math.sqrt(c.level) * state.battle.globalAttackMult);
+    const hp = Math.floor(c.defense * Math.sqrt(c.quantity) * state.battle.globalHPMult);
     statsContainer.className = 'modal-stats-container';
+
+    let bonusStats = '';
+
+    if (
+      (state.battle.damageAbsorption > 0 && state.battle.damageAbsorptionRealms.has(c.realm)) ||
+      (state.battle.protectionChance > 0 && state.battle.protectionRealms.has(c.realm)) ||
+      (state.battle.evolutionChance > 0 && state.battle.evolutionRealms.has(c.realm)) ||
+      (state.battle.extraAttackChance > 0 && state.battle.extraAttackRealms.has(c.realm)) ||
+      (state.battle.empowerment > 0 && state.battle.empowermentRealms.has(c.realm)) ||
+      (state.battle.stunChance > 0 && state.battle.stunRealms.has(c.realm)) ||
+      (state.battle.weakPointChance > 0 && state.battle.weakPointRealms.has(c.realm)) ||
+      (state.battle.resourcefulAttack > 0 && state.battle.resourcefulAttackRealms.has(c.realm)) ||
+      (state.battle.dodgeChance > 0 && state.battle.dodgeRealms.has(c.realm)) ||
+      (state.battle.dismemberChance > 0 && state.battle.dismemberRealms.has(c.realm))
+    ) {
+      if (state.battle.damageAbsorption > 0 && state.battle.damageAbsorptionRealms.has(c.realm)) {
+        bonusStats += `
+        <div class="stat-column">
+          <div class="base-stat">Absorb:</div>
+          <div class="combat-stat">
+            <i class="fas fa-shield-alt"></i> <span>${formatNumber(state.battle.damageAbsorption * 100)}%</span>
+          </div>
+        </div>`;
+      }
+      if (state.battle.protectionChance > 0 && state.battle.protectionRealms.has(c.realm)) {
+        bonusStats += `
+        <div class="stat-column">
+          <div class="base-stat">Protect:</div>
+          <div class="combat-stat">
+            <i class="fas fa-shield-virus"></i> <span>${formatNumber(state.battle.protectionChance * 100)}%</span>
+          </div>
+        </div>`;
+      }
+      if (state.battle.extraAttackChance > 0 && state.battle.extraAttackRealms.has(c.realm)) {
+        bonusStats += `
+        <div class="stat-column">
+          <div class="base-stat">Extra Attack:</div>
+          <div class="combat-stat">
+            <i class="fas fa-bolt"></i> <span>${formatNumber(state.battle.extraAttackChance * 100)}%</span>
+          </div>
+        </div>`;
+      }
+      if (state.battle.empowerment > 0 && state.battle.empowermentRealms.has(c.realm)) {
+        bonusStats += `
+        <div class="stat-column">
+          <div class="base-stat">Empower:</div>
+          <div class="combat-stat">
+            <i class="fas fa-fire"></i> <span>${formatNumber(state.battle.empowerment * 100)}%</span>
+          </div>
+        </div>`;
+      }
+      if (state.battle.evolutionChance > 0 && state.battle.evolutionRealms.has(c.realm)) {
+        bonusStats += `
+        <div class="stat-column">
+          <div class="base-stat">Evolve:</div>
+          <div class="combat-stat">
+            <i class="fas fa-dna"></i> <span>${formatNumber(state.battle.evolutionChance * 100)}%</span>
+          </div>
+        </div>`;
+      }
+      if (state.battle.stunChance > 0 && state.battle.stunRealms.has(c.realm)) {
+        bonusStats += `
+        <div class="stat-column">
+          <div class="base-stat">Stun:</div>
+          <div class="combat-stat">
+            <i class="fas fa-hammer"></i> <span>${formatNumber(state.battle.stunChance * 100)}%</span>
+          </div>
+        </div>`;
+      }
+      if (state.battle.weakPointChance > 0 && state.battle.weakPointRealms.has(c.realm)) {
+        bonusStats += `
+        <div class="stat-column">
+          <div class="base-stat">Weak Point:</div>
+          <div class="combat-stat">
+            <i class="fas fa-bullseye"></i> <span>${formatNumber(state.battle.weakPointChance * 100)}%</span>
+          </div>
+        </div>`;
+      }
+      if (state.battle.resourcefulAttack > 0 && state.battle.resourcefulAttackRealms.has(c.realm)) {
+        bonusStats += `
+        <div class="stat-column">
+          <div class="base-stat">Resourceful:</div>
+          <div class="combat-stat">
+            <i class="fas fa-coins"></i> <span>${formatNumber(state.battle.resourcefulAttack)} Pokes / Attack</span>
+          </div>
+        </div>`;
+      }
+      if (state.battle.dodgeChance > 0 && state.battle.dodgeRealms.has(c.realm)) {
+        bonusStats += `
+        <div class="stat-column">
+          <div class="base-stat">Dodge:</div>
+          <div class="combat-stat">
+            <i class="fas fa-cat"></i> <span>${formatNumber(state.battle.dodgeChance * 100)}%</span>
+          </div>
+        </div>`;
+      }
+      if (state.battle.dismemberChance > 0 && state.battle.dismemberRealms.has(c.realm)) {
+        bonusStats += `
+        <div class="stat-column">
+          <div class="base-stat">Dismember:</div>
+          <div class="combat-stat">
+            <i class="fas fa-skull-crossbones"></i> <span>${formatNumber(state.battle.dismemberChance * 100)}%</span>
+          </div>
+        </div>`;
+      }
+    }
+
     statsContainer.innerHTML = `
       <div class="stat-column">
         <div class="base-stat">Power: <span>${formatNumber(c.power)}</span></div>
         <div class="combat-stat">
           <i class="fas fa-fist-raised"></i> Attack: <span>${formatNumber(attack)}</span>
-          <div class="combat-calc">(${formatNumber(c.power)} × ${c.tier} × √${c.level})</div>
+          <div class="combat-calc">(${formatNumber(c.power)} × ${c.tier} × √${c.level}${state.battle.globalAttackMult > 0 ? ` × ${formatNumber(state.battle.globalAttackMult)}` : ''})</div>
         </div>
       </div>
       <div class="stat-column">
         <div class="base-stat">Defense: <span>${formatNumber(c.defense)}</span></div>
         <div class="combat-stat">
           <i class="fas fa-heart"></i> HP: <span>${formatNumber(hp)}</span>
-          <div class="combat-calc">(${formatNumber(c.defense)} × √${formatNumber(c.quantity)})</div>
+          <div class="combat-calc">(${formatNumber(c.defense)} × √${formatNumber(c.quantity)}${state.battle.globalHPMult > 0 ? ` × ${formatNumber(state.battle.globalHPMult)}` : ''})</div>
         </div>
       </div>
-      ${(state.battle.damageAbsorption > 0 && state.battle.damageAbsorptionRealms.has(c.realm)) ||
-        (state.battle.protectionChance > 0 && state.battle.protectionRealms.has(c.realm)) ||
-        (state.battle.evolutionChance > 0 && state.battle.evolutionRealms.has(c.realm)) ||
-        (state.battle.extraAttackChance > 0 && state.battle.extraAttackRealms.has(c.realm)) ||
-        (state.battle.empowerment > 0 && state.battle.empowermentRealms.has(c.realm)) ||
-        (state.battle.stunChance > 0 && state.battle.stunRealms.has(c.realm)) || 
-        (state.battle.weakPointChance > 0 && state.battle.weakPointRealms.has(c.realm)) ||
-        (state.battle.resourcefulAttack > 0 && state.battle.resourcefulAttackRealms.has(c.realm)) ||
-        (state.battle.dodgeChance > 0 &&state.battle.dodgeRealms.has(c.realm)) || 
-        (state.battle.dismemberChance > 0 && state.battle.dismemberRealms.has(c.realm)) ? `
-      <div class="stat-column">
-        <div class="base-stat">Special Stats:</span></div>
-        ${state.battle.damageAbsorption > 0 && state.battle.damageAbsorptionRealms.has(c.realm) ? `
-        <div class="combat-stat">
-          <i class="fas fa-shield-alt"></i> Absorb: <span>${formatNumber(state.battle.damageAbsorption) * 100}%</span>
-        </div>` : ''}
-        ${state.battle.protectionChance > 0 && state.battle.protectionRealms.has(c.realm) ? `
-        <div class="combat-stat">
-          <i class="fas fa-shield-virus"></i> Protect: <span>${formatNumber(state.battle.protectionChance) * 100}%</span>
-        </div>` : ''}
-        ${state.battle.extraAttackChance > 0 && state.battle.extraAttackRealms.has(c.realm) ? `
-        <div class="combat-stat">
-          <i class="fas fa-bolt"></i> Extra Attack: <span>${formatNumber(state.battle.extraAttackChance) * 100}%</span>
-        </div>` : ''}
-        ${state.battle.empowerment > 0 && state.battle.empowermentRealms.has(c.realm) ? `
-        <div class="combat-stat">
-          <i class="fas fa-fire"></i> Empower: <span>${formatNumber(state.battle.empowerment) * 100}%</span>
-        </div>` : ''}
-        ${state.battle.evolutionChance > 0 && state.battle.evolutionRealms.has(c.realm) ? `
-        <div class="combat-stat">
-          <i class="fas fa-dna"></i> Evolve: <span>${formatNumber(state.battle.evolutionChance) * 100}%</span>
-        </div>` : ''}
-        ${state.battle.stunChance > 0 && state.battle.stunRealms.has(c.realm) ? `
-        <div class="combat-stat">
-          <i class="fas fa-hammer"></i> Stun: <span>${formatNumber(state.battle.stunChance) * 100}%</span>
-        </div>` : ''}
-        ${state.battle.weakPointChance > 0 && state.battle.weakPointRealms.has(c.realm) ? `
-        <div class="combat-stat">
-          <i class="fas fa-bullseye"></i> Weak Point: <span>${formatNumber(state.battle.weakPointChance) * 100}%</span>
-        </div>` : ''}
-        ${state.battle.resourcefulAttack > 0 && state.battle.resourcefulAttackRealms.has(c.realm) ? `
-        <div class="combat-stat">
-          <i class="fas fa-coins"></i><span>${formatNumber(state.battle.resourcefulAttack)} Pokes / Attack</span>
-        </div>` : ''}
-        ${state.battle.dodgeChance > 0 && state.battle.dodgeRealms.has(c.realm) ? `
-        <div class="combat-stat">
-          <i class="fas fa-cat"></i> Dodge: <span>${formatNumber(state.battle.dodgeChance) * 100}%</span>
-        </div>` : ''}
-        ${state.battle.dismemberChance > 0 && state.battle.dismemberRealms.has(c.realm) ? `
-        <div class="combat-stat">
-          <i class="fas fa-skull-crossbones"></i> Dismember: <span>${formatNumber(state.battle.dismemberChance) * 100}%</span>
-        </div>` : ''}
-      </div>` : ''}
+      ${bonusStats}
     `;
+
     right.appendChild(statsContainer);
   }
+
 
   // --- EFFECTS HEADER ---
   const effHeader = document.createElement('p');
@@ -2107,6 +2206,15 @@ function updateGeneratorRates() {
     const newContribution = discoveredCount * discoveredCount * state.effects.allGeneratorMultiplier;
     state.resourceGeneratorContribution.pearl = newContribution;
   }
+  // Ultimate Resource Generator (skill 10011)
+  if (skillMap[10011].purchased) {
+    const discoveredCount = cards.filter(c => c.realm === 11 && c.quantity > 0).length;
+    const newContribution = discoveredCount * discoveredCount * state.effects.allGeneratorMultiplier;
+    state.resourceGeneratorContribution.zeal = newContribution;
+    state.resourceGeneratorContribution.royal_jelly = newContribution;
+    state.resourceGeneratorContribution.feather = newContribution;
+    state.resourceGeneratorContribution.cosmic_ray = newContribution;
+  }
 }
 
 // Add this function after updateAvailableEffects
@@ -2240,8 +2348,6 @@ function calculateMaxAffordableLevel(cardId) {
   }
   
   return { maxLevel, totalCost };
-  
-  return maxLevel;
 }
 
 function renderRealmFilters() {
@@ -2555,6 +2661,23 @@ function updatePokeFilterStats() {
     hideLockedCardsLabel.textContent = 'Hide Locked Cards';
     hideLockedCardsCheckboxContainer.append(hideLockedCardsCheckbox, hideLockedCardsLabel);
     flex.appendChild(hideLockedCardsCheckboxContainer);
+  }
+
+  if (skillMap[18102].purchased) {
+    const hideCappedCardsCheckboxContainer = document.createElement('div');
+    hideCappedCardsCheckboxContainer.className = 'hide-capped-cards-checkbox';
+    const hideCappedCardsCheckbox = document.createElement('input');
+    hideCappedCardsCheckbox.type = 'checkbox';
+    hideCappedCardsCheckbox.id = 'hide-capped-cards-checkbox';
+    hideCappedCardsCheckbox.checked = state.hideCappedCards;
+    hideCappedCardsCheckbox.addEventListener('change', (e) => {
+      state.hideCappedCards = e.target.checked;
+    });
+    const hideCappedCardsLabel = document.createElement('label');
+    hideCappedCardsLabel.htmlFor = 'hide-capped-cards-checkbox';
+    hideCappedCardsLabel.textContent = 'Hide Capped Cards';
+    hideCappedCardsCheckboxContainer.append(hideCappedCardsCheckbox, hideCappedCardsLabel);
+    flex.appendChild(hideCappedCardsCheckboxContainer);
   }
 
   container.appendChild(flex);
@@ -2934,8 +3057,8 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     if (skillMap[12301].purchased) {
       // Award Time Crunch value based on time difference
       const timeCrunchGain = timeDiff;  // Remove the /1000 division since we want full seconds
-      const actualGain = Math.min(timeCrunchGain, 300 - state.timeCrunchValue); // Only count what actually gets added
-      state.timeCrunchValue = Math.min(state.timeCrunchValue + timeCrunchGain, 300); // Cap at 5 minutes
+      const actualGain = Math.min(timeCrunchGain, state.timeCrunchMaxChargeTime - state.timeCrunchValue); // Only count what actually gets added
+      state.timeCrunchValue = Math.min(state.timeCrunchValue + timeCrunchGain, state.timeCrunchMaxChargeTime); // Cap at 5 minutes
       offlineEarnings['timeCrunch'] = new Decimal(actualGain);
     }
 
@@ -3098,8 +3221,8 @@ function updateCurrencyAndSave() {
     if (skillMap[12301].purchased) {
       // Award Time Crunch value based on time difference
       const timeCrunchGain = timeDiff;
-      const actualGain = Math.min(timeCrunchGain, 300 - state.timeCrunchValue);
-      state.timeCrunchValue = Math.min(state.timeCrunchValue + timeCrunchGain, 300);
+      const actualGain = Math.min(timeCrunchGain, state.timeCrunchMaxChargeTime - state.timeCrunchValue);
+      state.timeCrunchValue = Math.min(state.timeCrunchValue + timeCrunchGain, state.timeCrunchMaxChargeTime);
       offlineEarnings['timeCrunch'] = new Decimal(actualGain);
     }
 

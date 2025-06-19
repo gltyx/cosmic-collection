@@ -289,7 +289,7 @@ const achievements = {
         condition: 'Purchase 10 offers from Merchants',
         icon: '🛒',
         rewardType: 'Merchant Price Divider',
-        reward: 1.01,
+        reward: 1.1,
         threshold: 10,
     },
     merchantTrader2: {
@@ -299,7 +299,7 @@ const achievements = {
         condition: 'Purchase 100 offers from Merchants',
         icon: '🛒',
         rewardType: 'Merchant Price Divider',
-        reward: 1.02,
+        reward: 1.2,
         threshold: 100,
     },
     merchantTrader3: {
@@ -309,7 +309,7 @@ const achievements = {
         condition: 'Purchase 1K offers from Merchants',
         icon: '🛒',
         rewardType: 'Merchant Price Divider',
-        reward: 1.03,
+        reward: 1.3,
         threshold: 1000,
     },
     merchantTrader4: {
@@ -319,7 +319,7 @@ const achievements = {
         condition: 'Purchase 10K offers from Merchants',
         icon: '🛒',
         rewardType: 'Merchant Price Divider',
-        reward: 1.04,
+        reward: 1.4,
         threshold: 10000,
     },
     merchantTrader5: {
@@ -329,7 +329,7 @@ const achievements = {
         condition: 'Purchase 100K offers from Merchants',
         icon: '🛒',
         rewardType: 'Merchant Price Divider',
-        reward: 1.05,
+        reward: 1.5,
         threshold: 100000,
     },
     massivePoke: {
@@ -653,6 +653,176 @@ const achievements = {
         reward: 1.03,
         reqRealm: '11'
     },
+    secret10: {
+        id: 'secret10',
+        name: 'Secret X',
+        type: 'secret',
+        condition: 'Golden Shot',
+        icon: '✏',
+        rewardType: 'Min Cards Multiplier',
+        reward: 1.03,
+        reqRealm: '11'
+    },
+    battleMilestone: {
+        id: 'battleMilestone',
+        name: 'Battle Milestone',
+        type: 'battleMilestone',
+        condition: 'Defeat Briareus',
+        icon: '💀',
+        rewardType: 'Sacrifice Time Divider',
+        reward: 0.1,
+        enemy: 'Briareus',
+    },
+    battleMilestone2: {
+        id: 'battleMilestone2',
+        name: 'Battle Milestone II',
+        type: 'battleMilestone',
+        condition: 'Defeat Mnemosyne',
+        icon: '💀',
+        rewardType: 'Sacrifice Time Divider',
+        reward: 0.1,
+        enemy: 'Mnemosyne',
+    },
+    battleMilestone3: {
+        id: 'battleMilestone3',
+        name: 'Battle Milestone III',
+        type: 'battleMilestone',
+        condition: 'Defeat Oceanus',
+        icon: '💀',
+        rewardType: 'Sacrifice Time Divider',
+        reward: 0.1,
+        enemy: 'Oceanus',
+    },
+    battleMilestone4: {
+        id: 'battleMilestone4',
+        name: 'Battle Milestone IV',
+        type: 'battleMilestone',
+        condition: 'Defeat Persephone',
+        icon: '💀',
+        rewardType: 'Sacrifice Time Divider',
+        reward: 0.1,
+        enemy: 'Persephone',
+    },
+    battleMilestone5: {
+        id: 'battleMilestone5',
+        name: 'Battle Milestone V',
+        type: 'battleMilestone',
+        condition: 'Defeat Ares',
+        icon: '💀',
+        rewardType: 'Sacrifice Time Divider',
+        reward: 0.1,
+        enemy: 'Ares',
+    },
+    battleMilestone6: {
+        id: 'battleMilestone6',
+        name: 'Battle Milestone VI',
+        type: 'battleMilestone',
+        condition: 'Defeat Demeter',
+        icon: '💀',
+        rewardType: 'Sacrifice Time Divider',
+        reward: 0.1,
+        enemy: 'Demeter',
+    },
+    battleMilestone7: {
+        id: 'battleMilestone7',
+        name: 'Battle Milestone VII',
+        type: 'battleMilestone',
+        condition: 'Defeat Uranus',
+        icon: '💀',
+        rewardType: 'Sacrifice Time Divider',
+        reward: 0.1,
+        enemy: 'Uranus',
+    },
+    battleMilestone8: {
+        id: 'battleMilestone8',
+        name: 'Battle Milestone VIII',
+        type: 'battleMilestone',
+        condition: 'Defeat Zeus',
+        icon: '💀',
+        rewardType: 'Sacrifice Time Divider',
+        reward: 0.2,
+        enemy: 'Zeus',
+    },
+    battleMilestone9: {
+        id: 'battleMilestone9',
+        name: 'Battle Milestone IX',
+        type: 'battleMilestone',
+        condition: 'Defeat Bowser',
+        icon: '💀',
+        rewardType: 'Sacrifice Time Divider',
+        reward: 0.1,
+        enemy: 'Bowser',
+    },
+    battleMilestone10: {
+        id: 'battleMilestone10',
+        name: 'Battle Milestone X',
+        type: 'battleMilestone',
+        condition: 'Defeat Cartman',
+        icon: '💀',
+        rewardType: 'Sacrifice Time Divider',
+        reward: 0.1,
+        enemy: 'Cartman',
+    },
+    battleMilestone11: {
+        id: 'battleMilestone11',
+        name: 'Battle Milestone XI',
+        type: 'battleMilestone',
+        condition: 'Defeat Sephiroth',
+        icon: '💀',
+        rewardType: 'Sacrifice Time Divider',
+        reward: 0.1,
+        enemy: 'Sephiroth',
+    },
+    battleMilestone12: {
+        id: 'battleMilestone12',
+        name: 'Battle Milestone XII',
+        type: 'battleMilestone',
+        condition: 'Defeat Hal9000',
+        icon: '💀',
+        rewardType: 'Sacrifice Time Divider',
+        reward: 0.1,
+        enemy: 'Hal9000',
+    },
+    battleMilestone13: {
+        id: 'battleMilestone13',
+        name: 'Battle Milestone XIII',
+        type: 'battleMilestone',
+        condition: 'Defeat Aizen',
+        icon: '💀',
+        rewardType: 'Sacrifice Time Divider',
+        reward: 0.1,
+        enemy: 'Aizen',
+    },
+    battleMilestone14: {
+        id: 'battleMilestone14',
+        name: 'Battle Milestone XIV',
+        type: 'battleMilestone',
+        condition: 'Defeat Deadpool',
+        icon: '💀',
+        rewardType: 'Sacrifice Time Divider',
+        reward: 0.1,
+        enemy: 'Deadpool',
+    },
+    battleMilestone15: {
+        id: 'battleMilestone15',
+        name: 'Battle Milestone XV',
+        type: 'battleMilestone',
+        condition: 'Defeat Rick',
+        icon: '💀',
+        rewardType: 'Sacrifice Time Divider',
+        reward: 0.1,
+        enemy: 'Rick',
+    },
+    battleMilestone16: {
+        id: 'battleMilestone16',
+        name: 'Battle Milestone XVI',
+        type: 'battleMilestone',
+        condition: 'Defeat Your Ego',
+        icon: '💀',
+        rewardType: 'Sacrifice Time Divider',
+        reward: 0.5,
+        enemy: 'Your Ego',
+    },
     greekGodBattleTricks: {
         id: 'greekGodBattleTricks',
         name: 'Greek God Battle Tricks',
@@ -771,7 +941,7 @@ const achievements = {
         reward: 0.01,  
     },
     greekGodBattleTricks14: {
-        id: 'greekGodBattleTricks15',
+        id: 'greekGodBattleTricks14',
         name: 'Greek God Battle Tricks XIV',
         type: 'greekGodBattleTricks',
         condition: 'Typhon',
@@ -787,6 +957,123 @@ const achievements = {
         icon: '⚔️',
         rewardType: 'Battle Crit Chance',
         reward: 0.01,  
+    },
+    bossesBattleTricks: {
+        id: 'bossesBattleTricks',
+        name: 'Bosses Battle Tricks',
+        type: 'bossesBattleTricks',
+        condition: 'Papa Smurf',
+        icon: '🥁',
+        rewardType: 'Max Cards Multiplier',
+        reward: 1.05,
+    },
+    bossesBattleTricks2: {
+        id: 'bossesBattleTricks2',
+        name: 'Bosses Battle Tricks II',
+        type: 'bossesBattleTricks',
+        condition: 'Dr Wily',
+        icon: '🥁',
+        rewardType: 'Max Cards Multiplier',
+        reward: 1.05,
+    },
+    bossesBattleTricks3: {
+        id: 'bossesBattleTricks3',
+        name: 'Bosses Battle Tricks III',
+        type: 'bossesBattleTricks',
+        condition: 'Cartman',
+        icon: '🥁',
+        rewardType: 'Max Cards Multiplier',
+        reward: 1.05,
+    },
+    bossesBattleTricks4: {
+        id: 'bossesBattleTricks4',
+        name: 'Bosses Battle Tricks IV',
+        type: 'bossesBattleTricks',
+        condition: 'Darth Vader',
+        icon: '🥁',
+        rewardType: 'Max Cards Multiplier',
+        reward: 1.05,
+    },
+    bossesBattleTricks5: {
+        id: 'bossesBattleTricks5',
+        name: 'Bosses Battle Tricks V',
+        type: 'bossesBattleTricks',
+        condition: 'Sauron',
+        icon: '🥁',
+        rewardType: 'Max Cards Multiplier',
+        reward: 1.05,
+    },
+    bossesBattleTricks6: {
+        id: 'bossesBattleTricks6',
+        name: 'Bosses Battle Tricks VI',
+        type: 'bossesBattleTricks',
+        condition: 'Aizen',
+        icon: '🥁',
+        rewardType: 'Max Cards Multiplier',
+        reward: 1.05,
+    },
+    bossesBattleTricks7: {
+        id: 'bossesBattleTricks7',
+        name: 'Bosses Battle Tricks VII',
+        type: 'bossesBattleTricks',
+        condition: 'Thanos',
+        icon: '🥁',
+        rewardType: 'Max Cards Multiplier',
+        reward: 1.05,
+    },
+    bossesBattleTricks8: {
+        id: 'bossesBattleTricks8',
+        name: 'Bosses Battle Tricks VIII',
+        type: 'bossesBattleTricks',
+        condition: 'Arceus',
+        icon: '🥁',
+        rewardType: 'Max Cards Multiplier',
+        reward: 1.02,
+    },
+    bossesBattleTricks9: {
+        id: 'bossesBattleTricks9',
+        name: 'Bosses Battle Tricks IX',
+        type: 'bossesBattleTricks',
+        condition: 'Arceus',
+        icon: '🥁',
+        rewardType: 'Max Cards Multiplier',
+        reward: 1.02,
+    },
+    bossesBattleTricks10: {
+        id: 'bossesBattleTricks10',
+        name: 'Bosses Battle Tricks X',
+        type: 'bossesBattleTricks',
+        condition: 'Arceus',
+        icon: '🥁',
+        rewardType: 'Max Cards Multiplier',
+        reward: 1.02,
+    },
+    bossesBattleTricks11: {
+        id: 'bossesBattleTricks11',
+        name: 'Bosses Battle Tricks XI',
+        type: 'bossesBattleTricks',
+        condition: 'Rick',
+        icon: '🥁',
+        rewardType: 'Max Cards Multiplier',
+        reward: 1.05,
+    },
+    bossesBattleTricks12: {
+        id: 'bossesBattleTricks12',
+        name: 'Bosses Battle Tricks XII',
+        type: 'bossesBattleTricks',
+        condition: 'Chuck Norris',
+        icon: '🥁',
+        rewardType: 'Max Cards Multiplier',
+        reward: 1.1,
+    },
+    bossesBattleTricks13: {
+        id: 'bossesBattleTricks13',
+        name: 'Bosses Battle Tricks XIII',
+        type: 'bossesBattleTricks',
+        condition: 'Kuzzi',
+        icon: '🥁',
+        rewardType: 'Max Cards Multiplier',
+        reward: 1.2,
     },
     tierFanatic: {
         id: 'tierFanatic',
@@ -959,6 +1246,10 @@ function checkAchievements(type, param1, param2) {
             case 'tierFanatic':
                 shouldUnlock = param1 === achievement.rarity && cards.filter(c => c.rarity === achievement.rarity && c.tier === 20).length >= achievement.threshold;
                 break;
+
+            case 'battleMilestone':
+                shouldUnlock = param1 === achievement.enemy;
+                break;
         }
 
         if (shouldUnlock) {
@@ -1001,6 +1292,10 @@ function unlockAchievement(achievementId, duringLoad = false) {
 
             case 'Battle Crit Chance':
                 state.battle.critChance += achievementsMap[achievementId].reward;
+                break;
+
+            case 'Sacrifice Time Divider':
+                state.achievementRewards.sacrificeTimeDivider += achievementsMap[achievementId].reward;
                 break;
         }
 
@@ -1052,6 +1347,13 @@ function renderAchievements() {
                     adder: 0,
                 };
             }
+            else if (achievement.rewardType === 'Sacrifice Time Divider') {
+                // Initialize with divider for sacrifice time
+                acc[achievement.type] = {
+                    achievements: [],
+                    divider: 1,
+                };
+            }
             else {
                 // Initialize with multiplier for other types
                 acc[achievement.type] = {
@@ -1065,6 +1367,9 @@ function renderAchievements() {
         if (state.achievementsUnlocked.has(achievement.id)) {
             if (achievement.rewardType === 'Min Cards Per Poke' || achievement.rewardType === 'Max Cards Per Poke' || achievement.rewardType === 'Battle Crit Chance') {
                 acc[achievement.type].adder += achievement.reward; // Add to min cards per poke
+            }
+            else if (achievement.rewardType === 'Sacrifice Time Divider') {
+                acc[achievement.type].divider += achievement.reward; // Add for sacrifice time
             }
             else {
                 acc[achievement.type].multiplier *= achievement.reward; // Multiply for other types
@@ -1089,10 +1394,15 @@ function renderAchievements() {
                         ${data.hasOwnProperty('multiplier') ? 
                             (data.multiplier !== 1 ? 
                                 `<span class="achievement-type-multiplier">(${rewardType}: ×${data.multiplier.toFixed(3)})</span>` : 
-                                `<span class="achievement-type-multiplier">(${rewardType})</span>`) :
+                                `<span class="achievement-type-multiplier">(${rewardType})</span>`) : ''}
+                        ${data.hasOwnProperty('divider') ? 
+                            (data.divider !== 1 ? 
+                                `<span class="achievement-type-multiplier">(${rewardType}: ÷${formatNumber(data.divider)})</span>` : 
+                                `<span class="achievement-type-multiplier">(${rewardType})</span>`) : ''}
+                        ${data.hasOwnProperty('adder') ? 
                             (data.adder > 0 ? 
                                 `<span class="achievement-type-multiplier">(${rewardType}: +${formatNumber(data.adder)})</span>` : 
-                                `<span class="achievement-type-multiplier">(${rewardType})</span>`)}
+                                `<span class="achievement-type-multiplier">(${rewardType})</span>`) : ''}
                     </h3>
                     <div class="achievements-grid">
                         ${data.achievements.map(achievement => {
