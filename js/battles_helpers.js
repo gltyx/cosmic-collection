@@ -1,6 +1,18 @@
 // battles.js
 // — boss-specific mechanics (fill in the strings later) —
 const bossMechanicsByName = {
+  'Poseidon':           { 
+                            specialPowers: 'Prevents Sea World Protection', 
+                            killReward: '+0.1% Global Max Cards Mult' 
+                        },
+  'Uranus':             { 
+                            specialPowers: 'Cannot be Stunned', 
+                            killReward: '+0.1% Global HP Mult' 
+                        },
+  'Tartarus':           { 
+                            specialPowers: 'Cannot be Dodged', 
+                            killReward: '+0.1% Global Attack Mult' 
+                        },
   'Cronus':             { 
                             specialPowers: '50% chance to attack twice', 
                             killReward: '+0.5% Global Attack Mult' 
@@ -74,7 +86,7 @@ const bossMechanicsByName = {
                             killReward: '+2% Global Attack Mult' 
                         },
   'T800':               { 
-                            specialPowers: '2% Chance to Heal for 10% of Max HP', 
+                            specialPowers: '3% Chance to Heal for 10% of Max HP', 
                             killReward: '+2% Global HP Mult' 
                         },
   'Godzilla':           { 
@@ -102,7 +114,7 @@ const bossMechanicsByName = {
                             killReward: '+5% to Global Max Cards Mult' 
                         },
   'Doctor Manhattan':   { 
-                            specialPowers: 'Drains 40% of a random resource on each attack', 
+                            specialPowers: 'Drains 40% of a random resource on each attack. 2x Lifesteal.', 
                             killReward: '+6% to Global Max Cards Mult' 
                         },
   'Aizen':              { 
@@ -150,7 +162,7 @@ const bossMechanicsByName = {
                             killReward: '+50% to Global Max Cards Mult' 
                         },
   'Saitama':            { 
-                            specialPowers: 'Increases his Attack by 1%. Reduces Attack of all your cards by 10%.', 
+                            specialPowers: 'Increases his Attack by 1%. Reduces Attack of all your cards by 10%. 1x Lifesteal.', 
                             killReward: '+50% Global HP Mult' 
                         },
   'Kuzzi':              { 

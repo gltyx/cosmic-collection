@@ -158,8 +158,8 @@ const merchants = [
       priceMultiplier: 1,
       rarityScaling: 2.5,
       guaranteedRealm: 11,
-      guaranteedCount: 1,
-      description: 'Nobody knows just how old this guy is. Unlike other merchants so far, he sells Greek Gods cards - always has one. And he does not sell junk.',
+      guaranteedCount: 2,
+      description: 'Nobody knows just how old this guy is. Unlike other merchants, he sells Greek Gods cards - always has two. And he does not sell junk.',
       unlocked: false
     },
     {
@@ -169,11 +169,11 @@ const merchants = [
       refreshTime: 1,
       merchantOdds: 50,
       raritiesSkipped: [],
-      priceMultiplier: 0.2,
-      rarityScaling: 5,
+      priceMultiplier: 0.5,
+      rarityScaling: 7.5,
       guaranteedRealm: 12,
-      guaranteedCount: 1,
-      description: 'The ultimate merchant. Always has 1 boss card. 2x cards, 1/5 price, and +2.5 to rarity scaling.',
+      guaranteedCount: 3,
+      description: 'The ultimate merchant. Always has 3 boss cards. 2x cards, 1/2 price, and +5 to rarity scaling.',
       unlocked: false
     }
     
@@ -709,6 +709,16 @@ const merchants = [
       });
       buyBtn.addEventListener('click', e => {
         e.stopPropagation();
+        // Hide merchant tooltip when purchasing
+        if (merchantTooltip) {
+          merchantTooltip.classList.remove('visible');
+          setTimeout(() => {
+            if (merchantTooltip && !merchantTooltip.classList.contains('visible')) {
+              merchantTooltip.remove();
+              merchantTooltip = null;
+            }
+          }, 200);
+        }
         buyOffer(originalIdx);  // Use original index for purchase
       });
       front.appendChild(buyBtn);
@@ -737,6 +747,11 @@ const merchants = [
   
       // add click handler to open modal
       outer.addEventListener('click', () => openModal(card.id));
+
+      // Add tooltip data for cost equivalents
+      outer.setAttribute('data-merchant-card', 'true');
+      outer.setAttribute('data-offer-price', o.price);
+      outer.setAttribute('data-offer-currency', o.currency);
   
       // Add price intuition cloud if skill is purchased
       if (skillMap[19201].purchased) {
@@ -771,7 +786,9 @@ const merchants = [
       outer.append(inner);
       offersEl.appendChild(outer);
     });
-  
+
+    // Setup tooltips for merchant cards
+    setupMerchantTooltips();
   }
   
   function buyOffer(i) {
@@ -859,13 +876,173 @@ const merchants = [
     updateCurrencyBar();
   }
 
-  if (bulkBuyBtn) {
-    bulkBuyBtn.onclick = function() {
-      doBulkBuyAllOffers();
-      bulkBuyBtn.style.display = 'none';
-      const buyoutCostContainer = document.querySelector('.buyout-cost-container');
-      if (buyoutCostContainer) {
-        buyoutCostContainer.remove();
+if (bulkBuyBtn) {
+  bulkBuyBtn.onclick = function() {
+    doBulkBuyAllOffers();
+    bulkBuyBtn.style.display = 'none';
+    const buyoutCostContainer = document.querySelector('.buyout-cost-container');
+    if (buyoutCostContainer) {
+      buyoutCostContainer.remove();
+    }
+  };
+}
+
+// Global merchant tooltip element to prevent flickering
+let merchantTooltip = null;
+let merchantTooltipTimeout = null;
+
+// Setup tooltip functionality for merchant cards
+function setupMerchantTooltips() {
+  const merchantCards = document.querySelectorAll('[data-merchant-card="true"]');
+
+  merchantCards.forEach(card => {
+    // Skip if already has tooltip listeners
+    if (card.hasAttribute('data-merchant-tooltip-setup')) return;
+    card.setAttribute('data-merchant-tooltip-setup', 'true');
+
+    const showTooltip = () => {
+      const price = new Decimal(card.getAttribute('data-offer-price'));
+      const currency = card.getAttribute('data-offer-currency');
+
+      if (!price || !currency) return;
+
+      // Calculate poke and time equivalents
+      const perPokeRate = (state.effects.currencyPerPoke[currency] || 0) * (state.effects.currencyPerPokeMultiplier[currency] || 1);
+      const perSecRate = (state.effects.currencyPerSec[currency] || 0) * (state.effects.currencyPerSecMultiplier[currency] || 1);
+      const generatorContribution = state.resourceGeneratorContribution[currency] || 0;
+      const totalPerSecRate = perSecRate + generatorContribution;
+
+      // Calculate poke equivalent
+      let pokeEquivalent = 'N/A';
+      if (perPokeRate > 0) {
+        const pokes = price.dividedBy(perPokeRate).toNumber();
+        pokeEquivalent = formatNumber(Math.ceil(pokes)) + ' pokes';
+      }
+
+      // Calculate time equivalent
+      let timeEquivalent = 'N/A';
+      if (totalPerSecRate > 0) {
+        const seconds = price.dividedBy(totalPerSecRate).toNumber();
+        timeEquivalent = formatDuration(seconds);
+      }
+
+      let tooltipContent = `<strong>Cost Equivalent</strong><br>`;
+      tooltipContent += `${pokeEquivalent}<br>`;
+      tooltipContent += `${timeEquivalent}`;
+
+      // Check if card is affordable and add additional info if not
+      const playerBalance = state.currencies[currency] || new Decimal(0);
+      if (playerBalance.lessThan(price)) {
+        const needed = price.minus(playerBalance);
+
+        // Calculate pokes until affordable
+        let pokesUntilAffordable = 'N/A';
+        if (perPokeRate > 0) {
+          const pokes = needed.dividedBy(perPokeRate).toNumber();
+          pokesUntilAffordable = formatNumber(Math.ceil(pokes)) + ' pokes';
+        }
+
+        // Calculate time until affordable
+        let timeUntilAffordable = 'N/A';
+        if (totalPerSecRate > 0) {
+          const seconds = needed.dividedBy(totalPerSecRate).toNumber();
+          timeUntilAffordable = formatDuration(seconds);
+        }
+
+        tooltipContent += `<br><small>Pokes until affordable: ${pokesUntilAffordable}</small>`;
+        tooltipContent += `<br><small>Time until affordable: ${timeUntilAffordable}</small>`;
+      }
+
+      // Clear any existing timeout
+      if (merchantTooltipTimeout) {
+        clearTimeout(merchantTooltipTimeout);
+        merchantTooltipTimeout = null;
+      }
+
+      // Create or update tooltip
+      if (!merchantTooltip) {
+        merchantTooltip = document.createElement('div');
+        merchantTooltip.className = 'currency-tooltip';
+        document.body.appendChild(merchantTooltip);
+      }
+
+      merchantTooltip.innerHTML = tooltipContent;
+
+      // Position tooltip with smart bounds checking
+      const rect = card.getBoundingClientRect();
+      const tooltipRect = merchantTooltip.getBoundingClientRect();
+
+      let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
+      let top = rect.top - tooltipRect.height - 10;
+
+      // Adjust if tooltip goes off screen
+      if (left < 10) left = 10;
+      if (left + tooltipRect.width > window.innerWidth - 10) {
+        left = window.innerWidth - tooltipRect.width - 10;
+      }
+      if (top < 10) {
+        // Show below if no room above
+        top = rect.bottom + 10;
+        merchantTooltip.classList.add('below');
+      } else {
+        merchantTooltip.classList.remove('below');
+      }
+
+      merchantTooltip.style.left = left + 'px';
+      merchantTooltip.style.top = top + 'px';
+      merchantTooltip.classList.add('visible');
+    };
+
+    const hideTooltip = () => {
+      if (merchantTooltip) {
+        merchantTooltipTimeout = setTimeout(() => {
+          if (merchantTooltip) {
+            merchantTooltip.classList.remove('visible');
+            setTimeout(() => {
+              if (merchantTooltip && !merchantTooltip.classList.contains('visible')) {
+                merchantTooltip.remove();
+                merchantTooltip = null;
+              }
+            }, 200);
+          }
+        }, 100); // Small delay to prevent flickering when moving between cards
       }
     };
-  }
+
+    // Add event listeners
+    card.addEventListener('mouseenter', showTooltip);
+    card.addEventListener('mouseleave', hideTooltip);
+
+    // Long press support for mobile (don't interfere with normal touch)
+    let touchTimer = null;
+    let touchStarted = false;
+
+    card.addEventListener('touchstart', (e) => {
+      touchStarted = true;
+      touchTimer = setTimeout(() => {
+        if (touchStarted) {
+          e.preventDefault();
+          showTooltip();
+          // Hide after 3 seconds on long press
+          setTimeout(hideTooltip, 3000);
+        }
+      }, 500); // 500ms long press
+    });
+
+    card.addEventListener('touchend', () => {
+      touchStarted = false;
+      if (touchTimer) {
+        clearTimeout(touchTimer);
+        touchTimer = null;
+      }
+    });
+
+    card.addEventListener('touchmove', () => {
+      touchStarted = false;
+      if (touchTimer) {
+        clearTimeout(touchTimer);
+        touchTimer = null;
+      }
+    });
+  });
+}

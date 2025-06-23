@@ -44,7 +44,7 @@ function lockCard(cardId) {
   if (!card) return;
   
   card.locked = true;
-  state.battle.lockoutTimers[cardId] = Date.now() + (state.sacrificeLockoutTime * 60 * 60 * 1000 / state.achievementRewards.sacrificeTimeDivider); // sacrificeLockoutTime is in hours
+  state.battle.lockoutTimers[cardId] = Date.now() + (state.sacrificeLockoutTime * 60 * 60 * 1000 / (state.achievementRewards.sacrificeTimeDivider + state.skillAdditionalSacrificeTimeDivider)); // sacrificeLockoutTime is in hours
   saveState();
 }
 
@@ -93,6 +93,8 @@ function showDamageNumber(damage, target = 'enemy', specialType = null) {
     damageEl.textContent = 'Stun';
   } else if (specialType === 'snap') {
     damageEl.textContent = 'Snap';
+  } else if (specialType === 'poof') {
+    damageEl.textContent = 'Poof';
   } else if (specialType === 'revived') {
     damageEl.textContent = 'Revived';
   } else {
@@ -116,11 +118,6 @@ function showDamageNumber(damage, target = 'enemy', specialType = null) {
 
 // Remove top card from battle
 function removeSlotCard(slotToRemove = 0) {
-  // 1) Clear any running battle interval
-  if (state.battle.battleInterval) {
-    clearInterval(state.battle.battleInterval);
-    state.battle.battleInterval = null;
-  }
 
   // 2) Don’t do anything if that slot is already empty
   if (state.battle.slots[slotToRemove] === null) return;
@@ -128,6 +125,13 @@ function removeSlotCard(slotToRemove = 0) {
   // 3) Figure out if we’ll still have cards left AFTER removal
   const totalCardsBefore = state.battle.slots.filter(c => c !== null).length;
   const willHaveRemainingCards = (totalCardsBefore - 1) > 0;
+
+  // 3.5) Only clear battle interval if we'll have no cards left
+  const wasRunning = !state.battle.paused && state.battle.battleInterval;
+  if (!willHaveRemainingCards && state.battle.battleInterval) {
+    clearInterval(state.battle.battleInterval);
+    state.battle.battleInterval = null;
+  }
 
   // 4) Remove that slot and shift everything down, then add an empty slot at the end
   state.battle.slots.splice(slotToRemove, 1);
@@ -156,11 +160,23 @@ function removeSlotCard(slotToRemove = 0) {
           pauseBtn.textContent = 'Start Battle';
         }
       }
-      // 9) Otherwise, restart the loop now that slots have shifted
-      else {
+      // 9) If battle was running and we still have cards, restart the loop
+      else if (wasRunning) {
         startBattleLoop();
       }
     }, { once: true });
+  } else {
+    // 10) If no animation element, handle immediately
+    updateBattleUI();
+    if (!willHaveRemainingCards) {
+      const pauseBtn = document.querySelector('.battle-pause-btn');
+      if (pauseBtn) {
+        pauseBtn.classList.add('paused');
+        pauseBtn.textContent = 'Start Battle';
+      }
+    } else if (wasRunning) {
+      startBattleLoop();
+    }
   }
 }
 
@@ -193,11 +209,36 @@ function processVictory() {
     defeatedCard.locked = false;
   }
   
-  // Clear battle slots
-  state.battle.slots = Array(state.battle.slotLimit).fill(null);
+  if (state.battle.currentEnemy.name === 'Kratos' && state.battle.slots.some(card => card && card.id === '1119')) {
+    unlockAchievement('secret14');
+  }
+
+  // Clear battle slots (or preserve undamaged cards if skill 29101 is purchased)
+  if (skillMap[29101] && skillMap[29101].purchased) {
+    // Skill 29101: "Undamaged cards in battle stay for next enemy"
+    // Collect all undamaged cards (currentHp === maxHp)
+    const undamagedCards = state.battle.slots.filter(card =>
+      card && card.currentHp >= card.maxHp
+    );
+
+    // Create new slots array with undamaged cards at the front
+    state.battle.slots = [
+      ...undamagedCards,
+      ...Array(state.battle.slotLimit - undamagedCards.length).fill(null)
+    ];
+  } else {
+    // Default behavior: clear all battle slots
+    state.battle.slots = Array(state.battle.slotLimit).fill(null);
+  }
 
   // Give Rewards for Enemies that have rewards
-  if (state.battle.currentEnemy.name === 'Cronus') {
+  if (state.battle.currentEnemy.name === 'Poseidon') {
+    state.battle.globalMaxCardsMult += 0.001;
+  } else if (state.battle.currentEnemy.name === 'Uranus') {
+    state.battle.globalHPMult += 0.001;
+  } else if (state.battle.currentEnemy.name === 'Tartarus') {
+    state.battle.globalAttackMult += 0.001;
+  } else if (state.battle.currentEnemy.name === 'Cronus') {
     state.battle.globalAttackMult += 0.005;
   } else if (state.battle.currentEnemy.name === 'Typhon') {
     state.battle.globalMaxCardsMult += 0.005;
@@ -591,8 +632,8 @@ function updateBattleUI() {
     // Click to remove
     cardOuter.addEventListener('click', () => {
       const ok = confirm(
-        "你确定要从战斗中移除这张卡吗？ " +
-        "这张卡仍然会被献祭。"
+        "Are you sure you want to remove this card from battle? " +
+        "The card will still remain sacrificed."
       );
       if (!ok) return;
 
@@ -1020,6 +1061,8 @@ function performSacrifice(cardId) {
   // Place battle copy in slot
   state.battle.slots[availableSlot] = battleCard;
 
+
+
   // Check for and apply battle tricks synchronously
   if (state.battle.currentEnemy) {
     checkBattleTrick(cardId, state.battle.currentEnemy);
@@ -1028,6 +1071,55 @@ function performSacrifice(cardId) {
       triggerQuickGlitch();
       setTimeout(() => showMatrixRain(), 2000);
       setTimeout(() => unlockAchievement('secret8'), 10100);
+    }
+  }
+
+  if (state.battle.currentEnemy.name === 'Cronus') {
+    state.rocksAgainstCronus.add(cardId);
+    if (state.rocksAgainstCronus.size === 20) {
+      unlockAchievement('secret11')
+      showTidbit(`Cornus gets tricked AGAIN!<br><br>[Reduces current HP by 99%]`);
+      const damage = state.battle.currentEnemy.currentHp * 0.99;
+      state.battle.currentEnemy.currentHp = Math.max(1, state.battle.currentEnemy.currentHp - damage);
+      showDamageNumber(damage, 'enemy', 'crit');
+      state.rocksAgainstCronus.clear();
+    }
+  }
+
+  if (state.battle.currentEnemy.name === 'Zeus' && (cardId === 1106 || cardId === 1109 || cardId === 1111 || cardId === 1114 || cardId === 1124 || cardId === 1126 || cardId === 1133)) {
+    state.zeusSacrifices.add(cardId);
+    
+    showTidbit(`Zeus has sex with ${card.name}.<br><br>[Increases attack by 6.9%]`);
+    state.battle.currentEnemy.attack = Math.ceil(state.battle.currentEnemy.attack * 1.069);
+    if (state.zeusSacrifices.size === 7) {
+      unlockAchievement('secret12');
+    }
+  }
+
+  if (state.battle.currentEnemy.name === 'Rick' && (cardId === 1115 || cardId === 527 || cardId === 526)) {
+    // check if both all 1115 and 527 and 526 are in current slots
+    if (state.battle.slots.filter(slot => slot && (slot.id === '1115' || slot.id === '527' || slot.id === '526')).length === 3) {
+      unlockAchievement('secret15');
+      showTidbit(`Dionysus hands Rick drink from the cups together. They have a good ol' time! <br><br>[Increases both attacks by 50%]`);
+      state.battle.currentEnemy.attack = Math.ceil(state.battle.currentEnemy.attack * 1.5);
+      //also increase attack of the card in slot that has id 1115
+      const dionysusCard = state.battle.slots.find(slot => slot && slot.id === '1115');
+      if (dionysusCard) {
+        dionysusCard.attack = Math.ceil(dionysusCard.attack * 1.5);
+      }
+      //remove cards 526 and 527 from their slots -- and propagate slots (using splice and push and update battle ui)
+      const idx526 = state.battle.slots.findIndex(slot => slot && slot.id === '526');
+      if (idx526 !== -1) {
+        state.battle.slots.splice(idx526, 1);
+        state.battle.slots.push(null);
+      }
+      const idx527 = state.battle.slots.findIndex(slot => slot && slot.id === '527');
+      if (idx527 !== -1) {
+        state.battle.slots.splice(idx527, 1);
+        state.battle.slots.push(null);
+      }
+      updateBattleUI();
+      
     }
   }
 
@@ -1092,7 +1184,7 @@ function showSacrificeDialog(cardId) {
               <li>Remove it from your collection (${formatQuantity(c.quantity)} → 0) </li>
               <li>Reset its tier (${c.tier} → 0) and level (${c.level} → 1)</li>
               <li>Remove all its effects</li>
-              <li>Lock it for ${formatDuration(state.sacrificeLockoutTime * 60 * 60 / state.achievementRewards.sacrificeTimeDivider)}</li>
+              <li>Lock it for ${formatDuration(state.sacrificeLockoutTime * 60 * 60 / (state.achievementRewards.sacrificeTimeDivider + state.skillAdditionalSacrificeTimeDivider))}</li>
             </ul>
           </div>
           <div class="sacrifice-stats">
@@ -1282,6 +1374,8 @@ function startBattleLoop() {
         defeatEnemy();
         return;
       }      
+
+      let resourcesUpdated = false;
       
       if (state.battle.currentEnemy.name === 'Sephiroth' && Math.random() < 0.33) {
           showDamageNumber(0, 'enemy', 'dodge');
@@ -1406,7 +1500,7 @@ function startBattleLoop() {
               }
             }
 
-            if (state.battle.stunRealms.has(card.realm) && Math.random() < state.battle.stunChance) {
+            if (state.battle.stunRealms.has(card.realm) && Math.random() < state.battle.stunChance && state.battle.currentEnemy.name !== 'Uranus') {
               state.battle.currentEnemy.stunTurns += 1;
               showDamageNumber(0, 'enemy', 'stun');
             }
@@ -1422,6 +1516,7 @@ function startBattleLoop() {
                   const gain = new Decimal(rate * state.effects.currencyPerPokeMultiplier[curId] * state.battle.resourcefulAttack);
                   state.currencies[curId] = state.currencies[curId].plus(gain);
                 });
+                resourcesUpdated = true;
             }
           }
         });
@@ -1516,7 +1611,8 @@ function startBattleLoop() {
           // 3) dodge check
           if (
             state.battle.dodgeRealms.has(targetCard.realm) &&
-            Math.random() < state.battle.dodgeChance
+            Math.random() < state.battle.dodgeChance &&
+            state.battle.currentEnemy.name !== 'Tartarus'
           ) {
             showDamageNumber(0, `slot${targetIdx}`, 'dodge');
             continue;
@@ -1540,7 +1636,8 @@ function startBattleLoop() {
           if (
             nextCard &&
             state.battle.protectionRealms.has(nextCard.realm) &&
-            Math.random() < state.battle.protectionChance
+            Math.random() < state.battle.protectionChance &&
+            state.battle.currentEnemy.name !== 'Poseidon'
           ) {
             damage *= 0.5;
             specialType = 'protect';
@@ -1624,7 +1721,8 @@ function startBattleLoop() {
               });
               state.battle.slots = state.battle.slots.filter(c => c !== null)
                                         .concat(Array(state.battle.slotLimit - filled.length).fill(null));
-              updateBattleUI();
+              // Delay UI update to allow damage numbers to show
+              setTimeout(() => updateBattleUI(), 100);
             }
           }
 
@@ -1637,14 +1735,15 @@ function startBattleLoop() {
             if (filled.length) {
               const idx = filled[Math.floor(Math.random() * filled.length)];
 
-              showDamageNumber(0, `slot${idx}`, 'snap');
+              showDamageNumber(0, `slot${idx}`, 'poof');
 
               state.battle.slots[idx] = null;
               state.battle.slots = state.battle.slots
                 .filter(c => c !== null)
                 .concat(Array(state.battle.slotLimit - filled.length).fill(null));
 
-              updateBattleUI();
+              // Delay UI update to allow damage numbers to show
+              setTimeout(() => updateBattleUI(), 100);
             }
           }
 
@@ -1656,6 +1755,7 @@ function startBattleLoop() {
               const drainAmt   = currVal.mul(0.4).floor();
               state.currencies[randKey] = currVal.minus(drainAmt);
             }
+            resourcesUpdated = true;
           }
 
           if (state.battle.currentEnemy.name === 'Your Ego') {
@@ -1665,11 +1765,13 @@ function startBattleLoop() {
               const currVal    = state.currencies[randKey];
               state.currencies[randKey] = currVal.minus(currVal);
             }
+            resourcesUpdated = true;
           }
 
-          if ((state.battle.currentEnemy.name === 'Dracula' || state.battle.currentEnemy.name === 'Your Ego')
+          if ((state.battle.currentEnemy.name === 'Dracula' || state.battle.currentEnemy.name === 'Your Ego' || state.battle.currentEnemy.name === 'Saitama' || state.battle.currentEnemy.name === 'Doctor Manhattan')
               && state.battle.currentEnemy.maxHp > state.battle.currentEnemy.currentHp) {
-            const healAmount = Math.min(state.battle.currentEnemy.maxHp - state.battle.currentEnemy.currentHp, damage * 3);
+            const lifestealMult = state.battle.currentEnemy.name === 'Saitama' ? 1 : state.battle.currentEnemy.name === 'Doctor Manhattan' ? 2 : 3;
+            const healAmount = Math.min(state.battle.currentEnemy.maxHp - state.battle.currentEnemy.currentHp, damage * lifestealMult, (targetCard.currentHp + damage) * lifestealMult);
             state.battle.currentEnemy.currentHp += healAmount;
             showDamageNumber(healAmount, 'enemy', 'heal');
           }
@@ -1699,7 +1801,7 @@ function startBattleLoop() {
         const healAmount = Math.min(state.battle.currentEnemy.maxHp - state.battle.currentEnemy.currentHp, state.battle.currentEnemy.maxHp * 0.01);
         state.battle.currentEnemy.currentHp += healAmount;
         showDamageNumber(healAmount, 'enemy', 'heal');
-      } else if (state.battle.currentEnemy.name === 'T800' && state.battle.currentEnemy.currentHp >= state.battle.currentEnemy.maxHp && Math.random() < 0.02) {
+      } else if (state.battle.currentEnemy.name === 'T800' && state.battle.currentEnemy.currentHp >= state.battle.currentEnemy.maxHp && Math.random() < 0.03) {
         const healAmount = Math.min(state.battle.currentEnemy.maxHp - state.battle.currentEnemy.currentHp, state.battle.currentEnemy.maxHp * 0.1);
         state.battle.currentEnemy.currentHp += healAmount;
         showDamageNumber(healAmount, 'enemy', 'heal');
@@ -1734,6 +1836,10 @@ function startBattleLoop() {
           card.attack = Math.floor(card.attack * 0.9);
         });
         updateBattleStats();
+      }
+
+      if (resourcesUpdated) {
+        updateCurrencyBar();
       }
 
       // Save state and update UI
@@ -2101,12 +2207,14 @@ function showResetBattlesDialog() {
     
     const firstBossRealm = realms.find(r => r.unlocked && r.id === state.battle.currentBattleRealm);
     if (firstBossRealm) {
-      const firstBoss = cards.find(c => c.realm === firstBossRealm.id && !c.cantBeEnemy);
+      const firstBoss = cards.find(c => c.realm === firstBossRealm.id);
       if (firstBoss) {
         state.battle.currentEnemy = {
           ...firstBoss,
+          attack: firstBoss.power * 10,
           maxHp: firstBoss.defense * (state.battle.currentBattleRealm === 11 ? 100000 : 400000),
-          currentHp: firstBoss.defense * (state.battle.currentBattleRealm === 11 ? 100000 : 400000)
+          currentHp: firstBoss.defense * (state.battle.currentBattleRealm === 11 ? 100000 : 400000),
+          stunTurns: 0
         };
       }
     }

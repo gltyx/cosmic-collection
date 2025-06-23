@@ -119,7 +119,7 @@ const achievements = {
         condition: 'Collect all Rocks cards',
         icon: '🃏',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.02,
+        reward: 1.01,
         realm: 1,
     },
     cosmicCollector2: {
@@ -139,7 +139,7 @@ const achievements = {
         condition: 'Collect all Bugdom cards',
         icon: '🃏',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.02,
+        reward: 1.03,
         realm: 3,
     },
     cosmicCollector4: {
@@ -149,7 +149,7 @@ const achievements = {
         condition: 'Collect all Aviary cards',
         icon: '🃏',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.02,
+        reward: 1.04,
         realm: 4,
     },
     cosmicCollector5: {
@@ -159,7 +159,7 @@ const achievements = {
         condition: 'Collect all Ancient Relics cards',
         icon: '🃏',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.02,
+        reward: 1.05,
         realm: 5,
     },
     cosmicCollector6: {
@@ -169,7 +169,7 @@ const achievements = {
         condition: 'Collect all Celestial Bodies cards',
         icon: '🃏',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.02,
+        reward: 1.06,
         realm: 6,
     },
     cosmicCollector7: {
@@ -179,7 +179,7 @@ const achievements = {
         condition: 'Collect all Mythical Beasts cards',
         icon: '🃏',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.03,
+        reward: 1.07,
         realm: 7,
     },
     cosmicCollector8: {
@@ -189,7 +189,7 @@ const achievements = {
         condition: 'Collect all Incremental Games cards',
         icon: '🃏',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.04,
+        reward: 1.08,
         realm: 8,
     },
     cosmicCollector9: {
@@ -199,7 +199,7 @@ const achievements = {
         condition: 'Collect all Spirit Familiars cards',
         icon: '🃏',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.04,
+        reward: 1.09,
         realm: 9,
     },
     cosmicCollector10: {
@@ -209,7 +209,7 @@ const achievements = {
         condition: 'Collect all Weapons cards',
         icon: '🃏',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.05,
+        reward: 1.1,
         realm: 10,
     },
     cosmicCollector11: {
@@ -219,19 +219,19 @@ const achievements = {
         condition: 'Collect all Greek Gods cards',
         icon: '🃏',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.1,
+        reward: 1.2,
         realm: 11,
     },
-    // cosmicCollector12: {
-    //     id: 'cosmicCollector12',
-    //     name: 'Cosmic Collector XII',
-    //     type: 'cosmicCollector',
-    //     condition: 'Collect all Boss cards',
-    //     icon: '🃏',
-    //     rewardType: 'Max Cards Multiplier',
-    //     reward: 1.1,
-    //     realm: 12,
-    // },
+    cosmicCollector12: {
+        id: 'cosmicCollector12',
+        name: 'Cosmic Collector XII',
+        type: 'cosmicCollector',
+        condition: 'Collect all Boss cards',
+        icon: '🃏',
+        rewardType: 'Max Cards Multiplier',
+        reward: 2,
+        realm: 12,
+    },
     holePoker: {
         id: 'holePoker',
         name: 'Hole Poker',
@@ -316,21 +316,21 @@ const achievements = {
         id: 'merchantTrader4',
         name: 'Merchant Trader IV',
         type: 'merchantTrader',
-        condition: 'Purchase 10K offers from Merchants',
+        condition: 'Purchase 5K offers from Merchants',
         icon: '🛒',
         rewardType: 'Merchant Price Divider',
         reward: 1.4,
-        threshold: 10000,
+        threshold: 5000,
     },
     merchantTrader5: {
         id: 'merchantTrader5',
         name: 'Merchant Trader V',
         type: 'merchantTrader',
-        condition: 'Purchase 100K offers from Merchants',
+        condition: 'Purchase 25K offers from Merchants',
         icon: '🛒',
         rewardType: 'Merchant Price Divider',
         reward: 1.5,
-        threshold: 100000,
+        threshold: 25000,
     },
     massivePoke: {
         id: 'massivePoke',
@@ -431,6 +431,26 @@ const achievements = {
         rewardType: 'Min Cards Per Poke',
         reward: 10000000,
         threshold: 100000000000,
+    },
+    massivePoke11: {
+        id: 'massivePoke11',
+        name: 'Massive Poke XI',
+        type: 'massivePoke',
+        condition: 'Get 1T cards from a single poke',
+        icon: '💥',
+        rewardType: 'Min Cards Per Poke',
+        reward: 25000000,
+        threshold: 1000000000000,
+    },
+    massivePoke12: {
+        id: 'massivePoke12',
+        name: 'Massive Poke XII',
+        type: 'massivePoke',
+        condition: 'Get 10T cards from a single poke',
+        icon: '💥',
+        rewardType: 'Min Cards Per Poke',
+        reward: 100000000,
+        threshold: 10000000000000,
     },
     
     inItForTheLongHaul: {
@@ -563,6 +583,16 @@ const achievements = {
         reward: 1.5e8,
         threshold: 1e16,
     },
+    inItForTheLongHaul14: {
+        id: 'inItForTheLongHaul14',
+        name: 'In It For The Long Haul XIV',
+        type: 'inItForTheLongHaul',
+        condition: 'Total 100Q cards drawn from the Black Hole',
+        icon: '⏳',
+        rewardType: 'Max Cards Per Poke',
+        reward: 7.5e8,
+        threshold: 1e17,
+    },
     secret: {
         id: 'secret',
         name: 'Secret',
@@ -570,7 +600,7 @@ const achievements = {
         condition: 'Number 69',
         icon: '🚨',
         rewardType: 'Min Cards Multiplier',
-        reward: 1.03,
+        reward: 1.01,
         reqRealm: '3'
     },
     secret2: {
@@ -580,7 +610,7 @@ const achievements = {
         condition: 'Find the Easter Egg',
         icon: '🥚',
         rewardType: 'Min Cards Multiplier',
-        reward: 1.03,
+        reward: 1.02,
         reqRealm: '1'
     },
     secret3: {
@@ -600,7 +630,7 @@ const achievements = {
         condition: '3 x 3',
         icon: `🧲`,
         rewardType: 'Min Cards Multiplier',
-        reward: 1.03,
+        reward: 1.04,
         reqRealm: '3'
     },
     secret7: {
@@ -610,7 +640,7 @@ const achievements = {
         condition: 'No Skills Left?',
         icon: '🧠',
         rewardType: 'Min Cards Multiplier',
-        reward: 1.03,
+        reward: 1.05,
         reqRealm: '1'
     },
     secret5: {
@@ -620,7 +650,7 @@ const achievements = {
         condition: 'Rams is not a Realm',
         icon: '🐏',
         rewardType: 'Min Cards Multiplier',
-        reward: 1.03,
+        reward: 1.06,
         reqRealm: '9'
     },
     secret6: {
@@ -630,7 +660,7 @@ const achievements = {
         condition: 'There is no spoon',
         icon: '🥄',
         rewardType: 'Min Cards Multiplier',
-        reward: 1.03,
+        reward: 1.07,
         reqRealm: '10'
     },
     secret8: {
@@ -640,7 +670,7 @@ const achievements = {
         condition: 'Delete the game',
         icon: '💀',
         rewardType: 'Min Cards Multiplier',
-        reward: 1.03,
+        reward: 1.08,
         reqRealm: '11'
     },
     secret9: {
@@ -650,7 +680,7 @@ const achievements = {
         condition: 'Big Flipper',
         icon: '🔄',
         rewardType: 'Min Cards Multiplier',
-        reward: 1.03,
+        reward: 1.09,
         reqRealm: '11'
     },
     secret10: {
@@ -660,8 +690,68 @@ const achievements = {
         condition: 'Golden Shot',
         icon: '✏',
         rewardType: 'Min Cards Multiplier',
-        reward: 1.03,
+        reward: 1.10,
         reqRealm: '11'
+    },
+    secret11: {
+        id: 'secret11',
+        name: 'Secret XI',
+        type: 'secret',
+        condition: 'But Which Rock?',
+        icon: '🪨',
+        rewardType: 'Min Cards Multiplier',
+        reward: 1.11,
+        reqRealm: '11'
+    },
+    secret12: {
+        id: 'secret12',
+        name: 'Secret XII',
+        type: 'secret',
+        condition: 'Sexcapades',
+        icon: '🍆',
+        rewardType: 'Min Cards Multiplier',
+        reward: 1.12,
+        reqRealm: '11'
+    },
+    secret13: {
+        id: 'secret13',
+        name: 'Secret XIII',
+        type: 'secret',
+        condition: 'Ooph this cooldown. What can I play in the meantime?',
+        icon: '🎮',
+        rewardType: 'Min Cards Multiplier',
+        reward: 1.13,
+        reqRealm: '12'
+    },
+    secret14: {
+        id: 'secret14',
+        name: 'Secret XIV',
+        type: 'secret',
+        condition: 'God of War Rematch',
+        icon: '⛰️',
+        rewardType: 'Min Cards Multiplier',
+        reward: 1.14,
+        reqRealm: '12'
+    },
+    secret15: {
+        id: 'secret15',
+        name: 'Secret XV',
+        type: 'secret',
+        condition: 'Drunk God shares Drinks with the Drunk',
+        icon: '🍺',
+        rewardType: 'Min Cards Multiplier',
+        reward: 1.15,
+        reqRealm: '12'
+    },
+    secret16: {
+        id: 'secret16',
+        name: 'Secret XVI',
+        type: 'secret',
+        condition: 'Bitcoin Trillionaire',
+        icon: '🤑',
+        rewardType: 'Min Cards Multiplier',
+        reward: 1.16,
+        reqRealm: '12'
     },
     battleMilestone: {
         id: 'battleMilestone',
@@ -720,7 +810,7 @@ const achievements = {
         condition: 'Defeat Demeter',
         icon: '💀',
         rewardType: 'Sacrifice Time Divider',
-        reward: 0.1,
+        reward: 0.15,
         enemy: 'Demeter',
     },
     battleMilestone7: {
@@ -730,7 +820,7 @@ const achievements = {
         condition: 'Defeat Uranus',
         icon: '💀',
         rewardType: 'Sacrifice Time Divider',
-        reward: 0.1,
+        reward: 0.2,
         enemy: 'Uranus',
     },
     battleMilestone8: {
@@ -740,7 +830,7 @@ const achievements = {
         condition: 'Defeat Zeus',
         icon: '💀',
         rewardType: 'Sacrifice Time Divider',
-        reward: 0.2,
+        reward: 0.25,
         enemy: 'Zeus',
     },
     battleMilestone9: {
@@ -780,7 +870,7 @@ const achievements = {
         condition: 'Defeat Hal9000',
         icon: '💀',
         rewardType: 'Sacrifice Time Divider',
-        reward: 0.1,
+        reward: 0.2,
         enemy: 'Hal9000',
     },
     battleMilestone13: {
@@ -790,7 +880,7 @@ const achievements = {
         condition: 'Defeat Aizen',
         icon: '💀',
         rewardType: 'Sacrifice Time Divider',
-        reward: 0.1,
+        reward: 0.3,
         enemy: 'Aizen',
     },
     battleMilestone14: {
@@ -800,7 +890,7 @@ const achievements = {
         condition: 'Defeat Deadpool',
         icon: '💀',
         rewardType: 'Sacrifice Time Divider',
-        reward: 0.1,
+        reward: 0.4,
         enemy: 'Deadpool',
     },
     battleMilestone15: {
@@ -810,7 +900,7 @@ const achievements = {
         condition: 'Defeat Rick',
         icon: '💀',
         rewardType: 'Sacrifice Time Divider',
-        reward: 0.1,
+        reward: 0.5,
         enemy: 'Rick',
     },
     battleMilestone16: {
@@ -820,7 +910,7 @@ const achievements = {
         condition: 'Defeat Your Ego',
         icon: '💀',
         rewardType: 'Sacrifice Time Divider',
-        reward: 0.5,
+        reward: 1.2,
         enemy: 'Your Ego',
     },
     greekGodBattleTricks: {

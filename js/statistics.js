@@ -306,7 +306,7 @@ function updateStatsUI() {
             ${(realms[10].unlocked) ?
             `<tr>
                 <td>Sacrifice Time</td>
-                <td>${state.sacrificeLockoutTime}h${state.achievementRewards.sacrificeTimeDivider > 0 ? ` ÷ ${formatNumber(state.achievementRewards.sacrificeTimeDivider)}` : ''}</td>
+                <td>${state.sacrificeLockoutTime}h${state.achievementRewards.sacrificeTimeDivider > 0 ? ` ÷ ${formatNumber(state.achievementRewards.sacrificeTimeDivider + state.skillAdditionalSacrificeTimeDivider)}` : ''}</td>
             </tr>` : ''}
     `;
 

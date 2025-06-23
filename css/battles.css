@@ -400,7 +400,7 @@
 
 .damage-number.weakPoint {
   color: #6c0000;
-  font-size: 2.5em;
+  font-size: 2.4em;
 }
 
 .damage-number.heal {
@@ -425,12 +425,17 @@
 
 .damage-number.snap {
   color: #eeff00;
-  font-size: 2.5em;
+  font-size: 1.9em;
+}
+
+.damage-number.poof {
+  color: #99e377;
+  font-size: 1.9em;
 }
 
 .damage-number.revived {
   color: #00901f;
-  font-size: 2.5em;
+  font-size: 2.3em;
 }
 
 .damage-number.confused {
@@ -1023,7 +1028,7 @@
 }
 
 /* Responsive queries for smaller screens (width-based) */
-@media (max-width: 768px) {
+@media (max-height: 768px) {
   .slot-arrow {
     font-size: 1.4em;     /* smaller arrows on mobile */
   }
@@ -1037,7 +1042,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-height: 480px) {
   .slot-arrow {
     font-size: 1.2em;     /* even smaller arrows on very small screens */
   }

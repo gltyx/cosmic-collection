@@ -271,9 +271,26 @@ function renderSkillsTab() {
 
       if (!locked && !owned && affordable) {
         tile.onclick = () => {
+          // Hide skill tooltip when purchasing
+          if (skillTooltip) {
+            skillTooltip.classList.remove('visible');
+            setTimeout(() => {
+              if (skillTooltip && !skillTooltip.classList.contains('visible')) {
+                skillTooltip.remove();
+                skillTooltip = null;
+              }
+            }, 200);
+          }
           buySkill(s.id);
           renderSkillsTab();
         };
+      }
+
+      // Add tooltip data for unlocked, unpurchased skills
+      if (!locked && !owned) {
+        tile.setAttribute('data-skill-tooltip', 'true');
+        tile.setAttribute('data-skill-cost', s.cost.amount);
+        tile.setAttribute('data-skill-currency', s.cost.currencyId);
       }
 
       grid.appendChild(tile);
@@ -334,9 +351,24 @@ function renderSkillsTab() {
 
     if (!locked && !owned) {
       tile.onclick = () => {
+        // Hide skill tooltip when purchasing
+        if (skillTooltip) {
+          skillTooltip.classList.remove('visible');
+          setTimeout(() => {
+            if (skillTooltip && !skillTooltip.classList.contains('visible')) {
+              skillTooltip.remove();
+              skillTooltip = null;
+            }
+          }, 200);
+        }
         buySkill(s.id);
         renderSkillsTab();
       };
+
+      // Add tooltip data for unlocked, unpurchased skills
+      tile.setAttribute('data-skill-tooltip', 'true');
+      tile.setAttribute('data-skill-cost', s.cost.amount);
+      tile.setAttribute('data-skill-currency', s.cost.currencyId);
     }
 
     grid.appendChild(tile);
@@ -356,6 +388,9 @@ function renderSkillsTab() {
   }
 
   list.appendChild(grid);
+
+  // Setup tooltips for skill tiles
+  setupSkillTooltips();
 }
 
 // Optimized checkAffordableSkills to check only first skill in each sorted list
@@ -400,4 +435,164 @@ function buySkill(id) {
   applySkill(id, /*skipCost=*/false);
 
   checkAffordableSkills(); // Check if any other skills are affordable after purchase
+}
+
+// Global skill tooltip element to prevent flickering
+let skillTooltip = null;
+let skillTooltipTimeout = null;
+
+// Setup tooltip functionality for skill tiles
+function setupSkillTooltips() {
+  const skillTiles = document.querySelectorAll('[data-skill-tooltip="true"]');
+
+  skillTiles.forEach(tile => {
+    // Skip if already has tooltip listeners
+    if (tile.hasAttribute('data-skill-tooltip-setup')) return;
+    tile.setAttribute('data-skill-tooltip-setup', 'true');
+
+    const showTooltip = () => {
+      const cost = new Decimal(tile.getAttribute('data-skill-cost'));
+      const currency = tile.getAttribute('data-skill-currency');
+
+      if (!cost || !currency) return;
+
+      // Calculate poke and time equivalents
+      const perPokeRate = (state.effects.currencyPerPoke[currency] || 0) * (state.effects.currencyPerPokeMultiplier[currency] || 1);
+      const perSecRate = (state.effects.currencyPerSec[currency] || 0) * (state.effects.currencyPerSecMultiplier[currency] || 1);
+      const generatorContribution = state.resourceGeneratorContribution[currency] || 0;
+      const totalPerSecRate = perSecRate + generatorContribution;
+
+      // Calculate poke equivalent
+      let pokeEquivalent = 'N/A';
+      if (perPokeRate > 0) {
+        const pokes = cost.dividedBy(perPokeRate).toNumber();
+        pokeEquivalent = formatNumber(Math.ceil(pokes)) + ' pokes';
+      }
+
+      // Calculate time equivalent
+      let timeEquivalent = 'N/A';
+      if (totalPerSecRate > 0) {
+        const seconds = cost.dividedBy(totalPerSecRate).toNumber();
+        timeEquivalent = formatDuration(seconds);
+      }
+
+      let tooltipContent = `<strong>Cost Equivalent</strong><br>`;
+      tooltipContent += `${pokeEquivalent}<br>`;
+      tooltipContent += `${timeEquivalent}`;
+
+      // Check if skill is affordable and add additional info if not
+      const playerBalance = state.currencies[currency] || new Decimal(0);
+      if (playerBalance.lessThan(cost)) {
+        const needed = cost.minus(playerBalance);
+
+        // Calculate pokes until affordable
+        let pokesUntilAffordable = 'N/A';
+        if (perPokeRate > 0) {
+          const pokes = needed.dividedBy(perPokeRate).toNumber();
+          pokesUntilAffordable = formatNumber(Math.ceil(pokes)) + ' pokes';
+        }
+
+        // Calculate time until affordable
+        let timeUntilAffordable = 'N/A';
+        if (totalPerSecRate > 0) {
+          const seconds = needed.dividedBy(totalPerSecRate).toNumber();
+          timeUntilAffordable = formatDuration(seconds);
+        }
+
+        tooltipContent += `<br><small>Pokes until affordable: ${pokesUntilAffordable}</small>`;
+        tooltipContent += `<br><small>Time until affordable: ${timeUntilAffordable}</small>`;
+      }
+
+      // Clear any existing timeout
+      if (skillTooltipTimeout) {
+        clearTimeout(skillTooltipTimeout);
+        skillTooltipTimeout = null;
+      }
+
+      // Create or update tooltip
+      if (!skillTooltip) {
+        skillTooltip = document.createElement('div');
+        skillTooltip.className = 'currency-tooltip';
+        document.body.appendChild(skillTooltip);
+      }
+
+      skillTooltip.innerHTML = tooltipContent;
+
+      // Position tooltip with smart bounds checking
+      const rect = tile.getBoundingClientRect();
+      const tooltipRect = skillTooltip.getBoundingClientRect();
+
+      let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
+      let top = rect.top - tooltipRect.height - 10;
+
+      // Adjust if tooltip goes off screen
+      if (left < 10) left = 10;
+      if (left + tooltipRect.width > window.innerWidth - 10) {
+        left = window.innerWidth - tooltipRect.width - 10;
+      }
+      if (top < 10) {
+        // Show below if no room above
+        top = rect.bottom + 10;
+        skillTooltip.classList.add('below');
+      } else {
+        skillTooltip.classList.remove('below');
+      }
+
+      skillTooltip.style.left = left + 'px';
+      skillTooltip.style.top = top + 'px';
+      skillTooltip.classList.add('visible');
+    };
+
+    const hideTooltip = () => {
+      if (skillTooltip) {
+        skillTooltipTimeout = setTimeout(() => {
+          if (skillTooltip) {
+            skillTooltip.classList.remove('visible');
+            setTimeout(() => {
+              if (skillTooltip && !skillTooltip.classList.contains('visible')) {
+                skillTooltip.remove();
+                skillTooltip = null;
+              }
+            }, 200);
+          }
+        }, 100); // Small delay to prevent flickering when moving between tiles
+      }
+    };
+
+    // Add event listeners
+    tile.addEventListener('mouseenter', showTooltip);
+    tile.addEventListener('mouseleave', hideTooltip);
+
+    // Long press support for mobile (don't interfere with normal touch)
+    let touchTimer = null;
+    let touchStarted = false;
+
+    tile.addEventListener('touchstart', (e) => {
+      touchStarted = true;
+      touchTimer = setTimeout(() => {
+        if (touchStarted) {
+          e.preventDefault();
+          showTooltip();
+          // Hide after 3 seconds on long press
+          setTimeout(hideTooltip, 3000);
+        }
+      }, 500); // 500ms long press
+    });
+
+    tile.addEventListener('touchend', () => {
+      touchStarted = false;
+      if (touchTimer) {
+        clearTimeout(touchTimer);
+        touchTimer = null;
+      }
+    });
+
+    tile.addEventListener('touchmove', () => {
+      touchStarted = false;
+      if (touchTimer) {
+        clearTimeout(touchTimer);
+        touchTimer = null;
+      }
+    });
+  });
 }

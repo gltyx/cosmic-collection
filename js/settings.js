@@ -32,7 +32,7 @@ function initializeSettingsTab() {
         <div class="modal-content tips-modal-content">
             <h2>Game Tips</h2>
             <div class="tips-section">
-                <h3>Early Game Tips</h3>
+                <h3>Basic Game Tips</h3>
                 <ul>
                     <li><strong>Realm Filters:</strong> The "Per Poke" reward is not affected by realm filter selections. Early on, choosing only Rocks (and later any combination of realms with short cooldown) will speed up resource production for active play.</li>
                     <li><strong>Purchase Order Matters:</strong> Focus resource spending on skills and card effects that are most helpful to you.</li>
@@ -46,12 +46,12 @@ function initializeSettingsTab() {
                 </ul>
             </div>
             <div class="tips-section">
-                <h3>Early-Mid Game Tips</h3>
+                <h3>Intermediate Game Tips</h3>
                 <ul>
                     <li><strong>Absorber (bottom right):</strong> A good strategy is to charge with quick cooldowns and use on long cooldowns.</li>
                     <li><strong>Stuck before Mythical Beasts?:</strong> The easiest way to get the Rune resource is to unlock Fine/Rare cards from Rocks realm. Focus your resources on leveling cards that lower odds of low rarity Rocks cards (use the Odds filter in Collection), then swap to Rocks and get to poking.</li>
                     <li><strong>Interceptor (top left):</strong> Note that it charges fairly quickly by doing manual card flips (while it is not active).</li>
-                    <li><strong>Interceptor & Harvester Combo:</strong> 
+                    <li><strong>Interceptor & Harvester Combo:</strong>
                         <ul>
                             <li>Interceptor (top left) and Harvester (bottom left) work great together when you've saved up some time.</li>
                             <li>Activate interceptor and spam harvester for best results.</li>
@@ -62,11 +62,147 @@ function initializeSettingsTab() {
                 </ul>
             </div>
             <div class="tips-section">
-                <h3>To be continued...</h3>
+                <h3>Advanced Tips</h3>
+                <ul>
+                    <li><strong>Achievement Hunting:</strong> Achievements provide permanent multipliers. It may sometimes be worth it to go after ones that are within reach.</li>
+                    <li><strong>Secret Achievements:</strong> Try harvesting at exactly 69 seconds remaining, selecting only Aviary realm, or using absorber at exactly 3.00x three times in a row</li>
+                    <li><strong>Battle Tricks:</strong> Bow vs Eros halves his attack. Eagle vs Prometheus deals 25% current HP damage. Many more hidden combinations exist</li>
+                    <li><strong>Currency Optimization:</strong> Balance spending between skills, card levels, and saving for major unlocks. Prioritize skills that unlock new mechanics.</li>
+                    <li><strong>Post-Sacrifice Automation:</strong> After sacrificed card lockout timer expires, the card counts as new. If you have interceptor activated, this can stack lots of automation time.</li>
+                    <li><strong>Battle Card Positioning:</strong> Multiple strategies work:
+                        <ul>
+                            <li>Put tanky cards in front and high damage in back (gets more complex with Boss mechanics)</li>
+                            <li>Use cards with "Resourceful Poke" first for highest gains from them (taking advantage of Realm Conqueror)</li>
+                            <li>Use Dismember cards early to reduce enemy attack permanently</li>
+                            <li>Use Weak Point cards when enemy has lots of HP for best percentage damage effect</li>
+                        </ul>
+                    </li>
+                    <li><strong>Battle Card Filters:</strong> Use battle card filters to avoid sacrificing hard to get cards. Protect your most valuable cards!</li>
+                </ul>
+            </div>
+            <div class="tips-section">
+                <h3>For The Nerds</h3>
+                    <ul>
+                        <li><strong>Cooldown Formula:</strong> Sum of selected realm cooldowns × deselect multipliers (5x per skipped realm, can be reduced to 2.5x/2x with skills) ÷ cooldown divider effects</li>
+                        <li><strong>Tier Thresholds:</strong> Each rarity has 20 tiers with differently increasing requirements. Full table available at bottom of Stats page (unlocks on realm 11)</li>
+                        <li><strong>Merchant Pricing:</strong>
+                        <ul>
+                            <li><strong>Base price</strong>  
+                            <ul>
+                                <li>Currency is selected at random from unlocked currencies.</li>
+                                <li>Base price = (<code>Currency Per Sec </code> × 10) + (<code>Currency Per Poke</code> × 2) * <code>Rarity multiplier</code> </li>
+                                <li>Rarity multipliers:
+                                <ul>
+                                    <li>junk: 1</li>
+                                    <li>basic: 5</li>
+                                    <li>decent: 15</li>
+                                    <li>fine: 50</li>
+                                    <li>rare: 200</li>
+                                    <li>epic: 1000</li>
+                                    <li>legend: 5000</li>
+                                    <li>mythic: 25000</li>
+                                    <li>exotic: 100000</li>
+                                    <li>divine: 500000</li>
+                                </ul>
+                                </li>
+                            </ul>
+                            </li>
+                            <li><strong>Random &amp; global adjustments</strong>  
+                            <ul>
+                                <li>Price is then multiplied by a <code>Random Price Factor</code> between 0.01 (1%) and 1.99 (199%)</li>
+                                <li>And divided by total <code>Merchant Price Divider</code></li>
+                            </ul>
+                            </li>
+                            <li><strong>Bulk quantity (if you own > 9)</strong>  
+                            <ul>
+                                <li>Chance to trigger bulk offer (scaling 25%-100% with skills)
+                                <li><code>Quantity Factor</code> (0-1) is selected and multiplied by <code>Max Bulk Offer</code> (scales up with skills)</li>
+                                <li>Final price ×= <sup>3</sup>√(quantity)</li>
+                            </ul>
+                            </li>
+                            <li><strong>Offer tags</strong> (for Merchant Pricing Intuition)  
+                            <ul>
+                                <li>Bad Offer: <code>Random Price Factor</code> > 1.6</li>
+                                <li>Good Offer: <code>Random Price Factor</code> < 0.2</li>
+                                <li>Great Offer: <code>Random Price Factor</code> < 0.1 AND <code>Quantity Factor</code> > 0.3</li>
+                                <li>MUST BUY: <code>Random Price Factor</code> < 0.05 AND <code>Quantity Factor</code> > 0.6</li>
+                            </ul>
+                            </li>
+                        </ul>
+                        </li>
+                        <li><strong>Card Effect Scaling:</strong> Detailed formulas by effect type:
+                            <ul>
+                                <li><strong>Currency Per Poke/Second:</strong> base_value × level × (2<sup>(tier-1)</sup>)</li>
+                                <li><strong>Min/Max Cards Per Poke:</strong> base_value × level × (1.5<sup>(tier-1)</sup>). Base value by rarity (Min/Max):</li>
+                                    <ul>
+                                        <li>Junk: 0.05 / 0.1</li>
+                                        <li>Basic: 0.1 / 0.2</li>
+                                        <li>Decent: 0.25 / 0.5</li>
+                                        <li>Fine: 0.5 / 1</li>
+                                        <li>Rare: 1 / 2</li>
+                                        <li>Epic: 2.5 / 5</li>
+                                        <li>Legend: 5 / 10</li>
+                                        <li>Mythic: 10 / 20</li>
+                                        <li>Exotic: 25 / 50</li>
+                                        <li>Divine: 50 / 100</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Rarity Odds Divider:</strong> 0.01 × level × (1.25<sup>(tier-1)</sup>). Capped by rarity:</li>
+                                    <ul>
+                                        <li>Junk: 2x</li>
+                                        <li>Basic: 2.5x</li>
+                                        <li>Decent: 3x</li>
+                                        <li>Fine: 4x</li>
+                                        <li>Rare: 5x</li>
+                                        <li>Epic: 6x</li>
+                                        <li>Legend: 7x</li>
+                                        <li>Mythic: 8x</li>
+                                        <li>Exotic: 9x</li>
+                                        <li>Divine: 10x</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Cooldown Divider:</strong> base_value × level × (tier × (tier+1) / 2). Base value by rarity:</li>
+                                    <ul>
+                                        <li>Junk: 0.0005</li>
+                                        <li>Basic: 0.001</li>
+                                        <li>Decent: 0.002</li>
+                                        <li>Fine: 0.003</li>
+                                        <li>Rare: 0.004</li>
+                                        <li>Epic: 0.005</li>
+                                        <li>Legend: 0.006</li>
+                                        <li>Mythic: 0.007</li>
+                                        <li>Exotic: 0.008</li>
+                                        <li>Divine: 0.01</li>
+                                    </ul>
+                            </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li><strong>Realm Poke Starting Weights:</strong></li> 
+                            <ul>
+                                <li>Rocks: 1e11</li>
+                                <li>Sea World: 8e10</li>
+                                <li>Bugdom: 6e10</li>
+                                <li>Aviary: 4e10</li>
+                                <li>Ancient Relics: 2e10</li>
+                                <li>Celestial Bodies: 1e10</li>
+                                <li>Mythical Beasts: 8e9</li>
+                                <li>Incremental Games: 6e9</li>
+                                <li>Spirit Familiars: 4e9</li>
+                                <li>Weapons: 2e9</li>
+                                <li>Greek Gods: 1e9</li>
+                                <li>Bosses: 5e8</li>
+                            </ul>
+                        <li><strong>Realm Weight Reduction:</strong> "Fleeting Realm" and "Forsaken Realm" skills reduce these weights by ÷5 each, making higher realms more likely</li>
+                    </ul>
+            </div>
+            <div class="tips-section">
+                <h3>Community & Updates</h3>
                 <p>If you are struggling with a particular aspect of the game, hop in Discord - there is a great community there to help you!</p>
                 <p>On the other hand, if you have any other tips or suggestions, please also drop them in Discord and @Kuzzi to get them included in here!</p>
-                <p>Lastly, be sure to refresh game regularly as updates are frequent. Announcments channel in Discord has all the latest news!</p>
-            </div> 
+                <p>Lastly, be sure to refresh game regularly as updates are frequent. Announcements channel in Discord has all the latest news!</p>
+            </div>
             <div class="modal-buttons">
                 <button id="closeTipsBtn" class="settings-button safe-button">Got it!</button>
             </div>
@@ -405,6 +541,9 @@ function initializeSettingsTab() {
     // Initialize Kuzzi Games button
     kuzziGamesButton.addEventListener('click', () => {
         window.open('https://kuzzigames.com/', '_blank');
+        if (realms[11].unlocked) {
+            unlockAchievement('secret13');
+        }
     });
 
     // Initialize Supporter checkbox

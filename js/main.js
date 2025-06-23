@@ -57,6 +57,7 @@ window.state = {
     maxCardsPerPoke: 0, // Default maximum cards per poke
     sacrificeTimeDivider: 1,
   },
+  skillAdditionalSacrificeTimeDivider: 0,
   effects: {
     minCardsPerPoke: 1,
     maxCardsPerPoke: 4,
@@ -147,6 +148,8 @@ window.state = {
   skipSacrificeDialog: false,  // Add this line
   lastUnstuck: null, // Track last unstuck time
   cardSizeScale: 1, // Track card size scale
+  rocksAgainstCronus: new Set(),
+  zeusSacrifices: new Set(),
 };
 
 // init currencies & effects
@@ -191,6 +194,8 @@ function loadState() {
     state.merchantRefreshTime = obj.merchantRefreshTime || 0;
     state.supporterCheckboxClicked = obj.supporterCheckboxClicked || false;
     state.donationButtonClicked = obj.donationButtonClicked || false;
+    state.rocksAgainstCronus = new Set(obj.rocksAgainstCronus || []);
+    state.zeusSacrifices = new Set(obj.zeusSacrifices || []);
         
     // === Determine whether any saved card actually has a `locked` property ===
     const savedOwned = obj.ownedCards || {};
@@ -338,6 +343,8 @@ function saveState() {
       globalMaxCardsMult: state.battle.globalMaxCardsMult,
       vegetaEvolutions: state.battle.vegetaEvolutions
     },
+    rocksAgainstCronus: Array.from(state.rocksAgainstCronus),
+    zeusSacrifices: Array.from(state.zeusSacrifices)
   };
   currencies.forEach(c => {
     obj.currencies[c.id] = state.currencies[c.id].toString();
@@ -433,6 +440,32 @@ function updateCurrencyBar() {
 
     const div = document.createElement('div');
     div.className = 'currency-item';
+
+    // Calculate gains for tooltip
+    const perPokeRate = (state.effects.currencyPerPoke[cid] || 0) * (state.effects.currencyPerPokeMultiplier[cid] || 1);
+    const perSecRate = (state.effects.currencyPerSec[cid] || 0) * (state.effects.currencyPerSecMultiplier[cid] || 1);
+    const generatorContribution = state.resourceGeneratorContribution[cid] || 0;
+    const totalPerSecRate = perSecRate + generatorContribution;
+
+    // Create tooltip content
+    let tooltipContent = `<strong>${meta.name}</strong><br>`;
+    if (perPokeRate > 0) {
+      tooltipContent += `Per Poke: +${formatNumber(perPokeRate)}<br>`;
+    }
+    if (totalPerSecRate > 0) {
+      tooltipContent += `Per Second: +${formatNumber(totalPerSecRate)}`;
+      if (generatorContribution > 0) {
+        tooltipContent += ` (${formatNumber(perSecRate)} + ${formatNumber(generatorContribution)} generator)`;
+      }
+    }
+    if (perPokeRate === 0 && totalPerSecRate === 0) {
+      tooltipContent += `No active generation`;
+    }
+
+    // Store tooltip data for later use
+    div.setAttribute('data-currency-id', cid);
+    div.setAttribute('data-currency-name', meta.name);
+
     const currencyPath = `assets/images/currencies/${meta.icon}`;
     imageCache.getImage('currencies', currencyPath).then(img => {
       if (img) {
@@ -443,6 +476,118 @@ function updateCurrencyBar() {
       }
     });
     bar.appendChild(div);
+  });
+
+  // Setup tooltip event listeners only once
+  setupCurrencyTooltips();
+}
+
+// Global tooltip element to prevent flickering
+let currencyTooltip = null;
+let tooltipTimeout = null;
+
+// Setup tooltip functionality for currency items
+function setupCurrencyTooltips() {
+  const currencyItems = document.querySelectorAll('.currency-item');
+
+  currencyItems.forEach(item => {
+    // Skip if already has tooltip listeners
+    if (item.hasAttribute('data-tooltip-setup')) return;
+    item.setAttribute('data-tooltip-setup', 'true');
+
+    const showTooltip = (e) => {
+      const currencyId = item.getAttribute('data-currency-id');
+      const currencyName = item.getAttribute('data-currency-name');
+
+      if (!currencyId) return;
+
+      // Calculate tooltip content fresh
+      const perPokeRate = (state.effects.currencyPerPoke[currencyId] || 0) * (state.effects.currencyPerPokeMultiplier[currencyId] || 1);
+      const perSecRate = (state.effects.currencyPerSec[currencyId] || 0) * (state.effects.currencyPerSecMultiplier[currencyId] || 1);
+      const generatorContribution = state.resourceGeneratorContribution[currencyId] || 0;
+      const totalPerSecRate = perSecRate + generatorContribution;
+
+      let tooltipContent = `<strong>${currencyName}</strong><br>`;
+      if (perPokeRate > 0) {
+        tooltipContent += `Per Poke: +${formatNumber(perPokeRate)}<br>`;
+      }
+      if (totalPerSecRate > 0) {
+        tooltipContent += `Per Second: +${formatNumber(totalPerSecRate)}`;
+        if (generatorContribution > 0) {
+          tooltipContent += `<br><small>(${formatNumber(perSecRate)} + ${formatNumber(generatorContribution)} generator)</small>`;
+        }
+      }
+      if (perPokeRate === 0 && totalPerSecRate === 0) {
+        tooltipContent += `No active generation`;
+      }
+
+      // Clear any existing timeout
+      if (tooltipTimeout) {
+        clearTimeout(tooltipTimeout);
+        tooltipTimeout = null;
+      }
+
+      // Create or update tooltip
+      if (!currencyTooltip) {
+        currencyTooltip = document.createElement('div');
+        currencyTooltip.className = 'currency-tooltip';
+        document.body.appendChild(currencyTooltip);
+      }
+
+      currencyTooltip.innerHTML = tooltipContent;
+
+      // Position tooltip with smart bounds checking
+      const rect = item.getBoundingClientRect();
+      const tooltipRect = currencyTooltip.getBoundingClientRect();
+
+      let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
+      let top = rect.top - tooltipRect.height - 10;
+
+      // Adjust if tooltip goes off screen
+      if (left < 10) left = 10;
+      if (left + tooltipRect.width > window.innerWidth - 10) {
+        left = window.innerWidth - tooltipRect.width - 10;
+      }
+      if (top < 10) {
+        // Show below if no room above
+        top = rect.bottom + 10;
+        currencyTooltip.classList.add('below');
+      } else {
+        currencyTooltip.classList.remove('below');
+      }
+
+      currencyTooltip.style.left = left + 'px';
+      currencyTooltip.style.top = top + 'px';
+      currencyTooltip.classList.add('visible');
+    };
+
+    const hideTooltip = () => {
+      if (currencyTooltip) {
+        tooltipTimeout = setTimeout(() => {
+          if (currencyTooltip) {
+            currencyTooltip.classList.remove('visible');
+            setTimeout(() => {
+              if (currencyTooltip && !currencyTooltip.classList.contains('visible')) {
+                currencyTooltip.remove();
+                currencyTooltip = null;
+              }
+            }, 200);
+          }
+        }, 100); // Small delay to prevent flickering when moving between currency items
+      }
+    };
+
+    // Add event listeners
+    item.addEventListener('mouseenter', showTooltip);
+    item.addEventListener('mouseleave', hideTooltip);
+
+    // Touch support for mobile
+    item.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      showTooltip(e);
+      // Hide after 3 seconds on touch
+      setTimeout(hideTooltip, 3000);
+    });
   });
 }
 
@@ -637,17 +782,17 @@ function performPoke() {
       return;
     }
 
+    // Check if card is locked using card.locked property
+    if (!c.locked) {
+      giveCard(cid, count);
+    }
+
     if (state.hideCappedCards && skillMap[18102].purchased && c.tier === 20) {
       skippedCards++;
       if (currentPackCount === skippedCards) {
         state.flipsDone = true;
       }
       return;
-    }
-
-    // Check if card is locked using card.locked property
-    if (!c.locked) {
-      giveCard(cid, count);
     }
     
     const newTier = c.locked ? oldTier : c.tier;
@@ -2257,6 +2402,10 @@ function giveCard(cardId, amount = 1) {
   // --- 2. Update quantity ---
   c.quantity += amount;
 
+  if (cardId === '806' && c.quantity >= 1e12) {
+    unlockAchievement('secret16');
+  }
+
   // --- 3. Compute new tier & new effects ---
   const thresholds = window.tierThresholds[c.rarity];
   let newTier = 1;
@@ -2928,12 +3077,34 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
   await preloadGameAssets();
 
+  // Session variable to track if user dismissed the landscape overlay
+  let landscapeOverlayDismissed = false;
+  let wasInLandscape = false;
+
   // Check initial orientation
   const checkOrientation = () => {
     const overlay = document.getElementById('landscape-overlay');
     const isPortrait = window.innerHeight > window.innerWidth * 1.1;
-    overlay.style.display = isPortrait ? 'flex' : 'none';
+    const isLandscape = !isPortrait;
+
+    // If user goes to landscape and back to portrait, reset the dismissal
+    if (isLandscape) {
+      wasInLandscape = true;
+    } else if (wasInLandscape && isPortrait) {
+      // User went from landscape back to portrait, reset dismissal
+      landscapeOverlayDismissed = false;
+      wasInLandscape = false;
+    }
+
+    // Show overlay only if in portrait AND not dismissed for this session
+    overlay.style.display = (isPortrait && !landscapeOverlayDismissed) ? 'flex' : 'none';
   };
+
+  // Add dismiss button functionality
+  document.getElementById('dismiss-landscape-btn').addEventListener('click', () => {
+    landscapeOverlayDismissed = true;
+    document.getElementById('landscape-overlay').style.display = 'none';
+  });
 
   // Check orientation on load and resize
   checkOrientation();

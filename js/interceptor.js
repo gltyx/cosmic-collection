@@ -58,6 +58,27 @@ function startInterceptorCountdown() {
 
 // Handle interceptor button click
 function handleInterceptorClick() {
+  if (state.interceptorActive && skillMap[12206].purchased) {
+    // Calculate the reduction amount: remaining cooldown + 1 minute (60 seconds)
+    const reductionAmount = state.remainingCooldown + 60;
+
+    // Reduce the interceptor value
+    state.interceptorValue = Math.max(0, state.interceptorValue - reductionAmount);
+
+    // Deactivate the interceptor
+    state.interceptorActive = false;
+
+    // Clear the countdown interval
+    if (countdownInterval) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+    }
+
+    updateInterceptorUI();
+    return;
+  }
+
+  // Original functionality: activate interceptor if not active and has enough value
   if (state.interceptorActive || state.interceptorValue < 1) return;
 
   state.interceptorActive = true;

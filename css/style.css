@@ -164,7 +164,16 @@ body.dark-theme {
 }
 
 /* Reset & Base */
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+  /* Disable default mobile long-press behaviors */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 body {
   margin: 20px;
   background: var(--bg-color);
@@ -175,6 +184,13 @@ body {
 
 html, body {
   touch-action: pan-y;     /* disables double-tap/pinch zoom globally */
+}
+
+/* Prevent context menu on images and interactive elements */
+img, .card-outer, .skill-tile, .merchant-card, button {
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
 }
 
 /* Tabs */
@@ -268,6 +284,61 @@ nav#tabs { margin-bottom: 15px; }
   font-family: monospace;
   white-space: nowrap;
   font-size: 0.9em;
+}
+
+.currency-item {
+  position: relative;
+  cursor: pointer;
+}
+
+/* Currency tooltip styles */
+.currency-tooltip {
+  position: fixed;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(20, 20, 20, 0.95));
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.9em;
+  line-height: 1.4;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  max-width: 250px;
+  min-width: 120px;
+}
+
+.currency-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.95);
+}
+
+.currency-tooltip.below::after {
+  top: -16px;
+  border-top-color: transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.95);
+}
+
+.currency-tooltip.visible {
+  opacity: 1;
+}
+
+.currency-tooltip strong {
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+.currency-tooltip small {
+  color: #bbb;
+  font-size: 0.85em;
 }
 
 /* Extra small screens */
@@ -1287,6 +1358,30 @@ nav#tabs { margin-bottom: 15px; }
   25% { transform: rotate(90deg); }
   75% { transform: rotate(90deg); }
   100% { transform: rotate(0deg); }
+}
+
+.dismiss-landscape-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: clamp(0.9em, 3dvh, 1.1em);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  backdrop-filter: blur(4px);
+  touch-action: manipulation;
+}
+
+.dismiss-landscape-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.dismiss-landscape-btn:active {
+  transform: translateY(0);
 }
 
 .welcome-modal {
