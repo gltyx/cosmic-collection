@@ -1548,6 +1548,13 @@ window.skills = [
       purchased: false
     },
     {
+      id: 17002,
+      name: "Realm Conqueror 2",
+      description: "Getting all cards in a realm to tier 20 locks in its realm conqueror bonus permanently. (can sacrifice cards from that realm freely)",
+      cost: { realmId: 12, currencyId: "coral", amount: 4e30},
+      purchased: false
+    },
+    {
       id: 18001,
       name: "No More Junk",
       description: "Junk cards no longer show up after poke (you still get them) unless they gain tier or are new.",
@@ -4090,10 +4097,12 @@ function applySkill(id, skipCost = false) {
         processNewCardDiscovered();
         break;
       case 16002: // Gotta Catch 'Em All 2
-        processNewCardDiscovered();
+        if (loadFinished) processNewCardDiscovered();
         break;
       case 17001: // Realm Conqueror
         processNewCardDiscovered();
+        break;
+      case 17002: // Realm Conqueror 2
         break;
       case 18001: // No More Junk
         state.pokeRaritiesOmitted.push('junk');

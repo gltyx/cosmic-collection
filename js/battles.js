@@ -1493,9 +1493,6 @@ function battleLoop() {
           }
           if (state.battle.dismemberRealms.has(card.realm) && Math.random() < state.battle.dismemberChance) {
             state.battle.currentEnemy.attack = Math.floor(state.battle.currentEnemy.attack * (state.battle.currentEnemy.name === 'Your Ego' ? 0.9975 : 0.99));
-            if (state.battle.currentEnemy.name === 'Your Ego') {
-              state.battle.currentEnemy.attack = Math.floor(state.battle.currentEnemy.attack * 0.75);
-            } 
             if (state.battle.currentEnemy.attack <= 1) {
               state.battle.currentEnemy.attack = 1;
               unlockAchievement('secret18');
@@ -1922,7 +1919,7 @@ function startBattleLoop() {
         // Then start the interval
         state.battle.battleInterval = setInterval(battleLoop, 500);
       }
-    }, 100);
+    }, 250);
   }
 }
 

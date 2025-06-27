@@ -1905,3 +1905,28 @@ nav#tabs { margin-bottom: 15px; }
   background-color: #cccccc;
   cursor: not-allowed;
 }
+
+/* T20 Achievement Badge for realm filter buttons */
+.t20-achievement-badge {
+  position: absolute;
+  bottom: 12%;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(45deg, #ffd700, #ffed4e);
+  color: #333;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  border: 2px solid #fff;
+  z-index: 10;
+}
+
+.t20-achievement-badge:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}

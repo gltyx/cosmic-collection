@@ -18944,6 +18944,16 @@ window.cards = [
       {
         "type": "rarityOddsDivider",
         "realm": 12,
+        "rarity": "junk"
+      },
+      {
+        "type": "rarityOddsDivider",
+        "realm": 12,
+        "rarity": "basic"
+      },
+      {
+        "type": "rarityOddsDivider",
+        "realm": 12,
         "rarity": "decent"
       }
     ],

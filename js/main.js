@@ -157,6 +157,7 @@ window.state = {
   rocksAgainstCronus: new Set(),
   zeusSacrifices: new Set(),
   lastSelectedRealmsCheatDetector: false,
+  realmsWithAllT20: new Set(), // Track realms where all cards have reached T20
 };
 
 // init currencies & effects
@@ -204,6 +205,7 @@ function loadState() {
     state.rocksAgainstCronus = new Set(obj.rocksAgainstCronus || []);
     state.zeusSacrifices = new Set(obj.zeusSacrifices || []);
     state.lastSelectedRealmsCheatDetector = obj.lastSelectedRealmsCheatDetector || false;
+    state.realmsWithAllT20 = new Set(obj.realmsWithAllT20 || []);
         
     // === Determine whether any saved card actually has a `locked` property ===
     const savedOwned = obj.ownedCards || {};
@@ -369,6 +371,7 @@ function saveState() {
     rocksAgainstCronus: Array.from(state.rocksAgainstCronus),
     zeusSacrifices: Array.from(state.zeusSacrifices),
     lastSelectedRealmsCheatDetector: state.lastSelectedRealmsCheatDetector,
+    realmsWithAllT20: Array.from(state.realmsWithAllT20),
     effectFilters: {
       activeGroups: Array.from(state.effectFilters.activeGroups),
       oddsRealms: Array.from(state.effectFilters.oddsRealms),
@@ -2418,6 +2421,9 @@ function initCardsFilters() {
     const totalInREalm = totalInRealm(r.id);
     const isComplete = ownedInRealm === totalInREalm;
     
+    // Check if this realm has T20 achievement
+    const hasT20Achievement = skillMap[17002] && skillMap[17002].purchased && state.realmsWithAllT20.has(r.id);
+
     btn.innerHTML = `
       <img class="filter-back" alt="${r.name} card back"/>
       <div class="filter-label">${r.name}</div>
@@ -2428,6 +2434,7 @@ function initCardsFilters() {
             : `${ownedInRealm}/${totalInREalm}`
         }
       </div>
+      ${hasT20Achievement ? '<div class="t20-achievement-badge">★</div>' : ''}
     `;
 
     // Load card back image
@@ -3146,6 +3153,8 @@ function giveCard(cardId, amount = 1) {
     c.lastAppliedSpecialEffects = specialEffs;
     if (newTier === 20) {
       checkAchievements('tierFanatic', c.rarity);
+      // Check if this realm now has all cards at T20
+      checkAndTrackRealmT20Achievement(c.realm);
     }
   } 
 
@@ -3583,10 +3592,26 @@ function processNewCardDiscovered() {
   }
   if (skillMap[17001].purchased){
     //compute total # realms where all cards are discovered
-    const fullyDiscoveredRealms = realms.filter(r => 
-      r.unlocked && 
-      cards.filter(c => c.realm === r.id).every(c => c.quantity > 0)
-    ).length;
+    let fullyDiscoveredRealms;
+
+    if (skillMap[17002] && skillMap[17002].purchased) {
+      // With skill 17002: First check if realm had all cards T20, then check if all cards have qty>0
+      fullyDiscoveredRealms = realms.filter(r => {
+        if (!r.unlocked) return false;
+
+        // If this realm already achieved all T20, it's permanently locked in
+        if (state.realmsWithAllT20.has(r.id)) return true;
+
+        // Otherwise, check if all cards have qty > 0 (original logic)
+        return cards.filter(c => c.realm === r.id).every(c => c.quantity > 0);
+      }).length;
+    } else {
+      // Original logic: just check if all cards have qty > 0
+      fullyDiscoveredRealms = realms.filter(r =>
+        r.unlocked &&
+        cards.filter(c => c.realm === r.id).every(c => c.quantity > 0)
+      ).length;
+    }
     //make this only apply the difference from the last time this was applied. 
     const difference = fullyDiscoveredRealms - lastFullyDiscoveredRealms;
     if (difference > 0){  
@@ -4134,4 +4159,30 @@ function updateCurrencyAndSave() {
 
   // Finally save the game state
   saveState();
+}
+
+// Function to check if all cards in a realm have reached T20 and track it
+function checkAndTrackRealmT20Achievement(realmId) {
+  // Only check if skill 17002 is purchased
+  if (!skillMap[17002] || !skillMap[17002].purchased) return;
+
+  // Skip if already tracked
+  if (state.realmsWithAllT20.has(realmId)) return;
+
+  // Get all cards in the realm
+  const realmCards = cards.filter(c => c.realm === realmId);
+  if (realmCards.length === 0) return;
+
+  // Check if all cards have reached T20 (max tier)
+  const allCardsT20 = realmCards.every(c => c.tier >= 20);
+
+  if (allCardsT20) {
+    state.realmsWithAllT20.add(realmId);
+    showTidbit(`Realm ${realmId} has all cards at Tier 20! Realm Conqueror bonus locked in permanently.`, 4000);
+
+    // Update UI if we're on the cards collection screen
+    if (currentTab === 'cards') {
+      renderCardsCollection();
+    }
+  }
 }

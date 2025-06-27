@@ -312,10 +312,7 @@ function updateStatsUI() {
 
     if (skillMap[17001].purchased){
         //compute total # realms where all cards are discovered
-      const fullyDiscoveredRealms = realms.filter(r => 
-        r.unlocked && 
-        cards.filter(c => c.realm === r.id).every(c => c.quantity > 0)
-      ).length;
+      const fullyDiscoveredRealms = lastFullyDiscoveredRealms;
       const realmConquerorMultiplier = Math.pow(2, fullyDiscoveredRealms);
 
       tblE.innerHTML += `
