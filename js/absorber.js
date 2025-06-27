@@ -71,10 +71,12 @@ function resetAbsorber() {
 }
 
 // Get current multiplier
-function getAbsorberMultiplier() {
+function getAbsorberMultiplier(tooltipInfoOnly = false) {
   if (absorberActive) {
     const multiplier = state.absorberValue;
-    resetAbsorber();
+    if (!tooltipInfoOnly) {
+      resetAbsorber();
+    }
     return multiplier;
   }
   return 1;

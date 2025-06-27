@@ -66,14 +66,14 @@ window.skills = [
     {
       id: 1010,
       name: "Unlock Greek Gods Realm",
-      description: "Black Hole pokes and Merchants can now give cards from Greek Gods realm.",
+      description: "Black Hole pokes can now give cards from Greek Gods realm.",
       cost: { realmId: 10, currencyId: "cosmic_ray", amount: 1e10 },
       purchased: false
     },
     {
       id: 1011,
       name: "Unlock Bosses Realm",
-      description: "Black Hole pokes and Merchants can now give cards from Bosses realm.",
+      description: "Black Hole pokes can now give cards from Bosses realm.",
       cost: { realmId: 11, currencyId: "zeal", amount: 1e18 },
       purchased: false
     },
@@ -446,6 +446,13 @@ window.skills = [
       name: "Even Faster Poke 11",
       description: "Decrease base cooldown for Greek Gods by 10min.",
       cost: { realmId: 12, currencyId: "rune", amount: 1e20 },
+      purchased: false
+    },
+    {
+      id: 3112,
+      name: "Even Faster Poke 12",
+      description: "Decrease base cooldown for Bosses by 60hrs.",
+      cost: { realmId: 12, currencyId: "zeal", amount: 6e31 },
       purchased: false
     },
     {
@@ -2206,6 +2213,13 @@ window.skills = [
       purchased: false
     },
     {
+      id: 25003,
+      name: "Card Leveler 3",
+      description: "Adds Setting for max currency % to spend per card when using Level All button.",
+      cost: { realmId: 11, currencyId: "feather", amount: 3e17 },
+      purchased: false
+    },
+    {
       id: 26001,
       name: "Crit Chance",
       description: "Unlock battle Critical Hit Chance for all cards and set it to 5%.",
@@ -3247,7 +3261,96 @@ window.skills = [
       description: "Undamaged cards in battle stay for next enemy.",
       cost: { realmId: 12, currencyId: "coin", amount: 9.9e31 },
       purchased: false
+    },
+    {
+      id: 29102,
+      name: "Battle Card Preserver 2",
+      description: "Cards in battle stay for next enemy if they have at least 90% HP.",
+      cost: { realmId: 12, currencyId: "coin", amount: 9.99e35 },
+      purchased: false
+    },
+    {
+      id: 30001,
+      name: "Spiritual Boss Poke",
+      description: "Pokes that have Spirit Familiars and Bosses realms selected (other realms can be selected as well) yield 13x cards.",
+      cost: { realmId: 12, currencyId: "spirit", amount: 1.3e32 },
+      purchased: false
+    },
+    {
+      id: 30002,
+      name: "Solid Max Card Kill Rewards",
+      description: "10x enemy Global Max Cards kill rewards (not retroactive).",
+      cost: { realmId: 12, currencyId: "stone", amount: 1e33 },
+      purchased: false
+    },
+    {
+      id: 30003,
+      name: "Faded Boss Realm",
+      description: "Decrease base cooldown for Bosses by 180hrs.",
+      cost: { realmId: 12, currencyId: "rune", amount: 4.2e32 },
+      purchased: false
+    },
+    {
+      id: 30004,
+      name: "Boss Prayer",
+      description: "Increase realm odds for Bosses by 2x.",
+      cost: { realmId: 12, currencyId: "spirit", amount: 2e33 },
+      purchased: false
+    },
+    {
+      id: 30005,
+      name: "Oooh Shiny!",
+      description: "+1B Max Cards per Poke.",
+      cost: { realmId: 12, currencyId: "pearl", amount: 1e33 },
+      purchased: false
+    },
+    {
+      id: 30006,
+      name: "That's Enough Pollen",
+      description: "Remove Bugdom deselect cooldown multiplier.",
+      cost: { realmId: 12, currencyId: "pollen", amount: 5e33 },
+      purchased: false
+    },
+    {
+      id: 30007,
+      name: "It's Always Just About The Birds",
+      description: "Aviary deselect cooldown multiplier becomes 0.5x (reduces cooldown!).",
+      cost: { realmId: 12, currencyId: "feather", amount: 1e33 },
+      purchased: false
+    },
+    {
+      id: 30008,
+      name: "Nothing But Love",
+      description: "Pokes generate 33x worth of pokes of all currencies.",
+      cost: { realmId: 12, currencyId: "zeal", amount: 1e36 },
+      purchased: false
+    },
+    {
+      id: 30009,
+      name: "Cooldown Divider Equation Boost",
+      description: "Increase Tier contribution for Cooldown Divider of all cards by 2x. (From T*(T+1)/2 to T*(T+1))",
+      cost: { realmId: 12, currencyId: "rune", amount: 2e27 },
+      purchased: false
+    },
+    {
+      id: 30010,
+      name: "Min/Max Cards Equation Boosts",
+      description: "Increase Tier contribution exponent Base for Min/Max Cards per Poke from 1.5 to 1.8 for Bosses, 1.7 for Greek Gods, and 1.6 for other Realms. (B<sup>T-1</sup>)",
+      cost: { realmId: 12, currencyId: "crystal", amount: 8.88e29 },
+      purchased: false
+    },
+    {
+      id: 30011,
+      name: "Currency Equation Boosts",
+      description: "Increase Tier contribution exponent Base for Currency per Poke and per Second 2 to 2.5 for all cards. (B<sup>T-1</sup>)",
+      cost: { realmId: 12, currencyId: "cosmic_ray", amount: 2.5e30 },
+      purchased: false
     }
+
+
+
+
+
   ];
 
   // --- PURCHASE LOGIC ---
@@ -3608,6 +3711,13 @@ function applySkill(id, skipCost = false) {
           renderRealmFilters();
         }
         break;
+      case 3112:
+        realms[11].cooldown -= 3600 * 60;
+        if (loadFinished) {
+          updatePokeFilterStats();
+          renderRealmFilters();
+        }
+        break;
       case 4001: // Not Less Cards
         state.effects.minCardsPerPoke += 2;
         break;
@@ -3847,6 +3957,8 @@ function applySkill(id, skipCost = false) {
         break;
       case 12001: // Hawking Radiation Harvester
         window.initHarvester();
+        const showDeviceHoverInfoToggle = document.getElementById('showDeviceHoverInfoToggle');
+        showDeviceHoverInfoToggle.style.display = 'flex';
         break;
       case 12002: // Harvester Upgrade
         break;
@@ -4192,6 +4304,12 @@ function applySkill(id, skipCost = false) {
       case 25001: // Card Leveler
       case 25002: // Card Leveler 2
         break;
+      case 25003: // Card Leveler 3
+        // Show currency spending control in settings
+        if (loadFinished && typeof updateCurrencySpendingControlVisibility === 'function') {
+          updateCurrencySpendingControlVisibility();
+        }
+        break;
       case 26001: // Crit Chance
         state.battle.critChance += 0.05;
         break;
@@ -4442,6 +4560,70 @@ function applySkill(id, skipCost = false) {
       case 29005:
         state.battle.weakPointRealms.add(3);
         state.battle.evolutionRealms.add(7);
+        break;
+      case 29101:
+      case 29102:
+      case 30001:
+        break;
+      case 30002:
+        if (loadFinished) {
+          bossMechanicsByName = getBossMechanicsByName();
+        }
+        break;
+      case 30003:
+        realms[11].cooldown -= 3600 * 180;
+        if (loadFinished) {
+          updatePokeFilterStats();
+          renderRealmFilters();
+        }
+        break;
+      case 30004:
+        realms[11].pokeWeight *= 2;
+        if (loadFinished) updatePokeFilterStats();
+        break;
+      case 30005:
+        state.effects.maxCardsPerPoke += 1e9;
+        break;
+      case 30006:
+        realms[2].deselectMultiplier /= 2;
+        if (loadFinished) updatePokeFilterStats();
+        break;
+      case 30007:
+        realms[3].deselectMultiplier /= 4;
+        if (loadFinished) updatePokeFilterStats();
+        break;
+      case 30008:
+        break;
+      case 30009: // Increase Tier contribution for Cooldown Divider
+      case 30010: // Increase Tier contribution exponent Base for Min/Max Cards per Poke
+      case 30011: // Increase Tier contribution exponent Base for Currency per Poke and per Second
+        // Need to recalculate all card effects since the formula changed
+        if (loadFinished) {
+          // Remove all existing card effects
+          cards.forEach(c => {
+            if (c.quantity > 0 && c.lastAppliedEffects) {
+              applyEffectsDelta(c.lastAppliedEffects, -1);
+            }
+            if (c.quantity > 0 && c.lastAppliedSpecialEffects) {
+              applyEffectsDelta(c.lastAppliedSpecialEffects, -1);
+            }
+          });
+
+          // Recalculate and reapply all card effects with new formula
+          cards.forEach(c => {
+            if (c.quantity > 0) {
+              const newEffs = computeCardEffects(c);
+              const specialEffs = computeSpecialEffects(c);
+              applyEffectsDelta(newEffs, +1);
+              applyEffectsDelta(specialEffs, +1);
+              c.lastAppliedEffects = newEffs;
+              c.lastAppliedSpecialEffects = specialEffs;
+            }
+          });
+
+          // Update UI elements that depend on cooldown effects
+          updatePokeFilterStats();
+        }
         break;
 
       default:

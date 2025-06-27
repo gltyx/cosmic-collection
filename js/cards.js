@@ -17407,7 +17407,7 @@ window.cards = [
       "amount": 10.0
     },
     "description": "King of the gods who once chained the monster Typhon beneath Mount Etna with his thunderbolts.",
-    "power": 12500,
+    "power": 15000,
     "defense": 10000,
     "baseEffects": [
       {
@@ -17431,8 +17431,8 @@ window.cards = [
       },
       {
         "type": "rarityOddsDivider",
-        "realm": 11,
-        "rarity": "decent"
+        "realm": 12,
+        "rarity": "junk"
       },
       {
         "type": "rarityOddsDivider",
@@ -18655,6 +18655,11 @@ window.cards = [
       },
       {
         "type": "cooldownDivider"
+      },
+      {
+        "type": "rarityOddsDivider",
+        "realm": 12,
+        "rarity": "basic"
       }
     ],
     "specialEffects": [
@@ -18779,7 +18784,7 @@ window.cards = [
           "type": "level",
           "amount": 300
         },
-        "value": 10000000.0
+        "value": 25000000.0
       }
     ]
   },
@@ -18797,9 +18802,9 @@ window.cards = [
       "currency": "royal_jelly",
       "amount": 5.0
     },
-    "description": "He once ripped the arm off the Titan Gaia and used it as a club, leaving her howls echoing through Olympus.",
+    "description": "He once uprooted an entire mountain and crushed a legion beneath its weight.",
     "power": 500,
-    "defense": 1500,
+    "defense": 1875,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -18832,7 +18837,7 @@ window.cards = [
           "type": "level",
           "amount": 300
         },
-        "value": 10000000.0
+        "value": 25000000.0
       }
     ]
   },
@@ -18852,7 +18857,7 @@ window.cards = [
     },
     "description": "Said to have hatched from an egg in a silent void, Arceus shaped the Pokémon universe and gave life to all other Pokémon.",
     "power": 10000,
-    "defense": 2000,
+    "defense": 2500,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -18900,7 +18905,7 @@ window.cards = [
           "type": "level",
           "amount": 300
         },
-        "value": 10000000.0
+        "value": 25000000.0
       }
     ]
   },
@@ -18935,6 +18940,11 @@ window.cards = [
       },
       {
         "type": "cooldownDivider"
+      },
+      {
+        "type": "rarityOddsDivider",
+        "realm": 12,
+        "rarity": "decent"
       }
     ],
     "specialEffects": [
@@ -18973,7 +18983,7 @@ window.cards = [
     },
     "description": "Vegeta once endured 10,000 g’s of gravity training, forging his Saiyan body into a living star-breaker.",
     "power": 2813,
-    "defense": 500,
+    "defense": 704,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -19031,7 +19041,7 @@ window.cards = [
     },
     "description": "Death had a near Chuck Norris experience once.",
     "power": 2000,
-    "defense": 8000,
+    "defense": 9000,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -19273,6 +19283,26 @@ window.cards = [
       },
       {
         "type": "cooldownDivider"
+      },
+      {
+        "type": "rarityOddsDivider",
+        "realm": 12,
+        "rarity": "junk"
+      },
+      {
+        "type": "rarityOddsDivider",
+        "realm": 12,
+        "rarity": "basic"
+      },
+      {
+        "type": "rarityOddsDivider",
+        "realm": 12,
+        "rarity": "decent"
+      },
+      {
+        "type": "rarityOddsDivider",
+        "realm": 12,
+        "rarity": "fine"
       }
     ],
     "specialEffects": [
@@ -19310,7 +19340,7 @@ window.cards = [
       "amount": 5.0
     },
     "description": "Your ultimate nemesis.",
-    "power": 50000,
+    "power": 500000,
     "defense": 250000,
     "baseEffects": [
       {

@@ -269,7 +269,7 @@ const BATTLE_TRICKS = {
 };
 
 // Function to display a tidbit
-function showTidbit(text) {
+function showTidbit(text, duration = 8000) {
     const tidbitEl = document.createElement('div');
     tidbitEl.className = 'battle-tidbit';
     tidbitEl.innerHTML = text;
@@ -282,7 +282,7 @@ function showTidbit(text) {
     setTimeout(() => {
         tidbitEl.style.animation = 'tidbitFadeOut 0.5s ease-out forwards';
         setTimeout(() => tidbitEl.remove(), 500);
-    }, 8000);
+    }, duration);
 }
 
 // Function to check for and apply battle tricks

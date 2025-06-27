@@ -101,12 +101,15 @@ window.state = {
     activeGroups: new Set(),
     oddsRealms:      new Set(),    // <realmId>
     oddsRarities:   new Set(),    // <rarity>
-    unlockedRarities: new Set() // Track unlocked rarities
+    unlockedRarities: new Set(), // Track unlocked rarities
+    specialEffectsMode: 'none' // 'none' | 'show' | 'locked' | 'hide' for Special Effects filter
   },
   battle: {
     currentBattleRealm: 11,
     slots: [null, null, null], // 3 slots for cards in battle
     currentEnemy: null,
+    battleInterval: null,
+    startTimeout: null,
     critChance: 0,
     critDamage: 1.5,
     damageAbsorption: 0,
@@ -143,13 +146,17 @@ window.state = {
     globalMaxCardsMult: 1,
     vegetaEvolutions: 0,
   },
+  showDeviceHoverInfo: true,
   showTierUps: true,  // Add this line
   autoUseAbsorber: false,  // Add this line
   skipSacrificeDialog: false,  // Add this line
+  skipRemoveFromBattleDialog: false,  // Add this line
+  currencySpendingPercentage: 1.0, // Percentage of currency to spend on leveling (0.01 to 1.0)
   lastUnstuck: null, // Track last unstuck time
   cardSizeScale: 1, // Track card size scale
   rocksAgainstCronus: new Set(),
   zeusSacrifices: new Set(),
+  lastSelectedRealmsCheatDetector: false,
 };
 
 // init currencies & effects
@@ -196,6 +203,7 @@ function loadState() {
     state.donationButtonClicked = obj.donationButtonClicked || false;
     state.rocksAgainstCronus = new Set(obj.rocksAgainstCronus || []);
     state.zeusSacrifices = new Set(obj.zeusSacrifices || []);
+    state.lastSelectedRealmsCheatDetector = obj.lastSelectedRealmsCheatDetector || false;
         
     // === Determine whether any saved card actually has a `locked` property ===
     const savedOwned = obj.ownedCards || {};
@@ -280,10 +288,22 @@ function loadState() {
       });
     }
     state.showTierUps = obj.showTierUps ?? true; // Add this line with default true
+    state.showDeviceHoverInfo = obj.showDeviceHoverInfo ?? true; // Add this line with default true
     state.autoUseAbsorber = obj.autoUseAbsorber ?? false; // Add this line with default false
     state.skipSacrificeDialog = obj.skipSacrificeDialog ?? false; // Add this line with default false
+    state.skipRemoveFromBattleDialog = obj.skipRemoveFromBattleDialog ?? false; // Add this line with default false
+    state.currencySpendingPercentage = obj.currencySpendingPercentage ?? 1.0; // Add this line with default 1.0
     state.cardSizeScale = obj.cardSizeScale || 1;
-    state.lastUnstuck = obj.lastUnstuck ? new Date(obj.lastUnstuck) : null;
+    state.lastUnstuck = obj.lastUnstuck || null;
+
+    // Load effect filters
+    if (obj.effectFilters) {
+      state.effectFilters.activeGroups = new Set(obj.effectFilters.activeGroups || []);
+      state.effectFilters.oddsRealms = new Set(obj.effectFilters.oddsRealms || []);
+      state.effectFilters.oddsRarities = new Set(obj.effectFilters.oddsRarities || []);
+      state.effectFilters.unlockedRarities = new Set(obj.effectFilters.unlockedRarities || []);
+      // specialEffectsMode always defaults to 'none' on load
+    }
   } catch(e){
     console.error("Failed to load save:", e);
   }
@@ -316,8 +336,11 @@ function saveState() {
     lastSaveTime: Date.now(),
     remainingCooldown: state.remainingCooldown,
     showTierUps: state.showTierUps,  // Add this line
+    showDeviceHoverInfo: state.showDeviceHoverInfo,
     autoUseAbsorber: state.autoUseAbsorber,
     skipSacrificeDialog: state.skipSacrificeDialog,
+    skipRemoveFromBattleDialog: state.skipRemoveFromBattleDialog,
+    currencySpendingPercentage: state.currencySpendingPercentage,
     cardSizeScale: state.cardSizeScale,
     lastUnstuck: state.lastUnstuck,
     battle: {
@@ -344,7 +367,15 @@ function saveState() {
       vegetaEvolutions: state.battle.vegetaEvolutions
     },
     rocksAgainstCronus: Array.from(state.rocksAgainstCronus),
-    zeusSacrifices: Array.from(state.zeusSacrifices)
+    zeusSacrifices: Array.from(state.zeusSacrifices),
+    lastSelectedRealmsCheatDetector: state.lastSelectedRealmsCheatDetector,
+    effectFilters: {
+      activeGroups: Array.from(state.effectFilters.activeGroups),
+      oddsRealms: Array.from(state.effectFilters.oddsRealms),
+      oddsRarities: Array.from(state.effectFilters.oddsRarities),
+      unlockedRarities: Array.from(state.effectFilters.unlockedRarities)
+      // Note: specialEffectsMode is not saved, always defaults to 'none'
+    }
   };
   currencies.forEach(c => {
     obj.currencies[c.id] = state.currencies[c.id].toString();
@@ -641,18 +672,47 @@ function performPoke() {
   revealedCount = 0;
   state.flipsDone = false;
 
+  if (state.selectedRealms.length === 1 && (state.selectedRealms[0] === 11 || state.selectedRealms[0] === 12)) {
+    state.lastSelectedRealmsCheatDetector = true;
+  } else {
+    state.lastSelectedRealmsCheatDetector = false;
+  }
+
   // how many cards to draw this poke
   const e     = state.effects;
-  const r = (Math.random() + Math.random()) / 2; // center-biased
-  const draws = Math.floor(Math.floor(
-    ((r * ((e.maxCardsPerPoke + state.achievementRewards.maxCardsPerPoke) * (state.achievementRewards.maxCardsMultiplier) * (state.battle.globalMaxCardsMult) * (state.supporterCheckboxClicked ? 1.25 : 1) 
-          - ((e.minCardsPerPoke + state.achievementRewards.minCardsPerPoke) * state.achievementRewards.minCardsMultiplier)  + 1)
-          ) + (e.minCardsPerPoke + state.achievementRewards.minCardsPerPoke) * state.achievementRewards.minCardsMultiplier))
-  * absorberMultiplier);
+
+  const min = (e.minCardsPerPoke + state.achievementRewards.minCardsPerPoke) * state.achievementRewards.minCardsMultiplier;
+  const max = (e.maxCardsPerPoke + state.achievementRewards.maxCardsPerPoke) * state.achievementRewards.maxCardsMultiplier * state.battle.globalMaxCardsMult * (state.supporterCheckboxClicked ? 1.25 : 1);
+
+  const ratio = max / min;
+  const logWeight = ratio >= 90 ? 0.9 : ratio / 100; // equivalent to ratio/10%
+
+  // Logarithmic random: between log(min) and log(max)
+  const logMin = Math.log(min);
+  const logMax = Math.log(max);
+  const logRand = Math.exp(Math.random() * (logMax - logMin) + logMin);
+
+  // Linear random
+  const linearRand = Math.random() * (max - min) + min;
+
+  // Blend
+  const blended = logRand * logWeight + linearRand * (1 - logWeight);
+
+  // Final draws calculation (same as before)
+  let draws = Math.floor(Math.floor(blended + 1) * absorberMultiplier);
+
+  const isSpecialCondition = skillMap[30001].purchased && state.selectedRealms.includes(9) && state.selectedRealms.includes(12);
+
+  if (isSpecialCondition) {
+    draws *= 13;
+  }
 
   // Create and animate floating number
   const floatingNumber = document.createElement('div');
   floatingNumber.className = 'floating-number';
+  if (isSpecialCondition) {
+    floatingNumber.classList.add('floating-number-pink');
+  }
   floatingNumber.textContent = formatNumber(draws);
 
   state.stats.totalCardsDrawn += draws;
@@ -758,7 +818,7 @@ function performPoke() {
   Object.entries(state.effects.currencyPerPoke).forEach(([curId, rate]) => {
     if (!rate || state.currencies[curId] == null) return;
     state.currencies[curId] =
-      state.currencies[curId].plus(new Decimal(rate * state.effects.currencyPerPokeMultiplier[curId]));
+      state.currencies[curId].plus(new Decimal(rate * state.effects.currencyPerPokeMultiplier[curId] * (skillMap[30008].purchased ? 33 : 1) ));
   });
 
   // Check for affordable skills after currency update
@@ -911,6 +971,9 @@ function performPoke() {
         front.append(badge);
         if (wasNew && state.interceptorActive && skillMap[12204].purchased) {
           state.interceptorValue = state.interceptorValue + 15;
+          if (state.interceptorValue > 86400) {
+            unlockAchievement('secret17');
+          }
         }
       } else if (newTier > oldTier) {
         const badge = document.createElement('div');
@@ -1101,8 +1164,370 @@ function tryEnableHole() {
   }
 }
 
+// Create tooltip element
+let holeTooltip = null;
+
+function createHoleTooltip() {
+  if (holeTooltip) return holeTooltip;
+
+  holeTooltip = document.createElement('div');
+  holeTooltip.className = 'hole-tooltip';
+  holeTooltip.style.cssText = `
+    position: absolute;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-family: var(--ui-font);
+    white-space: nowrap;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  `;
+  document.body.appendChild(holeTooltip);
+  return holeTooltip;
+}
+
+function updateHoleTooltipContent() {
+  if (!holeTooltip) return;
+
+  const e = state.effects;
+  let minCards = Math.floor((e.minCardsPerPoke + state.achievementRewards.minCardsPerPoke) * state.achievementRewards.minCardsMultiplier);
+  let maxCards = Math.floor((e.maxCardsPerPoke + state.achievementRewards.maxCardsPerPoke) * (state.achievementRewards.maxCardsMultiplier) * (state.battle.globalMaxCardsMult) * (state.supporterCheckboxClicked ? 1.25 : 1));
+
+  // Apply absorber multiplier
+  const absorberMult = getAbsorberMultiplier(tooltipInfoOnly = true);
+  minCards = Math.floor(minCards * absorberMult);
+  maxCards = Math.floor(maxCards * absorberMult);
+
+  // Check for special condition (realm 9 + 12 with skill 30001)
+  const isSpecialCondition = skillMap[30001].purchased && state.selectedRealms.includes(9) && state.selectedRealms.includes(12);
+  if (isSpecialCondition) {
+    minCards *= 13;
+    maxCards *= 13;
+  }
+
+  // Determine card value colors
+  let cardColor = 'white';
+  if (absorberMult > 1) {
+    cardColor = '#20b2aa'; // Teal-green for absorber multiplier
+  } else if (isSpecialCondition) {
+    cardColor = '#ff69b4'; // Pink for special condition
+  }
+
+  // Get cooldown info and color
+  const cooldownSum = calculateCooldown();
+  const cooldownTxt = formatDuration(cooldownSum);
+  const cooldownColor = getCooldownColor(cooldownSum, forTooltip = true);
+  const skipChance = Math.round((state.effects.cooldownSkipChance || 0) * 100);
+
+  holeTooltip.innerHTML = `
+    <div>Poke Cards: <span style="color: ${cardColor}">${formatNumber(minCards)} - ${formatNumber(maxCards)}</span></div>
+    <div>Cooldown: <span style="color: ${cooldownColor}">${cooldownTxt}</span> (${skipChance}% skip)</div>
+  `;
+
+  if (skillMap[30008].purchased) {
+    holeTooltip.innerHTML += `<div style="color: gray">♥ Get 33 Pokes of Currencies ♥</div>`;
+  }
+}
+
+function showHoleTooltip(e) {
+  if (holeBtn.disabled || holeBtn.classList.contains('disabled')) return;
+
+  const tooltip = createHoleTooltip();
+  updateHoleTooltipContent();
+
+  const rect = holeBtn.getBoundingClientRect();
+  const left = rect.left + rect.width / 2 + window.scrollX;
+  const top = rect.top + window.scrollY - 10;
+
+  tooltip.style.left = `${left}px`;
+  tooltip.style.top = `${top}px`;
+  tooltip.style.opacity = '0.9';
+}
+
+function hideHoleTooltip() {
+  if (holeTooltip) {
+    holeTooltip.style.opacity = '0';
+  }
+}
+
+// Add hover event listeners
+holeBtn.addEventListener('mouseenter', showHoleTooltip);
+holeBtn.addEventListener('mouseleave', hideHoleTooltip);
+
+// Device tooltips
+let deviceTooltips = {};
+
+function createDeviceTooltip(deviceName) {
+  if (deviceTooltips[deviceName]) return deviceTooltips[deviceName];
+
+  const tooltip = document.createElement('div');
+  tooltip.className = 'device-tooltip';
+  tooltip.style.cssText = `
+    position: absolute;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-family: var(--ui-font);
+    white-space: nowrap;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    max-width: 300px;
+    white-space: normal;
+    line-height: 1.3;
+  `;
+  document.body.appendChild(tooltip);
+  deviceTooltips[deviceName] = tooltip;
+  return tooltip;
+}
+
+function updateHarvesterTooltipContent() {
+  const tooltip = deviceTooltips['harvester'];
+  if (!tooltip) return;
+
+  const isAvailable = state.harvesterValue > 1 && state.remainingCooldown > 0;
+
+  // Base online rate: 0.01, skill 12002 doubles it
+  const onlineRate = 0.01 * (skillMap[12002].purchased ? 2 : 1);
+  // Offline rate: 10x slower unless skill 12003 is purchased
+  const offlineRate = skillMap[12003].purchased ? onlineRate : onlineRate / 10;
+
+  let content = `<div><strong>Hawking Radiation <em>Harvester</em></strong></div>`;
+
+  if (isAvailable) {
+    const reductionAmount = Math.min(state.harvesterValue, state.remainingCooldown);
+    content += `<div>Click to reduce Black Hole cooldown by ${formatDuration(reductionAmount)}</div>`;
+  } else {
+    content += `<div>Used to reduce Black Hole cooldown</div>`;
+  }
+
+  // make the harvesting rate gray color
+  content += `<div style="color:gray">Harvesting Rate: ${formatDuration(onlineRate, 2)}/sec</div>`;
+
+  if (!skillMap[12003].purchased) {
+    content += `<div style="color:gray">Offline Rate: ${formatDuration(offlineRate, 2)}/sec</div>`;
+  }
+
+  if (skillMap[12004].purchased) {
+    content += `<div style="color:gray">Poke Bonus: +1% of cooldown time</div>`;
+  }
+
+  tooltip.innerHTML = content;
+}
+
+function updateAbsorberTooltipContent() {
+  const tooltip = deviceTooltips['absorber'];
+  if (!tooltip) return;
+
+  // Check if absorber is active by looking at the button class
+  const absorberButton = document.getElementById('absorber-button');
+  const isAbsorberActive = absorberButton && absorberButton.classList.contains('active');
+  const isAvailable = state.absorberValue > 1 && !isAbsorberActive;
+  if (!isAvailable) return;
+
+  // Calculate absorption rate display
+  let absorptionRateText;
+  if (skillMap[12104].purchased) {
+    absorptionRateText = `${state.selectedRealms.length}(realms) * ${skillMap[12102].purchased ? '0.1' : '0.05'} / poke`;
+  } else {
+    const absorptionRate = 0.05 * (skillMap[12102].purchased ? 2 : 1);
+    absorptionRateText = `${formatNumber(absorptionRate)}/poke`;
+  }
+
+  tooltip.innerHTML = `
+    <div><strong>Gravitational Wave <em>Absorber</em></strong></div>
+    <div>Click for next poke to give ${formatNumber(state.absorberValue)}x cards</div>
+    <div style="color:gray">Absorption Rate: ${absorptionRateText}</div>
+  `;
+}
+
+function updateInterceptorTooltipContent() {
+  const tooltip = deviceTooltips['interceptor'];
+  if (!tooltip) return;
+
+  // Passive rate: base 0.01, skill 12202 doubles it (only affects passive charging)
+  const passiveRate = 0.01 * (skillMap[12202].purchased ? 2 : 1);
+
+  let content = `<div><strong>Space Bending <em>Interceptor</em></strong></div>`;
+
+  if (state.interceptorActive) {
+    if (!skillMap[12206].purchased) {
+      content += `<div>Cannot be turned off (until a certain skill is purchased)</div>`;
+    } else {
+      const reductionAmount = state.remainingCooldown + 60;
+      content += `<div>Click to turn off - will lose ${formatDuration(reductionAmount)}</div>`;
+    }
+
+    if (skillMap[12204].purchased) {
+      content += `<div style="color:gray">Bonus Charge: +15s / new, +2s / tier up</div>`;
+    }
+  } else {
+    const actionText = skillMap[12203].purchased ? "poking and card flipping" : "card flipping";
+    content += `<div>Click to activate automatic ${actionText} for ${formatDuration(state.interceptorValue)}</div>`;
+    content += `<div style="color:gray">Pasive Charge: ${formatDuration(passiveRate, 2)}/sec</div>`;
+
+    const activeRate = passiveRate * (skillMap[12205].purchased ? 2.5 : 1);
+    content += `<div style="color:gray">Manual Charge: ${formatDuration(activeRate, 2)} / card flip</div>`;
+  }
+
+  tooltip.innerHTML = content;
+}
+
+function updateTimeCrunchTooltipContent() {
+  const tooltip = deviceTooltips['timeCrunch'];
+  if (!tooltip) return;
+
+  const timeUntilCharged = Math.max(0, state.timeCrunchMaxChargeTime - state.timeCrunchValue);
+  const pokeMultiplier = skillMap[30008].purchased ? 3300 : (skillMap[12302].purchased ? 100 : 25);
+
+  // Calculate total currency gain
+  let totalGain = 0;
+  Object.entries(state.effects.currencyPerPoke).forEach(([curId, rate]) => {
+    if (rate && state.currencies[curId] != null) {
+      totalGain += rate * pokeMultiplier * state.effects.currencyPerPokeMultiplier[curId];
+    }
+  });
+
+  tooltip.innerHTML = `
+    <div><strong>Time Crunch <em>Collector</em></strong></div>
+    <div>Time until charged: ${formatDuration(timeUntilCharged)}</div>
+    <div>Click to gain currency equal to ${formatNumber(pokeMultiplier)} pokes</div>
+  `;
+}
+
+function showDeviceTooltip(deviceName, element) {
+  const tooltip = createDeviceTooltip(deviceName);
+
+  // Update content based on device type
+  switch(deviceName) {
+    case 'harvester':
+      updateHarvesterTooltipContent();
+      break;
+    case 'absorber':
+      updateAbsorberTooltipContent();
+      break;
+    case 'interceptor':
+      updateInterceptorTooltipContent();
+      break;
+    case 'timeCrunch':
+      updateTimeCrunchTooltipContent();
+      break;
+  }
+
+  // Position the tooltip
+  const rect = element.getBoundingClientRect();
+  const viewportWidth = window.innerWidth;
+
+  // Temporarily make tooltip visible to measure it
+  tooltip.style.opacity = '0';
+  tooltip.style.visibility = 'visible';
+  const tooltipRect = tooltip.getBoundingClientRect();
+  tooltip.style.visibility = 'hidden';
+
+  // Calculate initial centered position
+  let left = rect.left + rect.width / 2 + window.scrollX;
+  const top = rect.top + window.scrollY - 10;
+
+  // Check if tooltip would go off the left edge
+  const tooltipHalfWidth = tooltipRect.width / 2;
+  if (left - tooltipHalfWidth < 10) {
+    // Position tooltip to the right of the left edge with some padding
+    left = tooltipHalfWidth + 10;
+    tooltip.style.transform = 'translateX(-50%)';
+  }
+  // Check if tooltip would go off the right edge
+  else if (left + tooltipHalfWidth > viewportWidth - 10) {
+    // Position tooltip to the left of the right edge with some padding
+    left = viewportWidth - tooltipHalfWidth - 10;
+    tooltip.style.transform = 'translateX(-50%)';
+  }
+  // Normal centered positioning
+  else {
+    tooltip.style.transform = 'translateX(-50%)';
+  }
+
+  tooltip.style.left = `${left}px`;
+  tooltip.style.top = `${top}px`;
+  tooltip.style.visibility = 'visible';
+  tooltip.style.opacity = '0.9';
+}
+
+function hideDeviceTooltip(deviceName) {
+  const tooltip = deviceTooltips[deviceName];
+  if (tooltip) {
+    tooltip.style.opacity = '0';
+    // Hide after transition completes
+    setTimeout(() => {
+      if (tooltip.style.opacity === '0') {
+        tooltip.style.visibility = 'hidden';
+      }
+    }, 200);
+  }
+}
+
+// Add mobile long press support
+let longPressTimer = null;
+let isLongPressing = false;
+
+holeBtn.addEventListener('touchstart', (e) => {
+  if (holeBtn.disabled || holeBtn.classList.contains('disabled')) return;
+
+  isLongPressing = false;
+  longPressTimer = setTimeout(() => {
+    isLongPressing = true;
+    showHoleTooltip();
+  }, 500); // 500ms long press
+});
+
+holeBtn.addEventListener('touchend', () => {
+  if (longPressTimer) {
+    clearTimeout(longPressTimer);
+    longPressTimer = null;
+  }
+
+  if (isLongPressing) {
+    hideHoleTooltip();
+    isLongPressing = false;
+  }
+});
+
+holeBtn.addEventListener('touchmove', () => {
+  if (longPressTimer) {
+    clearTimeout(longPressTimer);
+    longPressTimer = null;
+  }
+
+  if (isLongPressing) {
+    hideHoleTooltip();
+    isLongPressing = false;
+  }
+});
+
 holeBtn.addEventListener('click', ()=>{
   if (holeBtn.disabled || holeBtn.classList.contains('animating')) return;
+
+  // Clear long press timer and hide tooltip immediately when clicked
+  if (longPressTimer) {
+    clearTimeout(longPressTimer);
+    longPressTimer = null;
+  }
+  hideHoleTooltip();
+  isLongPressing = false;
+
   holeBtn.classList.add('animating');
 
   const pokeAnim = anime({
@@ -1124,6 +1549,180 @@ holeBtn.addEventListener('click', ()=>{
   Promise.all([ pokeAnim.finished, takeAnim.finished ])
     .then(()=> holeBtn.classList.remove('animating'));
 });
+
+// Device button event listeners
+function initDeviceTooltips() {
+  // Harvester tooltips
+  const harvesterButton = document.getElementById('harvester-button');
+  if (harvesterButton) {
+    // Prevent default drag/context menu behavior
+    harvesterButton.addEventListener('dragstart', (e) => e.preventDefault());
+    harvesterButton.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    harvesterButton.addEventListener('mouseenter', () => {
+      if (state.showDeviceHoverInfo) {
+        showDeviceTooltip('harvester', harvesterButton);
+      }
+    });
+    harvesterButton.addEventListener('mouseleave', () => hideDeviceTooltip('harvester'));
+    harvesterButton.addEventListener('click', () => hideDeviceTooltip('harvester'));
+
+    // Mobile long press for harvester
+    let harvesterLongPressTimer = null;
+    let harvesterIsLongPressing = false;
+
+    harvesterButton.addEventListener('touchstart', (e) => {
+      harvesterIsLongPressing = false;
+      harvesterLongPressTimer = setTimeout(() => {
+        harvesterIsLongPressing = true;
+        if (state.showDeviceHoverInfo) {
+          showDeviceTooltip('harvester', harvesterButton);
+        }
+      }, 500);
+    });
+
+    harvesterButton.addEventListener('touchend', () => {
+      if (harvesterLongPressTimer) {
+        clearTimeout(harvesterLongPressTimer);
+        harvesterLongPressTimer = null;
+      }
+      if (harvesterIsLongPressing) {
+        hideDeviceTooltip('harvester');
+        harvesterIsLongPressing = false;
+      }
+    });
+  }
+
+  // Absorber tooltips
+  const absorberButton = document.getElementById('absorber-button');
+  if (absorberButton) {
+    // Prevent default drag/context menu behavior
+    absorberButton.addEventListener('dragstart', (e) => e.preventDefault());
+    absorberButton.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    absorberButton.addEventListener('mouseenter', () => {
+      const isAbsorberActive = absorberButton.classList.contains('active');
+      if (state.showDeviceHoverInfo && state.absorberValue > 1 && !isAbsorberActive) {
+        showDeviceTooltip('absorber', absorberButton);
+      }
+    });
+    absorberButton.addEventListener('mouseleave', () => hideDeviceTooltip('absorber'));
+    absorberButton.addEventListener('click', () => hideDeviceTooltip('absorber'));
+
+    // Mobile long press for absorber
+    let absorberLongPressTimer = null;
+    let absorberIsLongPressing = false;
+
+    absorberButton.addEventListener('touchstart', (e) => {
+      const isAbsorberActive = absorberButton.classList.contains('active');
+      if (!(state.absorberValue > 1 && !isAbsorberActive)) return;
+
+      absorberIsLongPressing = false;
+      absorberLongPressTimer = setTimeout(() => {
+        absorberIsLongPressing = true;
+        if (state.showDeviceHoverInfo) {
+          showDeviceTooltip('absorber', absorberButton);
+        }
+      }, 500);
+    });
+
+    absorberButton.addEventListener('touchend', () => {
+      if (absorberLongPressTimer) {
+        clearTimeout(absorberLongPressTimer);
+        absorberLongPressTimer = null;
+      }
+      if (absorberIsLongPressing) {
+        hideDeviceTooltip('absorber');
+        absorberIsLongPressing = false;
+      }
+    });
+  }
+
+  // Interceptor tooltips
+  const interceptorButton = document.getElementById('interceptor-button');
+  if (interceptorButton) {
+    // Prevent default drag/context menu behavior
+    interceptorButton.addEventListener('dragstart', (e) => e.preventDefault());
+    interceptorButton.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    interceptorButton.addEventListener('mouseenter', () => {
+      if (state.showDeviceHoverInfo) {
+        showDeviceTooltip('interceptor', interceptorButton);
+      }
+    });
+    interceptorButton.addEventListener('mouseleave', () => hideDeviceTooltip('interceptor'));
+    interceptorButton.addEventListener('click', () => hideDeviceTooltip('interceptor'));
+
+    // Mobile long press for interceptor
+    let interceptorLongPressTimer = null;
+    let interceptorIsLongPressing = false;
+
+    interceptorButton.addEventListener('touchstart', (e) => {
+      interceptorIsLongPressing = false;
+      interceptorLongPressTimer = setTimeout(() => {
+        interceptorIsLongPressing = true;
+        if (state.showDeviceHoverInfo) {
+          showDeviceTooltip('interceptor', interceptorButton);
+        }
+      }, 500);
+    });
+
+    interceptorButton.addEventListener('touchend', () => {
+      if (interceptorLongPressTimer) {
+        clearTimeout(interceptorLongPressTimer);
+        interceptorLongPressTimer = null;
+      }
+      if (interceptorIsLongPressing) {
+        hideDeviceTooltip('interceptor');
+        interceptorIsLongPressing = false;
+      }
+    });
+  }
+
+  // Time Crunch tooltips - use container since button has pointer-events: none when disabled
+  const timeCrunchContainer = document.getElementById('time-crunch-container');
+  const timeCrunchButton = document.getElementById('time-crunch-button');
+  if (timeCrunchContainer && timeCrunchButton) {
+    // Prevent default drag/context menu behavior
+    timeCrunchContainer.addEventListener('dragstart', (e) => e.preventDefault());
+    timeCrunchContainer.addEventListener('contextmenu', (e) => e.preventDefault());
+    timeCrunchButton.addEventListener('dragstart', (e) => e.preventDefault());
+    timeCrunchButton.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    timeCrunchContainer.addEventListener('mouseenter', () => {
+      if (state.showDeviceHoverInfo) {
+        showDeviceTooltip('timeCrunch', timeCrunchButton);
+      }
+    });
+    timeCrunchContainer.addEventListener('mouseleave', () => hideDeviceTooltip('timeCrunch'));
+    timeCrunchContainer.addEventListener('click', () => hideDeviceTooltip('timeCrunch'));
+
+    // Mobile long press for time crunch
+    let timeCrunchLongPressTimer = null;
+    let timeCrunchIsLongPressing = false;
+
+    timeCrunchContainer.addEventListener('touchstart', (e) => {
+      timeCrunchIsLongPressing = false;
+      timeCrunchLongPressTimer = setTimeout(() => {
+        timeCrunchIsLongPressing = true;
+        if (state.showDeviceHoverInfo) {
+          showDeviceTooltip('timeCrunch', timeCrunchButton);
+        }
+      }, 500);
+    });
+
+    timeCrunchContainer.addEventListener('touchend', () => {
+      if (timeCrunchLongPressTimer) {
+        clearTimeout(timeCrunchLongPressTimer);
+        timeCrunchLongPressTimer = null;
+      }
+      if (timeCrunchIsLongPressing) {
+        hideDeviceTooltip('timeCrunch');
+        timeCrunchIsLongPressing = false;
+      }
+    });
+  }
+}
 
 // --- CARD MODAL ---
 function openModal(cardId) {
@@ -1355,7 +1954,7 @@ function openModal(cardId) {
     let totalMaxCost = new Decimal(0);
     let currentCost = nextLevelCost;
     const availableCurrency = state.currencies[c.levelCost.currency] || new Decimal(0);
-    
+
     while (totalMaxCost.plus(currentCost).lessThanOrEqualTo(availableCurrency)) {
       totalMaxCost = totalMaxCost.plus(currentCost);
       maxLevel++;
@@ -1606,7 +2205,7 @@ function openModal(cardId) {
     let includesSoftcapped = false;
 
     effectsList.forEach(def => {
-      const scale = EFFECT_SCALES[def.type] ?? 2;
+      const scale = EFFECT_SCALES[def.type] ?? (skillMap[30011].purchased ? 2.5 : 2);
       const tierMult = Math.pow(scale, c.tier - 1);
 
       let total, breakdown;
@@ -1626,17 +2225,37 @@ function openModal(cardId) {
         }
       } else if (def.type === "minCardsPerPoke") {
         const baseValue = EFFECTS_RARITY_VALUES[c.rarity]?.minCardsPerPokeBaseValue || 0;
-        total = baseValue * c.level * tierMult;
-        breakdown = `(base: ${formatNumber(baseValue)} × ${formatNumber(c.level)} lvl × ${formatNumber(tierMult)} tier)`;
+        let tierMultiplier = tierMult;
+        if (skillMap[30010].purchased) {
+          if (c.realm === 12) {
+            tierMultiplier = Math.pow(1.8, c.tier - 1);
+          } else if (c.realm === 11) {
+            tierMultiplier = Math.pow(1.7, c.tier - 1);
+          } else {
+            tierMultiplier = Math.pow(1.6, c.tier - 1);
+          }
+        }
+        total = baseValue * c.level * tierMultiplier;
+        breakdown = `(base: ${formatNumber(baseValue)} × ${formatNumber(c.level)} lvl × ${formatNumber(tierMultiplier)} tier)`;
         valueHtml = `+${formatNumber(total)}`;
       } else if (def.type === "maxCardsPerPoke") {
         const baseValue = EFFECTS_RARITY_VALUES[c.rarity]?.maxCardsPerPokeBaseValue || 0;
-        total = baseValue * c.level * tierMult;
+        let tierMultiplier = tierMult;
+        if (skillMap[30010].purchased) {
+          if (c.realm === 12) {
+            tierMultiplier = Math.pow(1.8, c.tier - 1);
+          } else if (c.realm === 11) {
+            tierMultiplier = Math.pow(1.7, c.tier - 1);
+          } else {
+            tierMultiplier = Math.pow(1.6, c.tier - 1);
+          }
+        }
+        total = baseValue * c.level * tierMultiplier;
         breakdown = `(base: ${formatNumber(baseValue)} × ${formatNumber(c.level)} lvl × ${formatNumber(tierMult)} tier)`;
         valueHtml = `+${formatNumber(total)}`;
       } else if (def.type === "cooldownDivider") {
         const baseValue = EFFECTS_RARITY_VALUES[c.rarity]?.cooldownDividerBaseValue || 0;
-        const tierContribution = (c.tier * (c.tier + 1)) / 2;
+        const tierContribution = (c.tier * (c.tier + 1)) / (skillMap[30009].purchased ? 1 : 2);
         total = baseValue * c.level * tierContribution;
         breakdown = `(base: ${formatNumber(baseValue)} × ${formatNumber(c.level)} lvl × ${formatNumber(tierContribution)} tier)`;
         valueHtml = `+${formatNumber(total)}`;
@@ -1871,9 +2490,18 @@ function renderEffectFilters() {
 
   // Create filter groups
   Object.entries(EFFECT_FILTER_GROUPS).forEach(([groupName, effectTypes]) => {
-    // Check if any effects in this group are available
-    const hasAvailableEffects = effectTypes.some(type => availableEffects.has(type));
-    if (!hasAvailableEffects) return;
+    // Special handling for Special Effects group
+    if (groupName === 'Special Effects') {
+      // Check if any owned cards have special effects (across all realms)
+      const hasSpecialEffectsCards = cards
+        .filter(c => c.quantity > 0)
+        .some(c => c.specialEffects && c.specialEffects.length > 0);
+      if (!hasSpecialEffectsCards) return;
+    } else {
+      // Check if any effects in this group are available
+      const hasAvailableEffects = effectTypes.some(type => availableEffects.has(type));
+      if (!hasAvailableEffects) return;
+    }
 
     const groupEl = document.createElement('div');
     groupEl.className = 'effect-filter-group';
@@ -1973,6 +2601,72 @@ function renderEffectFilters() {
           setTimeout(() => document.addEventListener('click', closeSubmenu), 0);
         }
       };
+    } else if (groupName === 'Special Effects') {
+      // Special handling for Special Effects filter
+      const { specialEffectsMode } = state.effectFilters;
+
+      // Add indicator to show current mode (only if not 'none')
+      if (specialEffectsMode !== 'none') {
+        let indicator = document.createElement('div');
+        indicator.className = 'special-effects-indicator';
+        indicator.textContent = specialEffectsMode === 'show' ? 'All' :
+                               specialEffectsMode === 'locked' ? 'Locked' : 'Hide Unlocked';
+        groupEl.appendChild(indicator);
+      }
+
+      // submenu container
+      const submenu = document.createElement('div');
+      submenu.className = 'rarity-filter-submenu';
+      submenu.style.display = 'none';
+
+      // Single column for options
+      const optionsColumn = document.createElement('div');
+      optionsColumn.className = 'rarity-filter-column';
+      optionsColumn.innerHTML = '<h4>Special Effects Filter</h4>';
+
+      const options = [
+        { value: 'none', label: 'No Special Effect Filtering' },
+        { value: 'show', label: 'Show only Special Effects' },
+        { value: 'locked', label: 'Show only Locked Special Effects' },
+        { value: 'hide', label: 'Hide Unlocked Special Effects' }
+      ];
+
+      options.forEach(option => {
+        const opt = document.createElement('div');
+        opt.className = 'rarity-filter-option' + (specialEffectsMode === option.value ? ' active' : '');
+        opt.textContent = option.label;
+        opt.onclick = e => {
+          e.stopPropagation();
+          state.effectFilters.specialEffectsMode = option.value;
+          if (option.value === 'none') {
+            state.effectFilters.activeGroups.delete('Special Effects');
+          } else {
+            state.effectFilters.activeGroups.add('Special Effects');
+          }
+          renderCardsCollection();
+          saveState();
+        };
+        optionsColumn.appendChild(opt);
+      });
+
+      submenu.appendChild(optionsColumn);
+      groupEl.appendChild(submenu);
+
+      // toggle submenu & close only when clicked outside
+      const closeSubmenu = ev => {
+        if (!submenu.contains(ev.target) && !groupEl.contains(ev.target)) {
+          submenu.style.display = 'none';
+          document.removeEventListener('click', closeSubmenu);
+        }
+      };
+      groupEl.onclick = e => {
+        e.stopPropagation();
+        if (submenu.style.display === 'none') {
+          submenu.style.display = 'flex';
+          submenu.style.zIndex = '1000';
+          setTimeout(() => document.addEventListener('click', closeSubmenu), 0);
+        }
+      };
     } else {
       groupEl.addEventListener('click', () => {
         if (state.effectFilters.activeGroups.has(groupName)) {
@@ -2039,6 +2733,30 @@ function renderCardsCollection() {
             && selRealms.includes(e.realm)
             && selRarities.includes(e.rarity)
           );
+        } else if (group === 'Special Effects') {
+          // Special handling for Special Effects group
+          const { specialEffectsMode } = state.effectFilters;
+
+          // If mode is 'none', this filter shouldn't be active
+          if (specialEffectsMode === 'none') return true;
+
+          // Check if card has special effects
+          const hasSpecialEffects = c.specialEffects && c.specialEffects.length > 0;
+
+          if (specialEffectsMode === 'show') {
+            // Show only cards with special effects
+            return hasSpecialEffects;
+          } else if (specialEffectsMode === 'locked') {
+            // Show only cards where at least one special effect requirement is not met
+            if (!hasSpecialEffects) return false;
+            return c.specialEffects.some(def => !isSpecialEffectRequirementMet(c, def.requirement));
+          } else if (specialEffectsMode === 'hide') {
+            // Show cards with no special effects OR cards with locked special effects
+            if (!hasSpecialEffects) return true; // Show cards with no special effects
+            return c.specialEffects.some(def => !isSpecialEffectRequirementMet(c, def.requirement));
+          }
+
+          return false;
         } else {
           // For other groups, check if card has any of the effect types
           return effectTypes.some(type => hasEffect(c, type));
@@ -2071,7 +2789,7 @@ function renderCardsCollection() {
           state.currencies[card.levelCost.currency] = 
             (state.currencies[card.levelCost.currency] || new Decimal(0))
               .minus(result.totalCost);
-          levelUp(card.id, increment);
+          levelUp(card.id, increment, skipRender = true);
         }
       });
       
@@ -2201,7 +2919,6 @@ function renderCardsCollection() {
         state.currencies[c.levelCost.currency] = freshAmt.minus(freshCost);
         levelUp(c.id);
         updateCurrencyBar();
-        renderCardsCollection();  // re-render to update costs & button states
       });
     }
     else {
@@ -2402,10 +3119,6 @@ function giveCard(cardId, amount = 1) {
   // --- 2. Update quantity ---
   c.quantity += amount;
 
-  if (cardId === '806' && c.quantity >= 1e12) {
-    unlockAchievement('secret16');
-  }
-
   // --- 3. Compute new tier & new effects ---
   const thresholds = window.tierThresholds[c.rarity];
   let newTier = 1;
@@ -2450,7 +3163,7 @@ function giveCard(cardId, amount = 1) {
 }
 
 // And in levelUp():
-function levelUp(cardId, increment = 1) {
+function levelUp(cardId, increment = 1, skipRender = false) {
   const c = cardMap[cardId];
   // remove old (base + special)
   if (c.lastAppliedEffects) {
@@ -2474,7 +3187,7 @@ function levelUp(cardId, increment = 1) {
   // Check for affordable skills after spending currency
   checkAffordableSkills();
 
-  if (currentTab === 'cards') {
+  if (currentTab === 'cards' && !skipRender) {
     renderCardsCollection();
   }
 }
@@ -2483,19 +3196,23 @@ function levelUp(cardId, increment = 1) {
 function calculateMaxAffordableLevel(cardId) {
   const c = cardMap[cardId];
   const baseCost = new Decimal(c.levelCost.amount);
-  const availableCurrency = state.currencies[c.levelCost.currency] || new Decimal(0);
+  const totalAvailableCurrency = state.currencies[c.levelCost.currency] || new Decimal(0);
+
+  // Apply currency spending percentage limit
+  const availableCurrency = totalAvailableCurrency.times(state.currencySpendingPercentage);
+
   let maxLevel = c.level;
   let totalCost = new Decimal(0);
   let currentCost = baseCost.times(Decimal.pow(c.levelScaling, maxLevel - 1));
   currentCost = Decimal(floorTo3SigDigits(currentCost));
-  
+
   while (totalCost.plus(currentCost).lessThanOrEqualTo(availableCurrency)) {
     totalCost = totalCost.plus(currentCost);
     maxLevel++;
     currentCost = baseCost.times(Decimal.pow(c.levelScaling, maxLevel - 1));
     currentCost = Decimal(floorTo3SigDigits(currentCost));
   }
-  
+
   return { maxLevel, totalCost };
 }
 
@@ -2673,9 +3390,9 @@ function calculateCooldown() {
   return Math.max(sum / state.effects.cooldownDivider, 0.5);
 }
 
-function getCooldownColor(cooldown) {
+function getCooldownColor(cooldown, forTooltip = false) {
   if (cooldown <= 0.5) return 'green';
-  if (cooldown < 10 * 60) return 'var(--font-color)';
+  if (cooldown < 10 * 60) return forTooltip ? 'white' : 'var(--font-color)';
   if (cooldown < 60 * 60) return 'orange';
   return 'red';
 }
@@ -3185,6 +3902,10 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   initHarvester();
   initGravitationalWaveAbsorber();
   initSpaceBendingInterceptor();
+  initTimeCrunchCollector();
+
+  // Initialize device tooltips after all devices are initialized
+  initDeviceTooltips();
 
   // Initialize battle system last, after all other systems
   if (realms[10].unlocked) {

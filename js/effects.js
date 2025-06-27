@@ -171,20 +171,40 @@ function computeCardEffects(c) {
     if (!c.baseEffects || c.tier === 0) return effs;
   
     c.baseEffects.forEach(def => {
-        const scale = EFFECT_SCALES[def.type] ?? 2;
+        const scale = EFFECT_SCALES[def.type] ?? (skillMap[30011].purchased ? 2.5 : 2);
         const multiplier = Math.pow(scale, c.tier - 1);
   
         switch (def.type) {
             case "minCardsPerPoke": {
                 const baseValue = EFFECTS_RARITY_VALUES[c.rarity]?.minCardsPerPokeBaseValue || 0;
-                const total = baseValue * c.level * multiplier;
+                let tierMultiplier = multiplier;
+                if (skillMap[30010].purchased) {
+                    if (c.realm === 12) {
+                        tierMultiplier = Math.pow(1.8, c.tier - 1);
+                    } else if (c.realm === 11) {
+                        tierMultiplier = Math.pow(1.7, c.tier - 1);
+                    } else {
+                        tierMultiplier = Math.pow(1.6, c.tier - 1);
+                    }
+                }
+                const total = baseValue * c.level * tierMultiplier;
                 effs[def.type] = (effs[def.type] || 0) + total;
                 break;
             }
   
             case "maxCardsPerPoke": {
                 const baseValue = EFFECTS_RARITY_VALUES[c.rarity]?.maxCardsPerPokeBaseValue || 0;
-                const total = baseValue * c.level * multiplier;
+                let tierMultiplier = multiplier;
+                if (skillMap[30010].purchased) {
+                    if (c.realm === 12) {
+                        tierMultiplier = Math.pow(1.8, c.tier - 1);
+                    } else if (c.realm === 11) {
+                        tierMultiplier = Math.pow(1.7, c.tier - 1);
+                    } else {
+                        tierMultiplier = Math.pow(1.6, c.tier - 1);
+                    }
+                }
+                const total = baseValue * c.level * tierMultiplier;
                 effs[def.type] = (effs[def.type] || 0) + total;
                 break;
             }
@@ -209,7 +229,7 @@ function computeCardEffects(c) {
   
             case "cooldownDivider": {
                 const baseValue = EFFECTS_RARITY_VALUES[c.rarity]?.cooldownDividerBaseValue || 0;
-                const tierContribution = (c.tier * (c.tier + 1)) / 2;
+                const tierContribution = (c.tier * (c.tier + 1)) / (skillMap[30009].purchased ? 1 : 2);
                 const total = baseValue * c.level * tierContribution;
                 effs.cooldownDivider = (effs.cooldownDivider || 0) + total;
                 break;
@@ -360,6 +380,7 @@ const EFFECT_FILTER_GROUPS = {
   '+Cards': ['minCardsPerPoke', 'maxCardsPerPoke', 'flatMaxCardsPerPoke', 'flatMinCardsPerPoke'],
   Cooldown: ['cooldownDivider', 'flatCooldownDivider'],
   Merchant: ['merchantCooldownReduction', 'flatExtraMerchantRarityScaling', 'merchantPriceDivider'],
+  'Special Effects': ['specialEffects'], // Special handling for cards with special effects
 };
 
 // Track available effects from unlocked cards

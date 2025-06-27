@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-H7T7HJ1VSM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-H7T7HJ1VSM');
+  </script> -->
   <meta charset="UTF-8" />
   <meta name="viewport"
       content="width=device-width,
                initial-scale=1,
                maximum-scale=1,
                user-scalable=no">
-  <title>Incremental Card Game</title>
+  <title>Cosmic Collection</title>
   <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon_32.png">
   <link rel="icon" type="image/png" sizes="64x64" href="assets/images/favicon_64.png">
@@ -168,7 +177,7 @@
   </div>
   <div id="tab-content-settings" class="tab-content" style="display:none;">
     <div class="settings-container">
-      <div class="version">Game Version: v0.9</div>
+      <div class="version">Game Version: v0.94</div>
       <div class="settings-section">
         <h2>Save & Load</h2>
         <div class="settings-buttons">
@@ -199,12 +208,22 @@
           <button id="showTierUpsToggle" class="settings-button toggle-button">
             <i class="fas fa-check"></i> Show Tier Ups in Collection
           </button>
+          <button id="showDeviceHoverInfoToggle" class="settings-button toggle-button" style="display: none;">
+            <i class="fas fa-check"></i> Show Device Hover Info
+          </button>
           <button id="autoAbsorberToggle" class="settings-button toggle-button" style="display: none;">
             <i class="fas fa-times"></i> Auto-Use Max Absorber
           </button>
           <button id="skipSacrificeDialogToggle" class="settings-button toggle-button" style="display: none;">
             <i class="fas fa-times"></i> Skip Sacrifice Dialog
           </button>
+          <button id ="skipRemoveFromBattleDialogToggle" class="settings-button toggle-button" style="display: none;">
+            <i class="fas fa-times"></i> Skip Battle Remove Dialog
+          </button>
+          <div id="currencySpendingControl" class="currency-spending-control" style="display: none;">
+            <label for="currencySpendingSlider">Max $ Level All: <span id="currencySpendingValue">100%</span></label>
+            <input type="range" id="currencySpendingSlider" min="1" max="100" value="100" step="1">
+          </div>
         </div>      </div>
       <div class="settings-section">
         <h2>Community & Support</h2>
@@ -301,11 +320,11 @@
   <script src="js/interceptor.js"></script>
   <script src="js/time_crunch.js"></script>
   <script src="js/battle_tricks.js"></script>
-  <script src="js/battles_helpers.js"></script>
   <script src="js/battles.js"></script>
   <script src="js/achievements.js"></script>
   <!-- Main Behavior -->
   <script src="js/main.js"></script>
+  <script src="js/battles_helpers.js"></script>
 <!--客服 开始-->
 <script src="//g8hh.github.io/static/js/jquery.min.js"></script>
 <link rel="stylesheet" href="//g8hh.github.io/static/css/kf.css" type="text/css" media="screen" charset="utf-8">
@@ -323,6 +342,5 @@ var _hmt = _hmt || [];
 })();
 </script>
     </div>
-
 </body>
 </html>

@@ -190,9 +190,9 @@ function initializeSettingsTab() {
                                 <li>Mythical Beasts: 8e9</li>
                                 <li>Incremental Games: 6e9</li>
                                 <li>Spirit Familiars: 4e9</li>
-                                <li>Weapons: 2e9</li>
-                                <li>Greek Gods: 1e9</li>
-                                <li>Bosses: 5e8</li>
+                                <li>Weapons: 1e9</li>
+                                <li>Greek Gods: 2e8</li>
+                                <li>Bosses: 1e7</li>
                             </ul>
                         <li><strong>Realm Weight Reduction:</strong> "Fleeting Realm" and "Forsaken Realm" skills reduce these weights by ÷5 each, making higher realms more likely</li>
                     </ul>
@@ -215,22 +215,38 @@ function initializeSettingsTab() {
     unstuckWarningModal.id = 'unstuckWarningModal';
     unstuckWarningModal.className = 'unstuck-modal-overlay';
     unstuckWarningModal.style.display = 'none';
-    unstuckWarningModal.innerHTML = `
-        <div class="unstuck-modal-content">
-            <h2>Get Unstuck</h2>
-            <p>This feature is intended only for when you accidentally used realm filters with an astronomically high cooldown. This will:</p>
-            <ul>
-                <li>Remove any active cooldown</li>
-                <li>Reset all currencies to 0</li>
-                <li>Keep all your other progress</li>
-            </ul>
-            <p class="warning-text">This can only be used once per day!</p>
-            <div class="modal-buttons">
-                <button id="confirmUnstuckBtn" class="settings-button warning-button">Confirm</button>
-                <button id="cancelUnstuckBtn" class="settings-button safe-button">Cancel</button>
+
+    // Function to update modal content based on cheat detector
+    function updateUnstuckModalContent() {
+        const cheatMessage = state.lastSelectedRealmsCheatDetector ? `
+            <div class="cheat-detection-message">
+                <p style="color: #ff4444; text-shadow: 0 0 4px #ff4444; font-weight: bold; animation: glow 1.5s ease-in-out infinite alternate;">
+                    Did you deliberately use this to cheat?! I know you did and I'm disappointed. I'm not going to stop you because you can play the game however you want, but shame on you.
+                </p>
             </div>
-        </div>
-    `;
+        ` : '';
+
+        unstuckWarningModal.innerHTML = `
+            <div class="unstuck-modal-content">
+                <h2>Get Unstuck</h2>
+                <p>This feature is intended only for when you accidentally used realm filters with an astronomically high cooldown. This will:</p>
+                <ul>
+                    <li>Remove any active cooldown</li>
+                    <li>Reset all currencies to 0</li>
+                    <li>Keep all your other progress</li>
+                </ul>
+                <p class="warning-text">This can only be used once per day!</p>
+                ${cheatMessage}
+                <div class="modal-buttons">
+                    <button id="confirmUnstuckBtn" class="settings-button warning-button">Confirm</button>
+                    <button id="cancelUnstuckBtn" class="settings-button safe-button">Cancel</button>
+                </div>
+            </div>
+        `;
+    }
+
+    // Initialize modal content
+    updateUnstuckModalContent();
     document.body.appendChild(unstuckWarningModal);
 
     // Initialize dark theme from localStorage
@@ -265,7 +281,6 @@ function initializeSettingsTab() {
     confirmResetButton.addEventListener('click', function() {
         // Clear all game data from localStorage
         localStorage.removeItem('ccgSave');
-        localStorage.removeItem('lastUnstuck');
 
         // Reload the page to restart the game
         window.location.reload();
@@ -388,23 +403,23 @@ function initializeSettingsTab() {
     // Get Unstuck functionality
     getUnstuckBtn.addEventListener('click', function() {
         const now = Date.now();
-        
+
         if (state.lastUnstuck && (now - parseInt(state.lastUnstuck)) < 24 * 60 * 60 * 1000) {
             const hoursLeft = Math.ceil((24 * 60 * 60 * 1000 - (now - parseInt(state.lastUnstuck))) / (60 * 60 * 1000));
             alert(`You can only use Get Unstuck once per day. Please try again in ${hoursLeft} hours.`);
             return;
         }
-        
+
+        // Update modal content based on current cheat detector state
+        updateUnstuckModalContent();
         unstuckWarningModal.style.display = 'flex';
     });
 
-    // Cancel unstuck
-    document.getElementById('cancelUnstuckBtn').addEventListener('click', function() {
-        unstuckWarningModal.style.display = 'none';
-    });
-
-    // Confirm unstuck
-    document.getElementById('confirmUnstuckBtn').addEventListener('click', function() {
+    // Use event delegation for dynamically generated buttons
+    unstuckWarningModal.addEventListener('click', function(e) {
+        if (e.target.id === 'cancelUnstuckBtn') {
+            unstuckWarningModal.style.display = 'none';
+        } else if (e.target.id === 'confirmUnstuckBtn') {
         // Clear cooldown
         state.remainingCooldown = 0;
         if (fillAnim) anime.remove(globalFill);
@@ -434,6 +449,7 @@ function initializeSettingsTab() {
         alert('Successfully reset cooldown and currencies. You can use this feature again in 24 hours.');
 
         saveState();
+        }
     });
 
     // Initialize card size slider
@@ -469,6 +485,13 @@ function initializeSettingsTab() {
         saveState();
     });
 
+    // Initialize the show device hover info toggle
+    const showDeviceHoverInfoToggle = document.getElementById('showDeviceHoverInfoToggle');
+    showDeviceHoverInfoToggle.classList.toggle('active', state.showDeviceHoverInfo);
+    showDeviceHoverInfoToggle.innerHTML = state.showDeviceHoverInfo ?
+        '<i class="fas fa-check"></i> Show Device Hover Info' :
+        '<i class="fas fa-times"></i> Show Device Hover Info';
+
     // Initialize auto absorber toggle
     const autoAbsorberToggle = document.getElementById('autoAbsorberToggle');
     autoAbsorberToggle.classList.toggle('active', state.autoUseAbsorber);
@@ -483,10 +506,46 @@ function initializeSettingsTab() {
         '<i class="fas fa-check"></i> Skip Sacrifice Dialog' :
         '<i class="fas fa-times"></i> Skip Sacrifice Dialog';
 
+    // Initialize skip remove from battle dialog toggle
+    const skipRemoveFromBattleDialogToggle = document.getElementById('skipRemoveFromBattleDialogToggle');
+    skipRemoveFromBattleDialogToggle.classList.toggle('active', state.skipRemoveFromBattleDialog);
+    skipRemoveFromBattleDialogToggle.innerHTML = state.skipRemoveFromBattleDialog ?
+        '<i class="fas fa-check"></i> Skip Battle Remove Confirm' :
+        '<i class="fas fa-times"></i> Skip Battle Remove Confirm';
+
     // Show skip sacrifice dialog toggle only if realms[10] is unlocked (Weapons realm)
     if (realms[10].unlocked) {
         skipSacrificeDialogToggle.style.display = 'flex';
+        skipRemoveFromBattleDialogToggle.style.display = 'flex';
     }
+
+    // Initialize currency spending control
+    const currencySpendingControl = document.getElementById('currencySpendingControl');
+    const currencySpendingSlider = document.getElementById('currencySpendingSlider');
+    const currencySpendingValue = document.getElementById('currencySpendingValue');
+
+    // Show currency spending control only if skill 25003 is purchased
+    if (skillMap[25003] && skillMap[25003].purchased) {
+        currencySpendingControl.style.display = 'flex';
+    }
+
+    // Initialize slider value
+    const displayPercent = state.currencySpendingPercentage * 100;
+    currencySpendingSlider.value = Math.log(displayPercent) / Math.log(100) * 100;
+    currencySpendingValue.textContent = displayPercent < 10
+                                    ? `${displayPercent.toFixed(2)}%`
+                                    : `${Math.round(displayPercent)}%`;
+
+
+    // Add click handler
+    showDeviceHoverInfoToggle.addEventListener('click', function() {
+        state.showDeviceHoverInfo = !state.showDeviceHoverInfo;
+        this.classList.toggle('active');
+        this.innerHTML = state.showDeviceHoverInfo ?
+            '<i class="fas fa-check"></i> Show Device Hover Info' :
+            '<i class="fas fa-times"></i> Show Device Hover Info';
+        saveState();
+    });
 
     // Add click handler
     autoAbsorberToggle.addEventListener('click', function() {
@@ -505,6 +564,33 @@ function initializeSettingsTab() {
         this.innerHTML = state.skipSacrificeDialog ?
             '<i class="fas fa-check"></i> Skip Sacrifice Dialog' :
             '<i class="fas fa-times"></i> Skip Sacrifice Dialog';
+        saveState();
+    });
+
+    // Add click handler for skip remove from battle dialog toggle
+    skipRemoveFromBattleDialogToggle.addEventListener('click', function() {
+        state.skipRemoveFromBattleDialog = !state.skipRemoveFromBattleDialog;
+        this.classList.toggle('active');
+        this.innerHTML = state.skipRemoveFromBattleDialog ?
+            '<i class="fas fa-check"></i> Skip Battle Remove Confirm' :
+            '<i class="fas fa-times"></i> Skip Battle Remove Confirm';
+        saveState();
+    });
+
+    currencySpendingSlider.addEventListener('input', function () {
+        const t = parseInt(this.value) / 100; // normalized 0.01–1
+        const min = 0.0001; // 0.01%
+        const max = 1.0;    // 100%
+        
+        // Logarithmic interpolation
+        const percent = min * Math.pow(max / min, t);
+        state.currencySpendingPercentage = percent;
+
+        const displayPercent = percent * 100;
+        currencySpendingValue.textContent = displayPercent < 10
+            ? `${displayPercent.toFixed(2)}%`
+            : `${Math.round(displayPercent)}%`;
+
         saveState();
     });
 
@@ -556,6 +642,14 @@ function initializeSettingsTab() {
     if (state.donationButtonClicked) {
         supporterCheckboxContainer.style.display = 'block';
         supporterCheckbox.checked = state.supporterCheckboxClicked;
+    }
+}
+
+// Function to update currency spending control visibility
+function updateCurrencySpendingControlVisibility() {
+    const currencySpendingControl = document.getElementById('currencySpendingControl');
+    if (currencySpendingControl && skillMap[25003] && skillMap[25003].purchased) {
+        currencySpendingControl.style.display = 'flex';
     }
 }
 

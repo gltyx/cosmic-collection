@@ -117,7 +117,7 @@ window.tierThresholds = {
   };
 
 // — Number formatting for currencies and costs —
-const suffixes = ["","K","M","B","T","Qa","Qi","Sx","Sp","Oc","No","Dc"];
+const suffixes = ["","K","M","B","T","Qa","Qi","Sx","Sp","Oc","No","Dc","♥","♥♥","♥♥♥"];
 
 function formatNumber(d) {
     const n = new Decimal(d);

@@ -389,6 +389,45 @@ nav#tabs { margin-bottom: 15px; }
   position: relative;
   touch-action: manipulation;
 }
+
+/* Device button tooltip styles */
+.device-tooltip {
+  position: fixed;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(20, 20, 20, 0.95));
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.9em;
+  line-height: 1.4;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  max-width: 300px;
+  min-width: 120px;
+}
+
+/* Prevent context menu and image dragging on device buttons for mobile */
+.harvester-button,
+.absorber-button,
+.interceptor-button,
+.time-crunch-button,
+.time-crunch-image {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  pointer-events: auto;
+}
 .hole-button:hover {
   animation: holePulse 1.5s infinite;
 }
@@ -1299,6 +1338,12 @@ nav#tabs { margin-bottom: 15px; }
   }
 }
 
+/* Pink floating number variant for special condition */
+.floating-number-pink {
+  color: #ff69b4 !important;
+  text-shadow: 0 0 10px rgba(255, 105, 180, 0.8) !important;
+}
+
 .skip-text {
   position: absolute;
   top: 50%;
@@ -1697,6 +1742,24 @@ nav#tabs { margin-bottom: 15px; }
   justify-content: center;
   font-size: 0.8em;
   font-weight: bold;
+}
+
+/* Special effects indicator */
+.special-effects-indicator {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  padding: 2px 6px;
+  background: var(--tab-active);
+  color: #fff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7em;
+  font-weight: bold;
+  white-space: nowrap;
+  min-width: 20px;
 }
 
 /* each option */
