@@ -42,7 +42,9 @@ function calculateHP(card) {
 function lockCard(cardId) {
   const card = cardMap[cardId];
   if (!card) return;
-  
+
+  if (card.locked && !state.battle.lockoutTimers[cardId]) return;
+
   card.locked = true;
   state.battle.lockoutTimers[cardId] = Date.now() + (state.sacrificeLockoutTime * 60 * 60 * 1000 / (state.achievementRewards.sacrificeTimeDivider + state.skillAdditionalSacrificeTimeDivider)); // sacrificeLockoutTime is in hours
   saveState();
@@ -56,6 +58,9 @@ function getNextEnemy() {
   if (enemy) {
     // Initialize enemy properties
     enemy.attack = enemy.power * 10;
+    if (enemy.name === 'Your Ego') {
+      enemy.attack *= 100;
+    }
     enemy.maxHp = enemy.defense * (state.battle.currentBattleRealm === 11 ? 100000 : 400000);
     enemy.currentHp = enemy.maxHp;
     enemy.stunTurns = 0;
@@ -306,7 +311,7 @@ function processVictory() {
   } else if (state.battle.currentEnemy.name === 'Darth Vader') {
     state.battle.globalHPMult += 0.015;
   } else if (state.battle.currentEnemy.name === 'Shao Kahn') {
-    state.battle.globalAttackMult += 0.03;
+    state.battle.globalAttackMult += 0.04;
   } else if (state.battle.currentEnemy.name === 'Hal9000') {
     state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.3 : 0.03;
   } else if (state.battle.currentEnemy.name === 'Sauron') {
@@ -316,21 +321,21 @@ function processVictory() {
   } else if (state.battle.currentEnemy.name === 'Doctor Manhattan') {
     state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.6 : 0.06;
   } else if (state.battle.currentEnemy.name === 'Aizen') {
-    state.battle.globalAttackMult += 0.08;
+    state.battle.globalAttackMult += 0.1;
   } else if (state.battle.currentEnemy.name === 'Thanos') {
     state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.8 : 0.08;
   } else if (state.battle.currentEnemy.name === 'Isshin') {
-    state.battle.globalAttackMult += 0.1;
+    state.battle.globalAttackMult += 0.12;
   } else if (state.battle.currentEnemy.name === 'Deadpool') {
     state.battle.globalHPMult += 0.03;
   } else if (state.battle.currentEnemy.name === 'Kratos') {
-    state.battle.globalAttackMult += 0.1;
+    state.battle.globalAttackMult += 0.15;
   } else if (state.battle.currentEnemy.name === 'Arceus') {
     state.battle.globalHPMult += 0.05;
   } else if (state.battle.currentEnemy.name === 'Rick') {
     state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 1 : 0.1;
   } else if (state.battle.currentEnemy.name === 'Vegeta') {
-    state.battle.globalAttackMult += 0.15;
+    state.battle.globalAttackMult += 0.18;
   } else if (state.battle.currentEnemy.name === 'Chuck Norris') {
     state.battle.globalHPMult += 0.05;
   } else if (state.battle.currentEnemy.name === 'Kaguya') {
@@ -1155,6 +1160,11 @@ function performSacrifice(cardId) {
 
   }
 
+  if (state.battle.currentEnemy.name === 'Your Ego' && (cardId === 1234)) {
+    unlockAchievement('secret20');
+  }
+
+
   if (cardId === 806 && battleCard.originalQuantity >= 1e12) {
     unlockAchievement('secret16');
     console.log('Bitcoin Trillionaire');
@@ -1541,8 +1551,10 @@ function battleLoop() {
         }
 
         if (state.battle.stunRealms.has(card.realm) && Math.random() < state.battle.stunChance && state.battle.currentEnemy.name !== 'Uranus' && state.battle.currentEnemy.name !== 'Zeus') {
-          state.battle.currentEnemy.stunTurns += 1;
-          showDamageNumber(0, 'enemy', 'stun');
+          if (state.battle.currentEnemy.name !== 'Your Ego' || Math.random() < 0.25) {
+            state.battle.currentEnemy.stunTurns += 1;
+            showDamageNumber(0, 'enemy', 'stun');
+          }
         }
 
         if (state.battle.evolutionRealms.has(card.realm) && Math.random() < state.battle.evolutionChance) {
@@ -1598,10 +1610,12 @@ function battleLoop() {
     numAttacks = filled.length;
   }
 
+  let wasStunned = false;
   
   // 2) handle stun
   if (state.battle.currentEnemy.stunTurns > 0) {
     state.battle.currentEnemy.stunTurns--;
+    wasStunned = true;
   } else {
     for (let i = 0; i < numAttacks; i++) {
       // don't attack if battle paused or no enemy
@@ -1769,8 +1783,8 @@ function battleLoop() {
         }
       }
 
-      if ((state.battle.currentEnemy.name === 'Rick' && Math.random() < 0.17) ||
-          (state.battle.currentEnemy.name === 'Kuzzi' && Math.random() < 0.85)) {
+      if ((state.battle.currentEnemy.name === 'Rick' && Math.random() < 0.15) ||
+          (state.battle.currentEnemy.name === 'Kuzzi' && Math.random() < 0.66)) {
         const filled = state.battle.slots
           .map((c, i) => c ? i : -1)
           .filter(i => i !== -1);
@@ -1813,7 +1827,7 @@ function battleLoop() {
 
       if ((state.battle.currentEnemy.name === 'Dracula' || state.battle.currentEnemy.name === 'Your Ego' || state.battle.currentEnemy.name === 'Saitama' || state.battle.currentEnemy.name === 'Doctor Manhattan')
           && state.battle.currentEnemy.maxHp > state.battle.currentEnemy.currentHp) {
-        const lifestealMult = state.battle.currentEnemy.name === 'Saitama' ? 1 : state.battle.currentEnemy.name === 'Doctor Manhattan' ? 2 : 3;
+        const lifestealMult = state.battle.currentEnemy.name === 'Saitama' ? 1 : state.battle.currentEnemy.name === 'Doctor Manhattan' ? 2 : 5;
         const healAmount = Math.min(state.battle.currentEnemy.maxHp - state.battle.currentEnemy.currentHp, damage * lifestealMult, (targetCard.currentHp + damage) * lifestealMult);
         state.battle.currentEnemy.currentHp += healAmount;
         showDamageNumber(healAmount, 'enemy', 'heal');
@@ -1860,20 +1874,20 @@ function battleLoop() {
 
       removeSlotCard(idx);
     }
-  } else if (state.battle.currentEnemy.name === 'Kratos') {
+  } else if (state.battle.currentEnemy.name === 'Kratos' && !wasStunned) {
     state.battle.currentEnemy.attack *= 1.04;
     updateBattleStats();
-  } else if (state.battle.currentEnemy.name === 'Vegeta' && state.battle.vegetaEvolutions < 5 && Math.random() < 0.09) {
+  } else if (state.battle.currentEnemy.name === 'Vegeta' && state.battle.vegetaEvolutions < 5 && Math.random() < 0.09 && !wasStunned) {
     state.battle.currentEnemy.attack *= 2;
     state.battle.currentEnemy.maxHp *= 2;
     state.battle.currentEnemy.currentHp = state.battle.currentEnemy.maxHp;
     state.battle.vegetaEvolutions += 1;
     showDamageNumber(0, 'enemy', 'evolve');
     updateBattleStats();
-  } else if (state.battle.currentEnemy.name === 'Chuck Norris' && Math.random() < 0.2) {
+  } else if (state.battle.currentEnemy.name === 'Chuck Norris' && Math.random() < 0.2 && !wasStunned) {
     state.battle.currentEnemy.attack *= 1.1;
     updateBattleStats();
-  } else if (state.battle.currentEnemy.name === 'Saitama') {
+  } else if (state.battle.currentEnemy.name === 'Saitama' && !wasStunned) {
     state.battle.currentEnemy.attack *= 1.01;
     state.battle.slots.forEach((card) => {
       if (!card) return;
@@ -1917,7 +1931,7 @@ function startBattleLoop() {
         // Call battleLoop immediately first
         battleLoop();
         // Then start the interval
-        state.battle.battleInterval = setInterval(battleLoop, 500);
+        state.battle.battleInterval = setInterval(battleLoop, state.battle.loopDuration);
       }
     }, 250);
   }
@@ -2163,7 +2177,7 @@ function showBattleHelp() {
         <li>Sacrificing resets the card's level, tier, and quantity to 0.</li>
         <li>The sacrificed card is locked for 24 hours (can be reduced) after the battle. This prevents you from getting it from pokes and merchants.</li>
         <li>All effects from the sacrificed card are removed on sacrifice.</li>
-        <li>When enemy is defeated, all sacrificed cards are removed - so choose carefully.</li>
+        <li>When enemy is defeated, all sacrificed cards are removed — so choose carefully.</li>
       </ul>
 
       <h3>Strategy Tips</h3>
@@ -2183,8 +2197,21 @@ function showBattleHelp() {
         <li>If you missed unlocking any achievements, you can hit the <strong>Reset Battles</strong> button to try again.</li>
       </ul>
 
+      <h3>Kill Rewards</h3>
+      <ul>
+        <li>Certain enemies (later on) have <strong>Kill Rewards</strong> — these stack permanently and can be farmed by defeating the enemy multiple times.</li>
+      </ul>
+
       <h3>Special Battle Stats</h3>
-      <ul style="list-style:none; padding:0; display:flex; flex-wrap:wrap; gap:8px;">
+      <ul style="
+        list-style: none;
+        padding: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 6px;
+      ">
         <li>
           <span style="color:#CCCCCC; display:inline-flex; align-items:center; gap:4px;">
             <i class="fas fa-shield-alt"></i> Damage Absorption - Reduces damage taken by that percentage
@@ -2197,7 +2224,7 @@ function showBattleHelp() {
         </li>
         <li>
           <span style="color:#FFCC99; display:inline-flex; align-items:center; gap:4px;">
-            <i class="fas fa-bolt"></i> Extra Attack Chance - Change to attack again (can proc multiple times)
+            <i class="fas fa-bolt"></i> Extra Attack Chance - Chance to attack again (can proc multiple times)
           </span>
         </li>
         <li>
@@ -2207,22 +2234,22 @@ function showBattleHelp() {
         </li>
         <li>
           <span style="color:#FFFF99; display:inline-flex; align-items:center; gap:4px;">
-            <i class="fas fa-dna"></i> Evolution Chance - On each attack, that percentage represents chance to gain attack equal to half that percentage (stackining multiplicatively)
+            <i class="fas fa-dna"></i> Evolution Chance - On each attack, chance to gain attack equal to half that percentage (stacks multiplicatively)
           </span>
         </li>
         <li>
           <span style="color:#A0C4FF; display:inline-flex; align-items:center; gap:4px;">
-            <i class="fas fa-hammer"></i> Stun Chance - Chance to stun the enemy card - forcing it to miss its attack that turn. Multiple stuns (from multiple cards with this effect) will stack and persist to the next turn
+            <i class="fas fa-hammer"></i> Stun Chance - Chance to stun the enemy card, forcing it to miss its next attack (stuns stack)
           </span>
         </li>
         <li>
           <span style="color:#FFAFAF; display:inline-flex; align-items:center; gap:4px;">
-            <i class="fas fa-bullseye"></i> Weak Point Chance - Can only trigger on Critical Hit. This is % chance to do additional damage equal to 1% of enemy current health
+            <i class="fas fa-bullseye"></i> Weak Point Chance - On Critical Hit, chance to deal extra damage equal to 1% of enemy current health
           </span>
         </li>
         <li>
           <span style="color:#3ACDB1; display:inline-flex; align-items:center; gap:4px;">
-            <i class="fas fa-coins"></i> Resourceful Attack - Each attack gain all resources equal to this many pokes (stacks with other cards with this effect)
+            <i class="fas fa-coins"></i> Resourceful Attack - Gain resources equal to this many pokes on each attack (stacks with other cards)
           </span>
         </li>
         <li>
@@ -2232,12 +2259,13 @@ function showBattleHelp() {
         </li>
         <li>
           <span style="color:#6AA48F; display:inline-flex; align-items:center; gap:4px;">
-            <i class="fas fa-skull-crossbones"></i> Dismember Chance - Can only trigger on Critical Hit. This is % chance to reduce enemy attack by 1% (stacks multiplicatively)
+            <i class="fas fa-skull-crossbones"></i> Dismember Chance - On Critical Hit, chance to reduce enemy attack by 1% (stacks multiplicatively)
           </span>
         </li>
       </ul>
     </div>
   `;
+
 
   // Handle click outside to close
   dialog.addEventListener('click', (e) => {
@@ -2276,6 +2304,13 @@ function showResetBattlesDialog() {
       card.locked = true;
       delete state.battle.lockoutTimers[card.id];
     });
+
+    // in the if statement, also Check that realm 11 and 12 cards also do not have lockout timers
+    if (state.achievementsUnlocked.has('endgameChecklist3') && cards.filter(c => c.quantity > 0).length === 0 && cards.filter(c => c.realm === 11 || c.realm === 12).every(c => c.locked && !state.battle.lockoutTimers[c.id])) {
+      state.runningGauntlet = true;
+      startGauntletTimer();
+      showTidbit('You have started the gauntlet! You have 4 hours, good luck!');
+    }
     
     const firstBossRealm = realms.find(r => r.unlocked && r.id === state.battle.currentBattleRealm);
     if (firstBossRealm) {

@@ -19103,7 +19103,7 @@ window.cards = [
       "amount": 5.0
     },
     "description": "Her Infinite Tsukuyomi trapped the entire world in lifelong dreams for a millennium.",
-    "power": 9000,
+    "power": 15000,
     "defense": 10000,
     "baseEffects": [
       {
@@ -19137,7 +19137,7 @@ window.cards = [
           "type": "level",
           "amount": 350
         },
-        "value": 3500.0
+        "value": 15000.0
       }
     ]
   },
@@ -19156,7 +19156,7 @@ window.cards = [
       "amount": 5.0
     },
     "description": "He’s been hidden in plain sight as a glowing silhouette on dozens of Marvel covers—watch closely and you’ll spot the creator himself.",
-    "power": 10000,
+    "power": 15000,
     "defense": 25000,
     "baseEffects": [
       {
@@ -19200,12 +19200,12 @@ window.cards = [
         "value": 3000.0
       },
       {
-        "type": "flatCooldownDivider",
+        "type": "flatMaxCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 400
+          "amount": 350
         },
-        "value": 8000.0
+        "value": 1500000000.0
       }
     ]
   },
@@ -19256,9 +19256,9 @@ window.cards = [
         "type": "flatCooldownDivider",
         "requirement": {
           "type": "level",
-          "amount": 450
+          "amount": 350
         },
-        "value": 20000.0
+        "value": 35000.0
       }
     ]
   },
@@ -19277,7 +19277,7 @@ window.cards = [
       "amount": 5.0
     },
     "description": "Breaking the 4th wall? The dev who wasted hundreds of hours of your life on this game.",
-    "power": 15000,
+    "power": 30000,
     "defense": 125000,
     "baseEffects": [
       {
@@ -19326,12 +19326,12 @@ window.cards = [
         "value": 3000.0
       },
       {
-        "type": "flatCooldownDivider",
+        "type": "flatMaxCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 500
+          "amount": 360
         },
-        "value": 50000.0
+        "value": 16000000000.0
       }
     ]
   },
@@ -19350,7 +19350,7 @@ window.cards = [
       "amount": 5.0
     },
     "description": "Your ultimate nemesis.",
-    "power": 500000,
+    "power": 100000,
     "defense": 250000,
     "baseEffects": [
       {
@@ -19384,12 +19384,12 @@ window.cards = [
         "value": 3000.0
       },
       {
-        "type": "flatCooldownDivider",
+        "type": "flatMaxCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 550
+          "amount": 420
         },
-        "value": 100000.0
+        "value": 42000000000.0
       }
     ]
   }

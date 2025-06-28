@@ -382,7 +382,6 @@ function renderSkillsTab() {
     grid.appendChild(noSkillsMessage);
 
     if(loadFinished && skillFilterState.purchased === 'unpurchased' && skillFilterState.lock === 'unlocked' && skillFilterState.affordability !== 'affordable') {
-      console.log('No skills match the current filters.');
       unlockAchievement('secret7');
     }
   }

@@ -18,7 +18,7 @@ const achievements = {
         condition: 'Discover 10 cards',
         icon: '🔍',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.015,
+        reward: 1.02,
         threshold: 10,
     },
     thrillOfDiscovery3: {
@@ -28,7 +28,7 @@ const achievements = {
         condition: 'Discover 15 cards',
         icon: '🔍',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.02,
+        reward: 1.03,
         threshold: 15,
     },
     thrillOfDiscovery4: {
@@ -38,7 +38,7 @@ const achievements = {
         condition: 'Discover 20 cards',
         icon: '🔍',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.025,
+        reward: 1.04,
         threshold: 20,
     },
     thrillOfDiscovery5: {
@@ -48,7 +48,7 @@ const achievements = {
         condition: 'Discover 25 cards',
         icon: '🔍',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.03,
+        reward: 1.05,
         threshold: 25,
     },
     thrillOfDiscovery6: {
@@ -58,7 +58,7 @@ const achievements = {
         condition: 'Discover 50 cards',
         icon: '🔍',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.035,
+        reward: 1.06,
         threshold: 50,
     },
     thrillOfDiscovery7: {
@@ -68,7 +68,7 @@ const achievements = {
         condition: 'Discover 100 cards',
         icon: '🔍',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.04,
+        reward: 1.07,
         threshold: 100,
     },
     thrillOfDiscovery8: {
@@ -78,7 +78,7 @@ const achievements = {
         condition: 'Discover 150 cards',
         icon: '🔍',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.045,
+        reward: 1.08,
         threshold: 150,
     },
     thrillOfDiscovery9: {
@@ -88,7 +88,7 @@ const achievements = {
         condition: 'Discover 200 cards',
         icon: '🔍',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.05,
+        reward: 1.09,
         threshold: 200,
     },
     thrillOfDiscovery10: {
@@ -98,7 +98,7 @@ const achievements = {
         condition: 'Discover 250 cards',
         icon: '🔍',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.055,
+        reward: 1.1,
         threshold: 250,
     },
     thrillOfDiscovery11: {
@@ -108,7 +108,7 @@ const achievements = {
         condition: 'Discover 300 cards',
         icon: '🔍',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.06,
+        reward: 1.15,
         threshold: 300,
     },
     thrillOfDiscovery12: {
@@ -118,7 +118,7 @@ const achievements = {
         condition: 'Discover 315 cards',
         icon: '🔍',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.065,
+        reward: 1.2,
         threshold: 315,
     },
     thrillOfDiscovery13: {
@@ -128,7 +128,7 @@ const achievements = {
         condition: 'Discover 330 cards',
         icon: '🔍',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.07,
+        reward: 1.25,
         threshold: 330,
     },
     thrillOfDiscovery14: {
@@ -138,7 +138,7 @@ const achievements = {
         condition: 'Discover 345 cards',
         icon: '🔍',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.075,
+        reward: 1.3,
         threshold: 345,
     },
 
@@ -251,7 +251,7 @@ const achievements = {
         condition: 'Collect all Greek Gods cards',
         icon: '🃏',
         rewardType: 'Max Cards Multiplier',
-        reward: 1.2,
+        reward: 1.25,
         realm: 11,
     },
     cosmicCollector12: {
@@ -271,7 +271,7 @@ const achievements = {
         condition: 'Poke the Black Hole 100 times',
         icon: '🕳️',
         rewardType: 'Min Cards Multiplier',
-        reward: 1.01,
+        reward: 1.02,
         threshold: 100,
     },
     holePoker2: {
@@ -281,7 +281,7 @@ const achievements = {
         condition: 'Poke the Black Hole 1K times',
         icon: '🕳️',
         rewardType: 'Min Cards Multiplier',
-        reward: 1.02,
+        reward: 1.04,
         threshold: 1000,
     },
     holePoker3: {
@@ -291,28 +291,28 @@ const achievements = {
         condition: 'Poke the Black Hole 10K times',
         icon: '🕳️',
         rewardType: 'Min Cards Multiplier',
-        reward: 1.03,
+        reward: 1.06,
         threshold: 10000,
     },
     holePoker4: {
         id: 'holePoker4',
         name: 'Hole Poker IV',
         type: 'holePoker',
-        condition: 'Poke the Black Hole 100K times',
+        condition: 'Poke the Black Hole 50K times',
         icon: '🕳️',
         rewardType: 'Min Cards Multiplier',
-        reward: 1.04,
-        threshold: 100000,
+        reward: 1.08,
+        threshold: 50000,
     },
     holePoker5: {
         id: 'holePoker5',
         name: 'Hole Poker V',
         type: 'holePoker',
-        condition: 'Poke the Black Hole 1M times',
+        condition: 'Poke the Black Hole 250K times',
         icon: '🕳️',
         rewardType: 'Min Cards Multiplier',
-        reward: 1.05,
-        threshold: 1000000,
+        reward: 1.1,
+        threshold: 250000,
     },
     merchantTrader: {
         id: 'merchantTrader',
@@ -494,6 +494,16 @@ const achievements = {
         reward: 130000000,
         threshold: 100000000000000,
     },
+    massivePoke14: {
+        id: 'massivePoke14',
+        name: 'Massive Poke XIV',
+        type: 'massivePoke',
+        condition: 'Get 1Qa cards from a single poke',
+        icon: '💥',
+        rewardType: 'Min Cards Per Poke',
+        reward: 250000000,
+        threshold: 1e15,
+    },
     inItForTheLongHaul: {
         id: 'inItForTheLongHaul',
         name: 'In It For The Long Haul',
@@ -608,7 +618,7 @@ const achievements = {
         id: 'inItForTheLongHaul12',
         name: 'In It For The Long Haul XII',
         type: 'inItForTheLongHaul',
-        condition: 'Total 1Q cards drawn from the Black Hole',
+        condition: 'Total 1Qa cards drawn from the Black Hole',
         icon: '⏳',
         rewardType: 'Max Cards Per Poke',
         reward: 3e7,
@@ -618,7 +628,7 @@ const achievements = {
         id: 'inItForTheLongHaul13',
         name: 'In It For The Long Haul XIII',
         type: 'inItForTheLongHaul',
-        condition: 'Total 10Q cards drawn from the Black Hole',
+        condition: 'Total 10Qa cards drawn from the Black Hole',
         icon: '⏳',
         rewardType: 'Max Cards Per Poke',
         reward: 1.5e8,
@@ -628,7 +638,7 @@ const achievements = {
         id: 'inItForTheLongHaul14',
         name: 'In It For The Long Haul XIV',
         type: 'inItForTheLongHaul',
-        condition: 'Total 100Q cards drawn from the Black Hole',
+        condition: 'Total 100Qa cards drawn from the Black Hole',
         icon: '⏳',
         rewardType: 'Max Cards Per Poke',
         reward: 7.5e8,
@@ -824,7 +834,16 @@ const achievements = {
         reward: 1.19,
         reqRealm: '12'
     },
-    // last one will be Ego Death - sacrifice Ego to Ego
+    secret20: {
+        id: 'secret20',
+        name: 'Secret XX',
+        type: 'secret',
+        condition: 'Ego Death',
+        icon: '😎',
+        rewardType: 'Min Cards Multiplier',
+        reward: 1.20,
+        reqRealm: '12'
+    },
     battleMilestone: {
         id: 'battleMilestone',
         name: 'Battle Milestone',
@@ -1347,51 +1366,51 @@ const achievements = {
         rarity: 'divine',
         threshold: 4,
     },
-    // endgameChecklist: {
-    //     id: 'endgameChecklist',
-    //     name: 'Endgame Checklist',
-    //     type: 'endgameChecklist',
-    //     condition: 'Get 1Qa of a single card',
-    //     icon: '📜',
-    //     rewardType: 'Max Cards Multiplier',
-    //     reward: 2,
-    // },
-    // endgameChecklist2: {
-    //     id: 'endgameChecklist2',
-    //     name: 'Endgame Checklist II',
-    //     type: 'endgameChecklist',
-    //     condition: 'Purchase all XXX skills',
-    //     icon: '📜',
-    //     rewardType: 'Max Cards Multiplier',
-    //     reward: 2,
-    // },
-    // endgameChecklist3: {
-    //     id: 'endgameChecklist3',
-    //     name: 'Endgame Checklist III',
-    //     type: 'endgameChecklist',
-    //     condition: 'Have all XXX cards in collection',
-    //     icon: '📜',
-    //     rewardType: 'Max Cards Multiplier',
-    //     reward: 2,
-    // },
-    // endgameChecklist4: {
-    //     id: 'endgameChecklist4',
-    //     name: 'Endgame Checklist IV',
-    //     type: 'endgameChecklist',
-    //     condition: 'Reach Inf of X Currency',
-    //     icon: '📜',
-    //     rewardType: 'Max Cards Multiplier',
-    //     reward: 2,
-    // },
-    // endgameChecklist5: {
-    //     id: 'endgameChecklist5',
-    //     name: 'Endgame Checklist V',
-    //     type: 'endgameChecklist',
-    //     condition: 'Unlock all XXX other achievements',
-    //     icon: '📜',
-    //     rewardType: 'Max Cards Multiplier',
-    //     reward: 2,
-    // },
+    endgameChecklist: {
+        id: 'endgameChecklist',
+        name: 'Massive Card Pile',
+        type: 'endgameChecklist',
+        condition: 'Get 1Qa of a single card',
+        icon: '📜',
+        rewardType: 'Max Cards Multiplier',
+        reward: 2,
+    },
+    endgameChecklist2: {
+        id: 'endgameChecklist2',
+        name: 'Beyond Skillful',
+        type: 'endgameChecklist',
+        condition: 'Purchase all 488 skills',
+        icon: '📜',
+        rewardType: 'Max Cards Multiplier',
+        reward: 2,
+    },
+    endgameChecklist3: {
+        id: 'endgameChecklist3',
+        name: 'Caught Em All!',
+        type: 'endgameChecklist',
+        condition: 'Have all 347 cards in collection',
+        icon: '📜',
+        rewardType: 'Max Cards Multiplier',
+        reward: 2,
+    },
+    endgameChecklist4: {
+        id: 'endgameChecklist4',
+        name: 'Run The Gauntlet',
+        type: 'endgameChecklist',
+        condition: 'Have All Cards, Sacrifice All Cards, Reset Both Battle Realms, Get All Cards Back in 4 Hours',
+        icon: '📜',
+        rewardType: 'Max Cards Multiplier',
+        reward: 2,
+    },
+    endgameChecklist5: {
+        id: 'endgameChecklist5',
+        name: 'Endgame Checklist V',
+        type: 'endgameChecklist',
+        condition: 'Unlock all 142 other achievements',
+        icon: '📜',
+        rewardType: 'Max Cards Multiplier',
+        reward: 2,
+    },
 
 
 };
@@ -1514,6 +1533,16 @@ function unlockAchievement(achievementId, duringLoad = false) {
             saveState();
             renderAchievements();
         }
+    }
+
+    if (state.achievementsUnlocked.size === 142) {
+        unlockAchievement('endgameChecklist5');
+        // Update The End button visibility
+        updateTheEndButtonVisibility();
+        // Show the epic finale modal after a brief delay
+        setTimeout(() => {
+            showTheEndModal();
+        }, 1000);
     }
 }
 

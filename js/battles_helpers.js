@@ -67,7 +67,7 @@ function getBossMechanicsByName() {
                             killReward: '+0.5% Global Attack Mult' 
                         },
   'Dracula':            { 
-                            specialPowers: '3x Lifesteal', 
+                            specialPowers: '5x Lifesteal', 
                             killReward: '+0.3% Global HP Mult' 
                         },
   'Cartman':            { 
@@ -100,7 +100,7 @@ function getBossMechanicsByName() {
                         },
   'Shao Kahn':          { 
                             specialPowers: '40% chance to also attack the last card', 
-                            killReward: '+3% Global Attack Mult' 
+                            killReward: '+4% Global Attack Mult' 
                         },
   'Hal9000':            { 
                             specialPowers: 'Each card takes 50% damage of the one in front of it', 
@@ -120,7 +120,7 @@ function getBossMechanicsByName() {
                         },
   'Aizen':              { 
                             specialPowers: '50% chance for Extra Attack (can proc multiple times)', 
-                            killReward: '+8% Global Attack Mult' 
+                            killReward: '+10% Global Attack Mult' 
                         },
   'Thanos':             { 
                             specialPowers: '4% chance to kill half the cards (rounded up)', 
@@ -128,7 +128,7 @@ function getBossMechanicsByName() {
                         },
   'Isshin':             { 
                             specialPowers: 'Attacks 3 Times (2nd and 3rd attacks hit random targets)', 
-                            killReward: '+10% Global Attack Mult' 
+                            killReward: '+12% Global Attack Mult' 
                         },
   'Deadpool':           { 
                             specialPowers: '69% chance to revive to full health instead of dying', 
@@ -136,19 +136,19 @@ function getBossMechanicsByName() {
                         },
   'Kratos':             { 
                             specialPowers: 'Increase Damage by 4% on each attack', 
-                            killReward: '+10% Global Attack Mult' 
+                            killReward: '+15% Global Attack Mult' 
                         },
   'Arceus':             { 
                             specialPowers: '5% chance to confuse each attacking card and have them attack a random ally instead', 
                             killReward: '+5% Global HP Mult' 
                         },
   'Rick':               { 
-                            specialPowers: '17% chance to teleport random card to another dimension (instantly kill)', 
+                            specialPowers: '15% chance to teleport random card to another dimension (instantly kill)', 
                             killReward: skillMap[30002].purchased ? '+100% to Global Max Cards Mult' : '+10% to Global Max Cards Mult' 
                         },
   'Vegeta':             { 
                             specialPowers: '9% chance to evolve - doubling attack, max hp, and fully healing (max 5 evolutions)', 
-                            killReward: '+15% Global Attack Mult' 
+                            killReward: '+18% Global Attack Mult' 
                         },
   'Chuck Norris':       { 
                             specialPowers: '20% Chance to Increase Attack by 10%. Also cannot be Dodged.', 
@@ -167,15 +167,15 @@ function getBossMechanicsByName() {
                             killReward: skillMap[30002].purchased ? '+500% to Global Max Cards Mult' : '+50% to Global Max Cards Mult' 
                         },
   'Kuzzi':              { 
-                            specialPowers: '85% chance to use AI to kill 1 random card after every turn. Also cannot be Dismembered and has no Weak Point. Kills all cards on death.', 
+                            specialPowers: '66% chance to use AI to kill 1 random card after every turn. Also cannot be Dismembered and has no Weak Point. Kills all cards on death.', 
                             killReward: skillMap[30002].purchased ? '+1000% to Global Max Cards Mult' : '+100% to Global Max Cards Mult' 
                         },
   'Your Ego':           { 
-                            specialPowers: '50% chance to dodge all attacks. 50% chance to deal 5x damage. 50% chance to attack 2nd time, hitting a random target. 50% chance to drain 100% of a random resource. 3x Lifesteal. Has no Weak Point. Dismember is 75% less effective.', 
+                            specialPowers: '50% chance to dodge all attacks and effects. 50% chance to deal 5x damage. 50% chance to attack 2nd time, hitting a random target. 50% chance to drain 100% of a random resource. 5x Lifesteal. Has no Weak Point. Dismember and Stun are 75% less effective.', 
                             killReward: skillMap[30002].purchased ? '+5000% to Global Max Cards Mult' : '+500% to Global Max Cards Mult' 
                         },
   };
 }
 
 
-let bossMechanicsByName = getBossMechanicsByName();
+let bossMechanicsByName;

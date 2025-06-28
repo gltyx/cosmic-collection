@@ -259,10 +259,18 @@ const BATTLE_TRICKS = {
     "851": {
         targetEnemy: "Kuzzi",
         effect: (enemy) => {
+            enemy.stunTurns += 7;
+        },
+        tidbit: "You use his favorite game against him. Dirty! Kuzzi does not want to hurt Degens Idle.<br><br>[Stunned for 7 turns]",
+        achievement: "bossesBattleTricks13",
+    },
+
+    "849": {
+        targetEnemy: "Kuzzi",
+        effect: (enemy) => {
             enemy.stunTurns += 3;
         },
-        tidbit: "You use his favorite game against him. Dirty! Kuzzi does not want to hurt Degens Idle.<br><br>[Stunned for 3 turns]",
-        achievement: "bossesBattleTricks13",
+        tidbit: "Honorable Mention. He does not want to hurt this one either.<br><br>[Stunned for 3 turns]",
     },
 
 
@@ -295,7 +303,9 @@ function checkBattleTrick(cardId, enemy) {
         // Apply the effect
         trick.effect(enemy);
 
-        unlockAchievement(trick.achievement);
+        if (trick.achievement) {
+            unlockAchievement(trick.achievement);
+        }
         
         // Return true to indicate a trick was applied
         return true;

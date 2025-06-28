@@ -117,7 +117,7 @@ window.tierThresholds = {
   };
 
 // — Number formatting for currencies and costs —
-const suffixes = ["","K","M","B","T","Qa","Qi","Sx","Sp","Oc","No","Dc","♥","♥♥","♥♥♥"];
+const suffixes = ["","K","M","B","T","Qa","Qi","Sx","Sp","Oc","No","Dc","♥","♥♥","♥♥♥","Inf","Inf<sup>2</sup>", "Inf<sup>3</sup>", "Inf<sup>4</sup>", "Inf<sup>5</sup>", "Inf<sup>6</sup>", "Inf<sup>7</sup>", "Inf<sup>8</sup>", "Inf<sup>9</sup>", "Inf<sup>10</sup>"];
 
 function formatNumber(d) {
     const n = new Decimal(d);
@@ -156,11 +156,24 @@ function formatNumber(d) {
 }
   
 function formatQuantity(value) {
-  return new Intl.NumberFormat('en-US', {
-    notation:               'compact',
-    compactDisplay:         'short',             // "K", "M", etc.
-    maximumSignificantDigits: 3                   // exactly 3 sig-figs
-  }).format(value);
+  if (value === 0) return '0';
+
+  // your suffixes for 10^0, 10^3, 10^6 … 10^33
+  const suffixes = ["","K","M","B","T","Qa","Qi","Sx","Sp","Oc","No","Dc"];
+  // determine which tier we’re in (thousands, millions, etc.)
+  const tier = Math.floor(Math.log10(value) / 3);
+
+  // if beyond your list, fall back to scientific
+  const suffix = suffixes[tier] || `e${tier*3}`;
+  const scale = Math.pow(10, tier * 3);
+  const scaled = value / scale;
+
+  // format to 3 significant digits
+  const formatted = new Intl.NumberFormat('en-US', {
+    maximumSignificantDigits: 3
+  }).format(scaled);
+
+  return formatted + suffix;
 }
   
 

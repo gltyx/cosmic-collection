@@ -697,7 +697,7 @@ window.skills = [
       id: 5110,
       name: "Make Love Not War",
       description: "Weapons realm deselect cooldown multiplier further reduced by 20%.",
-      cost: { realmId: 11, currencyId: "zeal", amount: 2e31 },
+      cost: { realmId: 11, currencyId: "zeal", amount: 2e34 },
       purchased: false
     },
     {
@@ -796,6 +796,13 @@ window.skills = [
       name: "Fan of Capitalism 14",
       description: "+5 cards offered by merchants.",
       cost: { realmId: 11, currencyId: "zeal", amount: 5e14 },
+      purchased: false
+    },
+    {
+      id: 6015,
+      name: "Ultimate Fan of Capitalism",
+      description: "+10 cards offered by merchants.",
+      cost: { realmId: 12, currencyId: "crystal", amount: 1e31 },
       purchased: false
     },
     {
@@ -2215,7 +2222,7 @@ window.skills = [
     {
       id: 25002,
       name: "Card Leveler 2",
-      description: "Changes Level All button to work right to left.",
+      description: "Changes Level All button to work right to left. (for individual Realms)",
       cost: { realmId: 10, currencyId: "royal_jelly", amount: 2e13 },
       purchased: false
     },
@@ -2467,7 +2474,7 @@ window.skills = [
     { 
       id: 26311,
       name: "Ultimate Spiritual Dodge",
-      description: "Increase Spirit Familiars dodge chance by +5%.",
+      description: "Increase Spirit Familiars dodge chance by +8%.",
       cost: { realmId: 12, currencyId: "spirit", amount: 1e31 },
       purchased: false
     },
@@ -2544,7 +2551,7 @@ window.skills = [
     { 
       id: 26411,
       name: "Ultimate Cosmic Stun",
-      description: "Increase Celestial Bodies stun chance by +2%.",
+      description: "Increase Celestial Bodies stun chance by +2.5%.",
       cost: { realmId: 12, currencyId: "cosmic_ray", amount: 1e33 },
       purchased: false
     },
@@ -2586,7 +2593,7 @@ window.skills = [
     {
       id: 26506,
       name: "Ultimate Rock Hard",
-      description: "Increase Rocks damage reduction by +10%.",
+      description: "Increase Rocks damage reduction by +16%.",
       cost: { realmId: 12, currencyId: "stone", amount: 1e31 },
       purchased: false
     },
@@ -2663,7 +2670,7 @@ window.skills = [
     { 
       id: 26611,
       name: "Ultimate Protective Bubble",
-      description: "Increase Protective Bubble chance by 10%.",
+      description: "Increase Protective Bubble chance by 16%.",
       cost: { realmId: 12, currencyId: "coral", amount: 1e34 },
       purchased: false
     },
@@ -2740,7 +2747,7 @@ window.skills = [
     { 
       id: 27711,
       name: "Ultimate Metamorphing Evolution",
-      description: "Increase evolution chance by +2% and damage by +1%.",
+      description: "Increase evolution chance by +5% and damage by +2.5%.",
       cost: { realmId: 12, currencyId: "pollen", amount: 1e32 },
       purchased: false
     },
@@ -2817,7 +2824,7 @@ window.skills = [
     { 
       id: 27811,
       name: "Ultimate Extra Attack",
-      description: "Increase extra attack chance by 8%.",
+      description: "Increase extra attack chance by 10%.",
       cost: { realmId: 12, currencyId: "egg", amount: 1e33 },
       purchased: false
     },
@@ -2894,7 +2901,7 @@ window.skills = [
     { 
       id: 27911,
       name: "Ultimate Resourceful Attack",
-      description: "Increase resourceful attack pokes by 1.",
+      description: "Increase resourceful attack pokes by 3.",
       cost: { realmId: 12, currencyId: "coin", amount: 1e35 },
       purchased: false
     },
@@ -2971,7 +2978,7 @@ window.skills = [
     { 
       id: 28011,
       name: "Ultimate Ancient Empowerment",
-      description: "Increase empower boost by 5%.",
+      description: "Increase empower boost by 8%.",
       cost: { realmId: 12, currencyId: "crystal", amount: 1e33 },
       purchased: false
     },
@@ -3048,7 +3055,7 @@ window.skills = [
     { 
       id: 28111,
       name: "Ultimate Weak Point Exploitation",
-      description: "Increase weak point chance by 2%.",
+      description: "Increase weak point chance by 2.5%.",
       cost: { realmId: 12, currencyId: "tooth", amount: 1e34 },
       purchased: false
     },
@@ -3125,8 +3132,8 @@ window.skills = [
     { 
       id: 28211,
       name: "Ultimate Gruesome Dismemberment",
-      description: "Increase dismember chance by 2%.",
-      cost: { realmId: 12, currencyId: "royal_jelly", amount: 1e35 },
+      description: "Increase dismember chance by 2.5%.",
+      cost: { realmId: 12, currencyId: "royal_jelly", amount: 1e34 },
       purchased: false
     },
     {
@@ -3352,13 +3359,77 @@ window.skills = [
       description: "Increase Tier contribution exponent Base for Currency per Poke and per Second 2 to 2.5 for all cards. (B<sup>T-1</sup>)",
       cost: { realmId: 12, currencyId: "cosmic_ray", amount: 2.5e30 },
       purchased: false
-    }
+    },
+    {
+      id: 30012,
+      name: "That's Enough Rocks",
+      description: "Remove Rocks deselect cooldown multiplier.",
+      cost: { realmId: 12, currencyId: "stone", amount: 5e33 },
+      purchased: false
+    },
+    {
+      id: 30013,
+      name: "That's Enough Water",
+      description: "Remove Sea World deselect cooldown multiplier.",
+      cost: { realmId: 12, currencyId: "coral", amount: 2.5e34 },
+      purchased: false
+    },
+    {
+      id: 30014,
+      name: "Clairvoyant ",
+      description: "Option to see all realms at once in Card Collection. (Why was this not a thing before?)",
+      cost: { realmId: 12, currencyId: "zeal", amount: 1.2e31 },
+      purchased: false
+    },
+    {
+      id: 30015,
+      name: "Celestial Skip",
+      description: "+10% chance to skip Black Hole cooldown.",
+      cost: { realmId: 12, currencyId: "cosmic_ray", amount: 1e37 },
+      purchased: false
+    },
+    {
+      id: 30016,
+      name: "Ultimate Absorber",
+      description: "Gravitational Wave Absorber gains +3 on every poke.",
+      cost: { realmId: 12, currencyId: "royal_jelly", amount: 2e36 },
+      purchased: false
+    },
+    {
+      id: 30017,
+      name: "Thanks Kaguya",
+      description: "Reduce realm odds for Mythical Beasts and Spirit Familiars by 5x.",
+      cost: { realmId: 12, currencyId: "pearl", amount: 5e36 },
+      purchased: false
+    },
+    {
+      id: 30018,
+      name: "Runic Battle Speed",
+      description: "Speed up battle loop by 2x.",
+      cost: { realmId: 12, currencyId: "rune", amount: 2e36 },
+      purchased: false
+    },
+    {
+      id: 30019,
+      name: "Infinite Battle Speed",
+      description: "Speed up battle loop by 2x.",
+      cost: { realmId: 12, currencyId: "zeal", amount: 9.99e44 },
+      purchased: false
+    },
+
+
+
+
+
+
 
 
 
 
 
   ];
+
+let onLoadSingleCheck = true;
 
   // --- PURCHASE LOGIC ---
 function applySkill(id, skipCost = false) {
@@ -3375,6 +3446,11 @@ function applySkill(id, skipCost = false) {
   
     // 2) mark purchased
     s.purchased = true;
+
+    if ((loadFinished || onLoadSingleCheck) && Object.values(skillMap).filter(s => s.purchased).length === 488) {
+      unlockAchievement('endgameChecklist2');
+      onLoadSingleCheck = false;
+    }
   
     // 3) apply its effect
     switch (s.id) {
@@ -3867,6 +3943,9 @@ function applySkill(id, skipCost = false) {
         break;
       case 6014:
         state.effects.merchantNumCards += 5;
+        break;
+      case 6015:
+        state.effects.merchantNumCards += 10;
         break;
       case 7001: // Unlock New Merchant
         unlockMerchantByName('Yvette Ambervale');
@@ -4364,7 +4443,7 @@ function applySkill(id, skipCost = false) {
         state.battle.dodgeChance += 0.025;
         break;
       case 26311:
-        state.battle.dodgeChance += 0.05;
+        state.battle.dodgeChance += 0.08;
         break;
       case 26401: // Stun Chance
       case 26402:
@@ -4379,15 +4458,17 @@ function applySkill(id, skipCost = false) {
         state.battle.stunChance += 0.01;
         break;
       case 26411:
-        state.battle.stunChance += 0.02;
+        state.battle.stunChance += 0.025;
         break;
       case 26501: // Rock Hard
       case 26502:
       case 26503:
       case 26504:
       case 26505:
-      case 26506:
         state.battle.damageAbsorption += 0.1;
+        break;
+      case 26506:
+        state.battle.damageAbsorption += 0.16;
         break;
       case 26601: // Protective Bubble
       case 26602:
@@ -4402,7 +4483,7 @@ function applySkill(id, skipCost = false) {
         state.battle.protectionChance += 0.05;
         break;
       case 26611:
-        state.battle.protectionChance += 0.1;
+        state.battle.protectionChance += 0.16;
         break;
       case 27701:
       case 27702:
@@ -4417,7 +4498,7 @@ function applySkill(id, skipCost = false) {
         state.battle.evolutionChance += 0.01;
         break;
       case 27711:
-        state.battle.evolutionChance += 0.02;
+        state.battle.evolutionChance += 0.05;
         break;
       case 27801:
       case 27802:
@@ -4432,7 +4513,7 @@ function applySkill(id, skipCost = false) {
         state.battle.extraAttackChance += 0.04;
         break;
       case 27811:
-        state.battle.extraAttackChance += 0.08;
+        state.battle.extraAttackChance += 0.1;
         break;
       case 27901:
       case 27902:
@@ -4447,7 +4528,7 @@ function applySkill(id, skipCost = false) {
         state.battle.resourcefulAttack += 0.5;
         break;
       case 27911:
-        state.battle.resourcefulAttack += 1;
+        state.battle.resourcefulAttack += 3;
         break;
       case 28001:
       case 28002:
@@ -4462,7 +4543,7 @@ function applySkill(id, skipCost = false) {
         state.battle.empowerment += 0.025;
         break;
       case 28011:
-        state.battle.empowerment += 0.05;
+        state.battle.empowerment += 0.08;
         break;
       case 28101:
       case 28102:
@@ -4477,7 +4558,7 @@ function applySkill(id, skipCost = false) {
         state.battle.weakPointChance += 0.01;
         break;
       case 28111:
-        state.battle.weakPointChance += 0.02;
+        state.battle.weakPointChance += 0.025;
         break;
       case 28201:
       case 28202:
@@ -4492,7 +4573,7 @@ function applySkill(id, skipCost = false) {
         state.battle.dismemberChance += 0.01;
         break;
       case 28211:
-        state.battle.dismemberChance += 0.02;
+        state.battle.dismemberChance += 0.025;
         break;
       case 28301:
         state.effects.currencyPerSecMultiplier['stone'] *= 3;
@@ -4634,6 +4715,35 @@ function applySkill(id, skipCost = false) {
           updatePokeFilterStats();
         }
         break;
+        case 30012:
+        realms[0].deselectMultiplier /= 2;
+        if (loadFinished) updatePokeFilterStats();
+        break;
+      case 30013:
+        realms[1].deselectMultiplier /= 2;
+        if (loadFinished) updatePokeFilterStats();
+        break;
+      case 30014: // Clairvoyant - All Cards filter
+        if (loadFinished) {
+          initCardsFilters();
+          renderCardsCollection();
+        }
+        break;
+      case 30015: // Celestial Skip - 10% chance to skip Black Hole cooldown
+        state.effects.cooldownSkipChance += 0.1;
+        break;
+      case 30016: //Ultimate Absorber
+        break;
+      case 30017: //Thanks Kaguya
+        realms[6].pokeWeight /= 5;
+        realms[8].pokeWeight /= 5;
+        if (loadFinished) updatePokeFilterStats();
+        break;
+      case 30018: //Runic Battle Speed
+      case 30019: //Infinite Battle Speed
+        state.battle.loopDuration /= 2;
+        break;
+      
 
       default:
         console.log('Unknown skill ID: ' + id);

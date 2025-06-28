@@ -23,6 +23,9 @@ function initializeSettingsTab() {
     // Game tips button
     const gameTipsBtn = document.getElementById('gameTipsBtn');
 
+    // The End button
+    const theEndBtn = document.getElementById('theEndBtn');
+
     // Create game tips modal
     const gameTipsModal = document.createElement('div');
     gameTipsModal.id = 'gameTipsModal';
@@ -632,6 +635,11 @@ function initializeSettingsTab() {
         }
     });
 
+    // Initialize The End button
+    theEndBtn.addEventListener('click', () => {
+        showTheEndModal();
+    });
+
     // Initialize Supporter checkbox
     supporterCheckbox.addEventListener('change', (e) => {
         state.supporterCheckboxClicked = e.target.checked;
@@ -643,6 +651,9 @@ function initializeSettingsTab() {
         supporterCheckboxContainer.style.display = 'block';
         supporterCheckbox.checked = state.supporterCheckboxClicked;
     }
+
+    // Initialize The End button visibility
+    updateTheEndButtonVisibility();
 }
 
 // Function to update currency spending control visibility
@@ -659,7 +670,7 @@ function updateCardSize() {
   if (holeDrawArea) {
     holeDrawArea.style.setProperty('--card-scale', state.cardSizeScale);
   }
-  
+
   // Update the slider and value display
   const slider = document.getElementById('cardSizeSlider');
   const valueDisplay = document.getElementById('cardSizeValue');
@@ -667,5 +678,13 @@ function updateCardSize() {
     slider.value = state.cardSizeScale * 100;
     valueDisplay.textContent = Math.round(state.cardSizeScale * 100) + '%';
   }
+}
+
+// Function to update The End button visibility
+function updateTheEndButtonVisibility() {
+    const theEndBtn = document.getElementById('theEndBtn');
+    if (theEndBtn && state.achievementsUnlocked.has('endgameChecklist5')) {
+        theEndBtn.style.display = 'block';
+    }
 }
 

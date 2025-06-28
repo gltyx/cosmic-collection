@@ -28,6 +28,7 @@ let loadFinished = false;
 // Add these at the top with other global variables
 let merchantInterval;
 let currencyInterval;
+let gauntletInterval;
 let touchMoveHandler;
 let touchEndHandler;
 let resizeHandler;
@@ -145,6 +146,7 @@ window.state = {
     globalHPMult: 1,
     globalMaxCardsMult: 1,
     vegetaEvolutions: 0,
+    loopDuration: 500,
   },
   showDeviceHoverInfo: true,
   showTierUps: true,  // Add this line
@@ -158,6 +160,9 @@ window.state = {
   zeusSacrifices: new Set(),
   lastSelectedRealmsCheatDetector: false,
   realmsWithAllT20: new Set(), // Track realms where all cards have reached T20
+  runningGauntlet: false,
+  gauntletStartTime: null, // Timestamp when Gauntlet started
+  gauntletNotifications: new Set(), // Track which notifications have been shown
 };
 
 // init currencies & effects
@@ -177,18 +182,18 @@ function loadState() {
   try {
     const obj = JSON.parse(raw);
     obj.unlockedRealms.forEach(rid  => realmMap[rid].unlocked = true);
-    // First apply purchased skills
-    if (Array.isArray(obj.purchasedSkills)) {
-      obj.purchasedSkills.forEach(sid => {
-        applySkill(Number(sid), /*skipCost=*/true);
-      });
-    }
     // Load achievements
     if (Array.isArray(obj.achievementsUnlocked)) {
       state.achievementsUnlocked = new Set(obj.achievementsUnlocked);
       state.achievementsUnlocked.forEach(achievementId => {
         unlockAchievement(achievementId, duringLoad=true);
       })
+    }
+    // First apply purchased skills
+    if (Array.isArray(obj.purchasedSkills)) {
+      obj.purchasedSkills.forEach(sid => {
+        applySkill(Number(sid), /*skipCost=*/true);
+      });
     }
     Object.entries(obj.currencies).forEach(([cid,val])=>{
       state.currencies[cid] = new Decimal(val);
@@ -206,6 +211,9 @@ function loadState() {
     state.zeusSacrifices = new Set(obj.zeusSacrifices || []);
     state.lastSelectedRealmsCheatDetector = obj.lastSelectedRealmsCheatDetector || false;
     state.realmsWithAllT20 = new Set(obj.realmsWithAllT20 || []);
+    state.runningGauntlet = obj.runningGauntlet || false;
+    state.gauntletStartTime = obj.gauntletStartTime || null;
+    state.gauntletNotifications = new Set(obj.gauntletNotifications || []);
         
     // === Determine whether any saved card actually has a `locked` property ===
     const savedOwned = obj.ownedCards || {};
@@ -372,6 +380,9 @@ function saveState() {
     zeusSacrifices: Array.from(state.zeusSacrifices),
     lastSelectedRealmsCheatDetector: state.lastSelectedRealmsCheatDetector,
     realmsWithAllT20: Array.from(state.realmsWithAllT20),
+    runningGauntlet: state.runningGauntlet,
+    gauntletStartTime: state.gauntletStartTime,
+    gauntletNotifications: Array.from(state.gauntletNotifications),
     effectFilters: {
       activeGroups: Array.from(state.effectFilters.activeGroups),
       oddsRealms: Array.from(state.effectFilters.oddsRealms),
@@ -701,7 +712,7 @@ function performPoke() {
   // Blend
   const blended = logRand * logWeight + linearRand * (1 - logWeight);
 
-  // Final draws calculation (same as before)
+  // Final draws calculation
   let draws = Math.floor(Math.floor(blended + 1) * absorberMultiplier);
 
   const isSpecialCondition = skillMap[30001].purchased && state.selectedRealms.includes(9) && state.selectedRealms.includes(12);
@@ -791,7 +802,9 @@ function performPoke() {
         
         // Assign base count to all cards
         pool.forEach(cid => {
-          picksCounts[cid] = (picksCounts[cid] || 0) + baseCount;
+          if (cid && cardMap[cid]) {
+            picksCounts[cid] = (picksCounts[cid] || 0) + baseCount;
+          }
         });
         
         // Distribute remainder randomly
@@ -799,7 +812,9 @@ function performPoke() {
           const shuffled = [...pool].sort(() => Math.random() - 0.5);
           for (let i = 0; i < remainder; i++) {
             const cid = shuffled[i];
-            picksCounts[cid] = (picksCounts[cid] || 0) + 1;
+            if (cid && cardMap[cid]) {
+              picksCounts[cid] = (picksCounts[cid] || 0) + 1;
+            }
           }
         }
       } else {
@@ -807,7 +822,9 @@ function performPoke() {
         for (let i = 0; i < rarityCount; i++) {
           const randomIndex = Math.floor(Math.random() * pool.length);
           const cid = pool[randomIndex];
-          picksCounts[cid] = (picksCounts[cid] || 0) + 1;
+          if (cid && cardMap[cid]) {
+            picksCounts[cid] = (picksCounts[cid] || 0) + 1;
+          }
         }
       }
     });
@@ -833,6 +850,12 @@ function performPoke() {
 
   // ————— AWARD & RENDER each unique card —————
   Object.entries(picksCounts).forEach(([cid, count]) => {
+    // Safety check: skip if card ID is undefined or card doesn't exist
+    if (!cid || cid === 'undefined' || !cardMap[cid]) {
+      console.warn(`Skipping invalid card ID: ${cid}`);
+      return;
+    }
+
     const c       = cardMap[cid];
     const wasNew  = c.quantity === 0;
     const oldTier = c.tier;
@@ -1344,11 +1367,13 @@ function updateAbsorberTooltipContent() {
 
   // Calculate absorption rate display
   let absorptionRateText;
-  if (skillMap[12104].purchased) {
+  if (skillMap[30016].purchased) {
+    absorptionRateText = `+3 / poke`;
+  } else if (skillMap[12104].purchased) {
     absorptionRateText = `${state.selectedRealms.length}(realms) * ${skillMap[12102].purchased ? '0.1' : '0.05'} / poke`;
-  } else {
+  }  else {
     const absorptionRate = 0.05 * (skillMap[12102].purchased ? 2 : 1);
-    absorptionRateText = `${formatNumber(absorptionRate)}/poke`;
+    absorptionRateText = `${formatNumber(absorptionRate)} / poke`;
   }
 
   tooltip.innerHTML = `
@@ -2412,6 +2437,7 @@ let currentCollectionRealm = null;
 function initCardsFilters() {
   const filtersContainer = document.getElementById('cards-filters');
   filtersContainer.innerHTML = '';
+
   realms.forEach(r => {
     const btn = document.createElement('button');
     btn.type = 'button';
@@ -2420,7 +2446,7 @@ function initCardsFilters() {
     const ownedInRealm = ownedCountInRealm(r.id);
     const totalInREalm = totalInRealm(r.id);
     const isComplete = ownedInRealm === totalInREalm;
-    
+
     // Check if this realm has T20 achievement
     const hasT20Achievement = skillMap[17002] && skillMap[17002].purchased && state.realmsWithAllT20.has(r.id);
 
@@ -2479,6 +2505,52 @@ function initCardsFilters() {
     }
     filtersContainer.appendChild(btn);
   });
+
+  // Add "All Cards" filter at the end if skill 30014 is purchased
+  if (skillMap[30014] && skillMap[30014].purchased) {
+    const allCardsBtn = document.createElement('button');
+    allCardsBtn.type = 'button';
+    allCardsBtn.className = 'cards-filter all-cards-filter';
+    allCardsBtn.dataset.realm = 'all';
+
+    const totalOwnedCards = cards.filter(c => c.quantity > 0).length;
+    const totalCards = cards.length;
+    const isComplete = totalOwnedCards === totalCards;
+
+    allCardsBtn.innerHTML = `
+      <div class="filter-back all-cards-background">
+        <div class="all-cards-icon">🌌</div>
+      </div>
+      <div class="filter-label">All Cards</div>
+      <div class="filter-count">
+        ${
+          isComplete
+            ? `<span style="color:green;font-weight:bold;">${totalOwnedCards}/${totalCards}</span>`
+            : `${totalOwnedCards}/${totalCards}`
+        }
+      </div>
+    `;
+
+    allCardsBtn.addEventListener('click', () => {
+      currentCollectionRealm = 'all';
+      document.querySelectorAll('.cards-filter').forEach(b => b.classList.remove('active'));
+      allCardsBtn.classList.add('active');
+      renderCardsCollection();
+    });
+
+    // Check if any cards are new
+    const hasNewCards = cards.some(c => c.isNew);
+    if (hasNewCards) {
+      if (!allCardsBtn.querySelector('.new-badge')) {
+        const badge = document.createElement('div');
+        badge.className = 'reveal-badge new-badge';
+        badge.textContent = 'NEW';
+        allCardsBtn.appendChild(badge);
+      }
+    }
+
+    filtersContainer.appendChild(allCardsBtn);
+  }
 }
 
 function ownedCountInRealm(rid) {
@@ -2698,7 +2770,14 @@ function renderCardsCollection() {
 
   // Get filtered cards first
   const filteredCards = cards
-    .filter(c => c.realm === currentCollectionRealm)
+    .filter(c => {
+      // If "All Cards" filter is selected, show cards from all realms
+      if (currentCollectionRealm === 'all') {
+        return true;
+      }
+      // Otherwise, filter by specific realm
+      return c.realm === currentCollectionRealm;
+    })
     .filter(c => {
       // If no effect filters are active, show all cards
       if (state.effectFilters.activeGroups.size === 0) return true;
@@ -2771,6 +2850,26 @@ function renderCardsCollection() {
       });
     });
 
+  // Sort cards when "All Cards" filter is active - by rarity, then realm, then card ID (decreasing)
+  if (currentCollectionRealm === 'all') {
+    filteredCards.sort((a, b) => {
+      // First sort by rarity (reverse order - divine first)
+      const rarityIndexA = rarities.indexOf(a.rarity);
+      const rarityIndexB = rarities.indexOf(b.rarity);
+      if (rarityIndexA !== rarityIndexB) {
+        return rarityIndexB - rarityIndexA; // Reverse order (divine first)
+      }
+
+      // Then sort by realm (reverse order - higher realm numbers first)
+      if (a.realm !== b.realm) {
+        return b.realm - a.realm; // Reverse order (higher realm numbers first)
+      }
+
+      // Finally sort by card ID (decreasing - higher IDs first)
+      return b.id - a.id;
+    });
+  }
+
   lastCollectionCardIds = filteredCards.map(c => c.id);
 
   // Add Level All button if skill 25001 is purchased
@@ -2782,7 +2881,7 @@ function renderCardsCollection() {
       // Get all visible cards in current realm with quantity > 0
       const cardsToLevel = filteredCards.filter(c => c.quantity > 0);
 
-      if (skillMap[25002]?.purchased) {
+      if (skillMap[25002]?.purchased && currentCollectionRealm !== 'all') {
         cardsToLevel.reverse();
       }
 
@@ -3126,6 +3225,10 @@ function giveCard(cardId, amount = 1) {
   // --- 2. Update quantity ---
   c.quantity += amount;
 
+  if (c.quantity >= 1e15) {
+    unlockAchievement('endgameChecklist');
+  }
+
   // --- 3. Compute new tier & new effects ---
   const thresholds = window.tierThresholds[c.rarity];
   let newTier = 1;
@@ -3168,6 +3271,20 @@ function giveCard(cardId, amount = 1) {
     checkAchievements('cosmicCollector', c.realm);
     checkAchievements('thrillOfDiscovery');
     updatePokeFilterStats();
+    if (state.achievementsUnlocked.has('thrillOfDiscovery14')) {
+      const cardsDiscovered = cards.filter(c => c.quantity > 0).length;
+      if (cardsDiscovered == 347) {
+        unlockAchievement('endgameChecklist3');
+        if (state.runningGauntlet) {
+          unlockAchievement('endgameChecklist4');
+          state.runningGauntlet = false;
+          state.gauntletStartTime = null;
+          state.gauntletNotifications.clear();
+          clearGauntletTimer();
+          showTidbit('WOW! You have completed the Gauntlet! Did not think you would make it!');
+        }
+      }
+    }
   }
 }
 
@@ -4067,7 +4184,331 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   renderAchievements();
 
   initializeSettingsTab();
+
+  // Update The End button visibility on load
+  if (typeof updateTheEndButtonVisibility === 'function') {
+    updateTheEndButtonVisibility();
+  }
+
+  bossMechanicsByName = getBossMechanicsByName();
+
+  // Check for Gauntlet on load
+  checkGauntletOnLoad();
 });
+
+// Gauntlet timing functions
+function startGauntletTimer() {
+  state.gauntletStartTime = Date.now();
+  state.gauntletNotifications.clear();
+
+  // Start the Gauntlet interval (check every 30 seconds)
+  if (gauntletInterval) {
+    clearInterval(gauntletInterval);
+  }
+
+  gauntletInterval = setInterval(checkGauntletTime, 30000);
+  saveState();
+}
+
+function checkGauntletTime() {
+  if (!state.runningGauntlet || !state.gauntletStartTime) {
+    clearGauntletTimer();
+    return;
+  }
+
+  const elapsed = Date.now() - state.gauntletStartTime;
+  const fourHours = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
+  const remaining = fourHours - elapsed;
+
+  // Check if Gauntlet has failed (time expired)
+  if (remaining <= 0) {
+    state.runningGauntlet = false;
+    clearGauntletTimer();
+    showTidbit('Gauntlet failed - time expired!');
+    saveState();
+    return;
+  }
+
+  // Convert remaining time to minutes
+  const remainingMinutes = Math.floor(remaining / (60 * 1000));
+
+  // Define notification thresholds in minutes
+  const notifications = [
+    { minutes: 225, message: '3 hours and 45 minutes remaining in Gauntlet!' },
+    { minutes: 210, message: '3 hours and 30 minutes remaining in Gauntlet!' },
+    { minutes: 195, message: '3 hours and 15 minutes remaining in Gauntlet!' },
+    { minutes: 180, message: '3 hours remaining in Gauntlet!' },
+    { minutes: 165, message: '2 hours and 45 minutes remaining in Gauntlet!' },
+    { minutes: 150, message: '2 hours and 30 minutes remaining in Gauntlet!' },
+    { minutes: 135, message: '2 hours and 15 minutes remaining in Gauntlet!' },
+    { minutes: 120, message: '2 hours remaining in Gauntlet!' },
+    { minutes: 105, message: '1 hour and 45 minutes remaining in Gauntlet!' },
+    { minutes: 90, message: '1 hour and 30 minutes remaining in Gauntlet!' },
+    { minutes: 75, message: '1 hour and 15 minutes remaining in Gauntlet!' },
+    { minutes: 60, message: '1 hour remaining in Gauntlet!' },
+    { minutes: 45, message: '45 minutes remaining in Gauntlet!' },
+    { minutes: 30, message: '30 minutes remaining in Gauntlet!' },
+    { minutes: 20, message: '20 minutes remaining in Gauntlet!' },
+    { minutes: 15, message: '15 minutes remaining in Gauntlet!' },
+    { minutes: 10, message: '10 minutes remaining in Gauntlet!' },
+    { minutes: 5, message: '5 minutes remaining in Gauntlet!' },
+    { minutes: 4, message: '4 minutes remaining in Gauntlet!' },
+    { minutes: 3, message: '3 minutes remaining in Gauntlet!' },
+    { minutes: 2, message: '2 minutes remaining in Gauntlet!' },
+    { minutes: 1, message: '1 minute remaining in Gauntlet!' }
+  ];
+
+  // Check each notification threshold
+  notifications.forEach(notification => {
+    const key = `${notification.minutes}min`;
+    if (remainingMinutes <= notification.minutes && !state.gauntletNotifications.has(key)) {
+      state.gauntletNotifications.add(key);
+      showTidbit(notification.message);
+      saveState();
+    }
+  });
+}
+
+function clearGauntletTimer() {
+  if (gauntletInterval) {
+    clearInterval(gauntletInterval);
+    gauntletInterval = null;
+  }
+}
+
+function checkGauntletOnLoad() {
+  if (!state.runningGauntlet || !state.gauntletStartTime) {
+    return;
+  }
+
+  const elapsed = Date.now() - state.gauntletStartTime;
+  const fourHours = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
+  const remaining = fourHours - elapsed;
+
+  // Check if Gauntlet has failed while offline
+  if (remaining <= 0) {
+    state.runningGauntlet = false;
+    state.gauntletStartTime = null;
+    state.gauntletNotifications.clear();
+    showTidbit('Gauntlet failed - time expired while you were away!');
+    saveState();
+    return;
+  }
+
+  // Show remaining time message
+  const remainingHours = Math.floor(remaining / (60 * 60 * 1000));
+  const remainingMinutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+
+  let timeMessage;
+  if (remainingHours > 0) {
+    timeMessage = `${remainingHours} hour${remainingHours > 1 ? 's' : ''} and ${remainingMinutes} minute${remainingMinutes !== 1 ? 's' : ''} remaining in Gauntlet`;
+  } else {
+    timeMessage = `${remainingMinutes} minute${remainingMinutes !== 1 ? 's' : ''} remaining in Gauntlet`;
+  }
+
+  showTidbit(timeMessage);
+
+  // Restart the timer
+  if (gauntletInterval) {
+    clearInterval(gauntletInterval);
+  }
+  gauntletInterval = setInterval(checkGauntletTime, 30000);
+}
+
+// The End Modal - Epic Finale
+function showTheEndModal() {
+  const overlay = document.createElement('div');
+  overlay.className = 'the-end-modal-overlay';
+  overlay.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, rgba(138, 43, 226, 0.3), rgba(0, 0, 0, 0.9));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: theEndFadeIn 2s ease-in-out;
+    overflow: hidden;
+    padding: 20px;
+    box-sizing: border-box;
+  `;
+
+  const modal = document.createElement('div');
+  modal.className = 'the-end-modal';
+  modal.style.cssText = `
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+    border: 4px solid #ffd700;
+    border-radius: 20px;
+    padding: 20px;
+    max-width: 800px;
+    width: 90vw;
+    max-height: 90vh;
+    text-align: center;
+    position: relative;
+    box-shadow:
+      0 0 50px rgba(255, 215, 0, 0.8),
+      inset 0 0 30px rgba(255, 215, 0, 0.2);
+    animation: theEndGlow 3s ease-in-out infinite alternate;
+    overflow-y: auto;
+    margin: auto;
+    transform-origin: center;
+  `;
+
+  // Add sparkle background
+  const sparkles = document.createElement('div');
+  sparkles.style.cssText = `
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
+      radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.1) 2px, transparent 2px),
+      radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      radial-gradient(circle at 60% 20%, rgba(255, 215, 0, 0.08) 1px, transparent 1px);
+    background-size: 100px 100px, 150px 150px, 80px 80px, 120px 120px;
+    animation: sparkleFloat 20s linear infinite;
+    pointer-events: none;
+  `;
+  modal.appendChild(sparkles);
+
+  const content = document.createElement('div');
+  content.style.cssText = `
+    position: relative;
+    z-index: 2;
+    color: #ffffff;
+  `;
+
+  // Title with epic styling
+  const title = document.createElement('h1');
+  title.textContent = 'THE END';
+  title.style.cssText = `
+    font-size: clamp(2.5em, 8vw, 4em);
+    font-weight: bold;
+    margin: 0 0 20px 0;
+    background: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+    animation: titlePulse 2s ease-in-out infinite alternate;
+  `;
+
+  // Thank you message
+  const thankYou = document.createElement('div');
+  thankYou.innerHTML = `
+    <p style="font-size: clamp(1.2em, 4vw, 1.5em); margin: 15px 0; line-height: 1.6; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+      🎉 <strong>CONGRATULATIONS!</strong> 🎉
+    </p>
+    <p style="font-size: clamp(1em, 3vw, 1.2em); margin: 15px 0; line-height: 1.6; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+      You have completed <strong>Cosmic Collection</strong>!<br>
+      Thank you so much for playing through this entire journey!
+    </p>
+    <p style="font-size: clamp(0.9em, 2.5vw, 1.1em); margin: 20px 0; line-height: 1.6; text-shadow: 0 2px 4px rgba(0,0,0,0.5); color: #ffed4e;">
+      I am incredibly grateful to the amazing <strong>Discord Community</strong> for all the feedback,
+      discussions, and suggestions that shaped this game into what it is today.
+      You all made this so much better!
+    </p>
+    <p style="font-size: clamp(0.9em, 2.5vw, 1.1em); margin: 20px 0; line-height: 1.6; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+      I really appreciate you, and if you enjoyed the progression, strategy, and luck elements of this game,
+      I invite you to try my other games. (in my humble opinion as you saw in Incremental Games realm, I believe Degens Idle is way more fun and strategic)
+    </p>
+  `;
+
+  // Game recommendations with styling
+  const gameRecs = document.createElement('div');
+  gameRecs.innerHTML = `
+    <div style="
+      background: rgba(255, 215, 0, 0.1);
+      border: 2px solid #ffd700;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    ">
+      <p style="font-size: clamp(0.9em, 2.5vw, 1.1em); margin: 15px 0; line-height: 1.5;">
+        Play them for free at <a href="https://www.kuzzigames.com" target="_blank" style="
+          color: #ffed4e;
+          font-weight: bold;
+          text-decoration: underline;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        " onmouseover="this.style.color='#ffd700'; this.style.textShadow='0 0 10px rgba(255,215,0,0.8)'"
+           onmouseout="this.style.color='#ffed4e'; this.style.textShadow='none'">www.kuzzigames.com</a>
+      </p>
+    </div>
+  `;
+
+  // Close button
+  const closeBtn = document.createElement('button');
+  closeBtn.textContent = 'Thank You! 💜';
+  closeBtn.style.cssText = `
+    background: linear-gradient(45deg, #8a2be2, #9932cc);
+    color: white;
+    border: 2px solid #ffd700;
+    border-radius: 25px;
+    padding: 12px 25px;
+    font-size: clamp(1em, 3vw, 1.2em);
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 25px;
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
+    transition: all 0.3s ease;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  `;
+
+  closeBtn.onmouseover = () => {
+    closeBtn.style.transform = 'scale(1.05)';
+    closeBtn.style.boxShadow = '0 6px 20px rgba(138, 43, 226, 0.6)';
+  };
+
+  closeBtn.onmouseout = () => {
+    closeBtn.style.transform = 'scale(1)';
+    closeBtn.style.boxShadow = '0 4px 15px rgba(138, 43, 226, 0.4)';
+  };
+
+  closeBtn.onclick = () => {
+    overlay.style.animation = 'theEndFadeOut 1s ease-in-out';
+    setTimeout(() => overlay.remove(), 1000);
+  };
+
+  content.appendChild(title);
+  content.appendChild(thankYou);
+  content.appendChild(gameRecs);
+  content.appendChild(closeBtn);
+  modal.appendChild(content);
+  overlay.appendChild(modal);
+
+  // Add click outside to close
+  overlay.onclick = (e) => {
+    if (e.target === overlay) {
+      overlay.style.animation = 'theEndFadeOut 1s ease-in-out';
+      setTimeout(() => overlay.remove(), 1000);
+    }
+  };
+
+  document.body.appendChild(overlay);
+
+  // Check if content overflows and adjust scrolling accordingly
+  setTimeout(() => {
+    const modalHeight = modal.scrollHeight;
+    const viewportHeight = window.innerHeight * 0.9; // 90vh
+
+    if (modalHeight > viewportHeight) {
+      // Content overflows, enable scrolling
+      overlay.style.overflow = 'auto';
+      modal.style.overflowY = 'auto';
+    } else {
+      // Content fits, disable scrolling
+      overlay.style.overflow = 'hidden';
+      modal.style.overflowY = 'visible';
+    }
+  }, 100);
+}
 
 // Add cleanup function
 function cleanup() {
