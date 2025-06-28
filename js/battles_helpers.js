@@ -24,11 +24,11 @@ function getBossMechanicsByName() {
                         },
   'Gaia':               { 
                             specialPowers: '5% Chance to Heal 2% of Max Health', 
-                            killReward: '+0.5% Global HP Mult' 
+                            killReward: '+0.2% Global HP Mult' 
                         },
   'Nyx':                { 
                             specialPowers: '3% Chance to scare a random card away (removes it)', 
-                            killReward: '+2% Global HP Mult' 
+                            killReward: '+1% Global HP Mult' 
                         },
   'Chaos':              { 
                             specialPowers: 'Attacks Twice. Damage cannot be Absorbed.', 
@@ -60,7 +60,7 @@ function getBossMechanicsByName() {
                         },
   'Bowser':             { 
                             specialPowers: 'Reflects 10% Damage to Attackers', 
-                            killReward: '+0.3% Global HP Mult' 
+                            killReward: '+0.2% Global HP Mult' 
                         },
   'Genghis Khan':       { 
                             specialPowers: '25% chance to deal Triple damage',
@@ -68,7 +68,7 @@ function getBossMechanicsByName() {
                         },
   'Dracula':            { 
                             specialPowers: '3x Lifesteal', 
-                            killReward: '+0.5% Global HP Mult' 
+                            killReward: '+0.3% Global HP Mult' 
                         },
   'Cartman':            { 
                             specialPowers: '10% to Fart each time he is hit - Deals 5% of Max Health to front 2 cards', 
@@ -76,7 +76,7 @@ function getBossMechanicsByName() {
                         },
   'Agent Smith':        { 
                             specialPowers: '75% Dodge Chance', 
-                            killReward: '+1% Global HP Mult' 
+                            killReward: '+0.5% Global HP Mult' 
                         },
   'Sephiroth':          { 
                             specialPowers: '33% Chance to Dodge all attacks/effects', 
@@ -88,7 +88,7 @@ function getBossMechanicsByName() {
                         },
   'T800':               { 
                             specialPowers: '3% Chance to Heal for 10% of Max HP', 
-                            killReward: '+2% Global HP Mult' 
+                            killReward: '+1% Global HP Mult' 
                         },
   'Godzilla':           { 
                             specialPowers: 'Reflects 15% Damage to Attackers', 
@@ -96,7 +96,7 @@ function getBossMechanicsByName() {
                         },
   'Darth Vader':        { 
                             specialPowers: '98% Chance to only take 3% of damage', 
-                            killReward: '+3% Global HP Mult' 
+                            killReward: '+1.5% Global HP Mult' 
                         },
   'Shao Kahn':          { 
                             specialPowers: '40% chance to also attack the last card', 
@@ -108,7 +108,7 @@ function getBossMechanicsByName() {
                         },
   'Sauron':             { 
                             specialPowers: '10% Chance to Instantly Kill', 
-                            killReward: '+5% Global HP Mult' 
+                            killReward: '+2% Global HP Mult' 
                         },
   'Pudge':              { 
                             specialPowers: '25% chance to pull the last card to the front and deal 50% of its Current Health as damage', 
@@ -132,7 +132,7 @@ function getBossMechanicsByName() {
                         },
   'Deadpool':           { 
                             specialPowers: '69% chance to revive to full health instead of dying', 
-                            killReward: '+10% Global HP Mult' 
+                            killReward: '+3% Global HP Mult' 
                         },
   'Kratos':             { 
                             specialPowers: 'Increase Damage by 4% on each attack', 
@@ -140,7 +140,7 @@ function getBossMechanicsByName() {
                         },
   'Arceus':             { 
                             specialPowers: '5% chance to confuse each attacking card and have them attack a random ally instead', 
-                            killReward: '+10% Global HP Mult' 
+                            killReward: '+5% Global HP Mult' 
                         },
   'Rick':               { 
                             specialPowers: '17% chance to teleport random card to another dimension (instantly kill)', 
@@ -152,7 +152,7 @@ function getBossMechanicsByName() {
                         },
   'Chuck Norris':       { 
                             specialPowers: '20% Chance to Increase Attack by 10%. Also cannot be Dodged.', 
-                            killReward: '+15% Global HP Mult' 
+                            killReward: '+5% Global HP Mult' 
                         },
   'Kaguya':             { 
                             specialPowers: 'Only Takes Damage from the Front Card. 40% chance to also attack the last card.', 
@@ -164,10 +164,10 @@ function getBossMechanicsByName() {
                         },
   'Saitama':            { 
                             specialPowers: 'Increases his Attack by 1%. Reduces Attack of all your cards by 10%. 1x Lifesteal.', 
-                            killReward: '+50% Global HP Mult' 
+                            killReward: skillMap[30002].purchased ? '+500% to Global Max Cards Mult' : '+50% to Global Max Cards Mult' 
                         },
   'Kuzzi':              { 
-                            specialPowers: 'Uses AI to kill 1 random card after every turn. Also cannot be Dismembered and has no Weak Point. Kills all cards on death.', 
+                            specialPowers: '85% chance to use AI to kill 1 random card after every turn. Also cannot be Dismembered and has no Weak Point. Kills all cards on death.', 
                             killReward: skillMap[30002].purchased ? '+1000% to Global Max Cards Mult' : '+100% to Global Max Cards Mult' 
                         },
   'Your Ego':           { 

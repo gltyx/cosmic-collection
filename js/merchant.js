@@ -170,10 +170,10 @@ const merchants = [
       merchantOdds: 50,
       raritiesSkipped: [],
       priceMultiplier: 0.5,
-      rarityScaling: 7.5,
+      rarityScaling: 10,
       guaranteedRealm: 12,
       guaranteedCount: 3,
-      description: 'The ultimate merchant. Always has 3 boss cards. 2x cards, 1/2 price, and +5 to rarity scaling.',
+      description: 'The ultimate merchant. Always has 3 boss cards. 2x cards, 1/2 price, and +7.5 to rarity scaling.',
       unlocked: false
     }
     
