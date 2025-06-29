@@ -43,7 +43,12 @@ function lockCard(cardId) {
   const card = cardMap[cardId];
   if (!card) return;
 
-  if (card.locked && !state.battle.lockoutTimers[cardId]) return;
+  // If card is locked by battle (not by sacrifice lockout), add to pending lockout timers instead
+  if (card.locked && !state.battle.lockoutTimers[cardId]) {
+    state.battle.pendingLockoutTimers[cardId] = Date.now() + (state.sacrificeLockoutTime * 60 * 60 * 1000 / (state.achievementRewards.sacrificeTimeDivider + state.skillAdditionalSacrificeTimeDivider));
+    saveState();
+    return;
+  }
 
   card.locked = true;
   state.battle.lockoutTimers[cardId] = Date.now() + (state.sacrificeLockoutTime * 60 * 60 * 1000 / (state.achievementRewards.sacrificeTimeDivider + state.skillAdditionalSacrificeTimeDivider)); // sacrificeLockoutTime is in hours
@@ -54,8 +59,10 @@ function lockCard(cardId) {
 function getNextEnemy() {
   const greekGodsCards = cards.filter(c => c.realm === state.battle.currentBattleRealm);
   // Find the first card that hasn't been battled yet
-  const enemy = greekGodsCards.find(c => c.locked && !state.battle.lockoutTimers[c.id]);
-  if (enemy) {
+  const originalCard = greekGodsCards.find(c => c.locked && !state.battle.lockoutTimers[c.id]);
+  if (originalCard) {
+    // Create a copy of the card for battle use (don't modify the original)
+    const enemy = { ...originalCard };
     // Initialize enemy properties
     enemy.attack = enemy.power * 10;
     if (enemy.name === 'Your Ego') {
@@ -64,8 +71,9 @@ function getNextEnemy() {
     enemy.maxHp = enemy.defense * (state.battle.currentBattleRealm === 11 ? 100000 : 400000);
     enemy.currentHp = enemy.maxHp;
     enemy.stunTurns = 0;
+    return enemy;
   }
-  return enemy;
+  return null;
 }
 
 // Show damage number animation
@@ -235,7 +243,25 @@ function processVictory() {
   // Unlock the actual card (not the battle copy)
   const defeatedCard = cardMap[state.battle.currentEnemy.id];
   if (defeatedCard) {
-    defeatedCard.locked = false;
+    // Check if there's a pending lockout timer for this card
+    if (state.battle.pendingLockoutTimers[defeatedCard.id]) {
+      const now = Date.now();
+      const pendingEndTime = state.battle.pendingLockoutTimers[defeatedCard.id];
+
+      if (pendingEndTime <= now) {
+        // Pending lockout has expired, just unlock the card
+        defeatedCard.locked = false;
+        delete state.battle.pendingLockoutTimers[defeatedCard.id];
+      } else {
+        // Pending lockout is still active, move it to active lockout timers
+        state.battle.lockoutTimers[defeatedCard.id] = pendingEndTime;
+        delete state.battle.pendingLockoutTimers[defeatedCard.id];
+        // Card stays locked due to sacrifice lockout
+      }
+    } else {
+      // No pending lockout, just unlock the card
+      defeatedCard.locked = false;
+    }
   }
   
   if (state.battle.currentEnemy.name === 'Kratos' && state.battle.slots.some(card => card && card.id === '1119')) {
@@ -829,6 +855,8 @@ function switchBattleRealm(targetRealm) {
   state.battle.currentBattleRealm = targetRealm;
   if (state.battle.currentEnemy) {
     state.battle.currentEnemy.currentHp = state.battle.currentEnemy.maxHp;
+
+    state.battle.vegetaEvolutions = 0;
   }
 
   // (Re)load next enemy for the new realm if needed
@@ -1379,6 +1407,8 @@ function renderBattleCardSpecialEffects(card) {
 
 function clearExpiredLockouts() {
   const now = Date.now();
+
+  // Clear expired active lockout timers
   Object.entries(state.battle.lockoutTimers).forEach(([cardId, endTime]) => {
     if (endTime <= now) {
       delete state.battle.lockoutTimers[cardId];
@@ -1386,6 +1416,13 @@ function clearExpiredLockouts() {
       if (card) {
         card.locked = false;
       }
+    }
+  });
+
+  // Clear expired pending lockout timers (these don't affect card.locked state)
+  Object.entries(state.battle.pendingLockoutTimers).forEach(([cardId, endTime]) => {
+    if (endTime <= now) {
+      delete state.battle.pendingLockoutTimers[cardId];
     }
   });
 }
@@ -2299,10 +2336,23 @@ function showResetBattlesDialog() {
 
   confirmBtn.addEventListener('click', () => {
     const bossCards = cards.filter(c => c.realm === state.battle.currentBattleRealm);
-    
+
+    // First, clean up expired pending lockout timers
+    const now = Date.now();
+    Object.entries(state.battle.pendingLockoutTimers).forEach(([cardId, endTime]) => {
+      if (endTime <= now) {
+        delete state.battle.pendingLockoutTimers[cardId];
+      }
+    });
+
     bossCards.forEach(card => {
       card.locked = true;
-      delete state.battle.lockoutTimers[card.id];
+
+      // If card has an active lockout timer, move it to pending
+      if (state.battle.lockoutTimers[card.id]) {
+        state.battle.pendingLockoutTimers[card.id] = state.battle.lockoutTimers[card.id];
+        delete state.battle.lockoutTimers[card.id];
+      }
     });
 
     // in the if statement, also Check that realm 11 and 12 cards also do not have lockout timers

@@ -135,6 +135,7 @@ window.state = {
     dismemberRealms: new Set([10]),
     slotLimit: 3,
     lockoutTimers: {}, // Keep this for temporary lockouts
+    pendingLockoutTimers: {}, // For cards that are battle-locked but have pending sacrifice lockouts
     initialized: false,
     sortBy: 'power',
     paused: true,
@@ -273,6 +274,7 @@ function loadState() {
         state.battle.currentEnemy.stunTurns = 0;
       }
       state.battle.lockoutTimers = obj.battle.lockoutTimers;
+      state.battle.pendingLockoutTimers = obj.battle.pendingLockoutTimers || {};
       state.battle.sortBy = obj.battle.sortBy || 'power';
       state.battle.globalAttackMult = obj.battle.globalAttackMult || 1;
       state.battle.globalHPMult = obj.battle.globalHPMult || 1;
@@ -294,6 +296,15 @@ function loadState() {
           if (card) {
             card.locked = true;
           }
+        }
+      });
+
+      // Clean up expired pending lockout timers during load
+      Object.entries(obj.battle.pendingLockoutTimers || {}).forEach(([cardId, endTime]) => {
+        if (endTime <= now) {
+          delete state.battle.pendingLockoutTimers[cardId];
+        } else {
+          state.battle.pendingLockoutTimers[cardId] = endTime;
         }
       });
     }
@@ -370,6 +381,7 @@ function saveState() {
         attack: state.battle.currentEnemy.attack
       } : null,
       lockoutTimers: state.battle.lockoutTimers,
+      pendingLockoutTimers: state.battle.pendingLockoutTimers,
       sortBy: state.battle.sortBy,
       globalAttackMult: state.battle.globalAttackMult,
       globalHPMult: state.battle.globalHPMult,
@@ -873,7 +885,7 @@ function performPoke() {
       giveCard(cid, count);
     }
 
-    if (state.hideCappedCards && skillMap[18102].purchased && c.tier === 20) {
+    if (state.hideCappedCards && skillMap[18102].purchased && oldTier === 20) {
       skippedCards++;
       if (currentPackCount === skippedCards) {
         state.flipsDone = true;

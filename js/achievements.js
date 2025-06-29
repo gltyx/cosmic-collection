@@ -135,11 +135,11 @@ const achievements = {
         id: 'thrillOfDiscovery14',
         name: 'Thrill of Discovery XIV',
         type: 'thrillOfDiscovery',
-        condition: 'Discover 345 cards',
+        condition: 'Discover 342 cards',
         icon: '🔍',
         rewardType: 'Max Cards Multiplier',
         reward: 1.3,
-        threshold: 345,
+        threshold: 342,
     },
 
 
@@ -501,8 +501,18 @@ const achievements = {
         condition: 'Get 1Qa cards from a single poke',
         icon: '💥',
         rewardType: 'Min Cards Per Poke',
-        reward: 250000000,
+        reward: 200000000,
         threshold: 1e15,
+    },
+    massivePoke15: {
+        id: 'massivePoke15',
+        name: 'Massive Poke XV',
+        type: 'massivePoke',
+        condition: 'Get 10Qa cards from a single poke',
+        icon: '💥',
+        rewardType: 'Min Cards Per Poke',
+        reward: 300000000,
+        threshold: 1e16,
     },
     inItForTheLongHaul: {
         id: 'inItForTheLongHaul',
@@ -641,8 +651,18 @@ const achievements = {
         condition: 'Total 100Qa cards drawn from the Black Hole',
         icon: '⏳',
         rewardType: 'Max Cards Per Poke',
-        reward: 7.5e8,
+        reward: 4e8,
         threshold: 1e17,
+    },
+    inItForTheLongHaul15: {
+        id: 'inItForTheLongHaul15',
+        name: 'In It For The Long Haul XV',
+        type: 'inItForTheLongHaul',
+        condition: 'Total 1Sx cards drawn from the Black Hole',
+        icon: '⏳',
+        rewardType: 'Max Cards Per Poke',
+        reward: 8e8,
+        threshold: 1e18,
     },
     secret: {
         id: 'secret',
@@ -1406,7 +1426,7 @@ const achievements = {
         id: 'endgameChecklist5',
         name: 'Endgame Checklist V',
         type: 'endgameChecklist',
-        condition: 'Unlock all 142 other achievements',
+        condition: 'Unlock all 144 other achievements',
         icon: '📜',
         rewardType: 'Max Cards Multiplier',
         reward: 2,
@@ -1535,7 +1555,7 @@ function unlockAchievement(achievementId, duringLoad = false) {
         }
     }
 
-    if (state.achievementsUnlocked.size === 142) {
+    if (!state.achievementsUnlocked.has('endgameChecklist5') && state.achievementsUnlocked.size === 144) {
         unlockAchievement('endgameChecklist5');
         // Update The End button visibility
         updateTheEndButtonVisibility();

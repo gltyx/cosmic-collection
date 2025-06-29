@@ -158,23 +158,21 @@ function formatNumber(d) {
 function formatQuantity(value) {
   if (value === 0) return '0';
 
-  // your suffixes for 10^0, 10^3, 10^6 … 10^33
   const suffixes = ["","K","M","B","T","Qa","Qi","Sx","Sp","Oc","No","Dc"];
-  // determine which tier we’re in (thousands, millions, etc.)
   const tier = Math.floor(Math.log10(value) / 3);
 
-  // if beyond your list, fall back to scientific
-  const suffix = suffixes[tier] || `e${tier*3}`;
+  // use ?? instead of || so "" is kept
+  const suffix = suffixes[tier] ?? `e${tier*3}`;
   const scale = Math.pow(10, tier * 3);
   const scaled = value / scale;
 
-  // format to 3 significant digits
   const formatted = new Intl.NumberFormat('en-US', {
     maximumSignificantDigits: 3
   }).format(scaled);
 
   return formatted + suffix;
 }
+
   
 
 function formatPct(value) {
