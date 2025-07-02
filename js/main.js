@@ -139,6 +139,7 @@ window.state = {
     initialized: false,
     sortBy: 'power',
     paused: true,
+    autoBattle: false, // Auto-Battle toggle state
     sortBy: 'power',
     sortDirection: 'desc',
     filterRealms: [],
@@ -650,6 +651,8 @@ function setupCurrencyTooltips() {
 
 let currentTab = 'hole';
 
+let adInjected = false;
+
 function showTab(tab) {
   const tabs = ['hole','cards','skills','merchant','battles','achievements','stats','settings'];
   tabs.forEach(t=>{
@@ -668,6 +671,33 @@ function showTab(tab) {
   }
   else if (tab === 'battles') {
     updateBattleUI();
+  } else if (tab === 'settings') {
+    
+    if (!adInjected) {
+      adInjected = true;
+      if (window.location.pathname.includes("/cosmic_collection")) {
+        // Load AdSense script once
+        const adsScript = document.createElement("script");
+        adsScript.async = true;
+        adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1862340236898418";
+        adsScript.crossOrigin = "anonymous";
+        document.head.appendChild(adsScript);
+
+        // Wait for script to load before adding ad
+        adsScript.onload = () => {
+          const adContainer = document.createElement("ins");
+          adContainer.className = "adsbygoogle";
+          adContainer.style = "display:block; margin-top: 20px;";
+          adContainer.setAttribute("data-ad-client", "ca-pub-1862340236898418");
+          adContainer.setAttribute("data-ad-slot", "9994375638");
+          adContainer.setAttribute("data-ad-format", "auto");
+          adContainer.setAttribute("data-full-width-responsive", "true");
+
+          document.getElementById("settings-footer-ad").appendChild(adContainer);
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        };
+      }
+    }
   }
   currentTab = tab;
 }
@@ -730,7 +760,7 @@ function performPoke() {
   const isSpecialCondition = skillMap[30001].purchased && state.selectedRealms.includes(9) && state.selectedRealms.includes(12);
 
   if (isSpecialCondition) {
-    draws *= 13;
+    draws *= 11;
   }
 
   // Create and animate floating number
@@ -850,7 +880,7 @@ function performPoke() {
   Object.entries(state.effects.currencyPerPoke).forEach(([curId, rate]) => {
     if (!rate || state.currencies[curId] == null) return;
     state.currencies[curId] =
-      state.currencies[curId].plus(new Decimal(rate * state.effects.currencyPerPokeMultiplier[curId] * (skillMap[30008].purchased ? 33 : 1) ));
+      state.currencies[curId].plus(new Decimal(rate * state.effects.currencyPerPokeMultiplier[curId] * (skillMap[30008].purchased ? 6.9 : 1) ));
   });
 
   // Check for affordable skills after currency update
@@ -1246,8 +1276,8 @@ function updateHoleTooltipContent() {
   // Check for special condition (realm 9 + 12 with skill 30001)
   const isSpecialCondition = skillMap[30001].purchased && state.selectedRealms.includes(9) && state.selectedRealms.includes(12);
   if (isSpecialCondition) {
-    minCards *= 13;
-    maxCards *= 13;
+    minCards *= 11;
+    maxCards *= 11;
   }
 
   // Determine card value colors
@@ -1270,7 +1300,7 @@ function updateHoleTooltipContent() {
   `;
 
   if (skillMap[30008].purchased) {
-    holeTooltip.innerHTML += `<div style="color: gray">♥ Get 33 Pokes of Currencies ♥</div>`;
+    holeTooltip.innerHTML += `<div style="color: gray">♥ Get 6.9x Pokes of Currencies ♥</div>`;
   }
 }
 
@@ -1354,10 +1384,10 @@ function updateHarvesterTooltipContent() {
   }
 
   // make the harvesting rate gray color
-  content += `<div style="color:gray">Harvesting Rate: ${formatDuration(onlineRate, 2)}/sec</div>`;
+  content += `<div style="color:gray">Harvesting Rate: ${formatDuration(onlineRate, 2)} / sec</div>`;
 
   if (!skillMap[12003].purchased) {
-    content += `<div style="color:gray">Offline Rate: ${formatDuration(offlineRate, 2)}/sec</div>`;
+    content += `<div style="color:gray">Offline Rate: ${formatDuration(offlineRate, 3)} / sec</div>`;
   }
 
   if (skillMap[12004].purchased) {
@@ -1418,7 +1448,7 @@ function updateInterceptorTooltipContent() {
   } else {
     const actionText = skillMap[12203].purchased ? "poking and card flipping" : "card flipping";
     content += `<div>Click to activate automatic ${actionText} for ${formatDuration(state.interceptorValue)}</div>`;
-    content += `<div style="color:gray">Pasive Charge: ${formatDuration(passiveRate, 2)}/sec</div>`;
+    content += `<div style="color:gray">Passive Charge: ${formatDuration(passiveRate, 2)} / sec</div>`;
 
     const activeRate = passiveRate * (skillMap[12205].purchased ? 2.5 : 1);
     content += `<div style="color:gray">Manual Charge: ${formatDuration(activeRate, 2)} / card flip</div>`;
@@ -1432,7 +1462,7 @@ function updateTimeCrunchTooltipContent() {
   if (!tooltip) return;
 
   const timeUntilCharged = Math.max(0, state.timeCrunchMaxChargeTime - state.timeCrunchValue);
-  const pokeMultiplier = skillMap[30008].purchased ? 3300 : (skillMap[12302].purchased ? 100 : 25);
+  const pokeMultiplier = skillMap[30008].purchased ? 690 : (skillMap[12302].purchased ? 100 : 25);
 
   // Calculate total currency gain
   let totalGain = 0;
@@ -1577,13 +1607,25 @@ holeBtn.addEventListener('click', ()=>{
     easing: 'easeInOutQuad'
   });
 
+  // Add CSS class for take animation
+  const cardOuters = document.querySelectorAll('#draw-area .card-outer');
+  cardOuters.forEach(card => {
+    card.classList.add('taking');
+  });
+
   const takeAnim = anime({
     targets: '#draw-area .card-outer',
-    translateX: 200,
-    opacity:   [1,0],
-    duration:  500,
-    easing:    'easeInBack',
-    complete:  ()=>{ performPoke(); updateCurrencyBar(); }
+    opacity: [1,0],
+    duration: 500,
+    easing: 'easeInBack',
+    complete: ()=>{
+      // Remove the taking class after animation
+      cardOuters.forEach(card => {
+        card.classList.remove('taking');
+      });
+      performPoke();
+      updateCurrencyBar();
+    }
   });
 
   Promise.all([ pokeAnim.finished, takeAnim.finished ])
@@ -3237,7 +3279,7 @@ function giveCard(cardId, amount = 1) {
   // --- 2. Update quantity ---
   c.quantity += amount;
 
-  if (c.quantity >= 1e15) {
+  if (c.quantity >= 1e16) {
     unlockAchievement('endgameChecklist');
   }
 
@@ -4206,6 +4248,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
   // Check for Gauntlet on load
   checkGauntletOnLoad();
+
 });
 
 // Gauntlet timing functions

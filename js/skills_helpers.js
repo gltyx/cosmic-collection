@@ -1312,7 +1312,7 @@ window.skills = [
     {
       id: 12201,
       name: "Space Bending Interceptor",
-      description: "Unlocks a device that intercepts space bending (both passivly and when you flip over cards), which can be activated automate flipping over cards.",
+      description: "Unlocks a device that intercepts space bending (both passively and when you flip over cards), which can be activated to automate flipping over cards for its duration.",
       cost: { realmId: 5, currencyId: "egg", amount: 8e6 },
       purchased: false
     },
@@ -1697,35 +1697,35 @@ window.skills = [
     {
       id: 19501,
       name: "Larger Card Stacks",
-      description: "Increase max card bulk offer from <sup>3</sup>√qty to <sup>2.5</sup>√qty.",
+      description: "Increase merchant max card bulk offer from <sup>3</sup>√qty to <sup>2.5</sup>√qty.",
       cost: { realmId: 4, currencyId: "coral", amount: 1e7},
       purchased: false
     },
     {
       id: 19502,
       name: "Larger Card Stacks 2",
-      description: "Increase max card bulk offer from <sup>2.5</sup>√qty to √qty.",
+      description: "Increase merchant max card bulk offer from <sup>2.5</sup>√qty to √qty.",
       cost: { realmId: 6, currencyId: "coral", amount: 2e8},
       purchased: false
     },
     {
       id: 19503,
       name: "Larger Card Stacks 3",
-      description: "Increase max card bulk offer from √qty to 10 * √qty",
+      description: "Increase merchant max card bulk offer from √qty to 10 * √qty",
       cost: { realmId: 10, currencyId: "coral", amount: 1e12},
       purchased: false
     },
     {
       id: 19504,
       name: "Larger Card Stacks 4",
-      description: "Increase max card bulk offer from 10 * √qty to 100 * √qty.",
+      description: "Increase merchant max card bulk offer from 10 * √qty to 100 * √qty.",
       cost: { realmId: 11, currencyId: "coral", amount: 2.5e18},
       purchased: false
     },
     {
       id: 19505,
       name: "Ultimate Larger Card Stacks",
-      description: "Increase max card bulk offer from 100 * √qty to 1000 * √qty.",
+      description: "Increase merchant max card bulk offer from 100 * √qty to 1000 * √qty.",
       cost: { realmId: 12, currencyId: "coral", amount: 1e28},
       purchased: false
     },
@@ -3273,21 +3273,35 @@ window.skills = [
       id: 29101,
       name: "Battle Card Preserver",
       description: "Undamaged cards in battle stay for next enemy.",
-      cost: { realmId: 12, currencyId: "coin", amount: 9.9e31 },
+      cost: { realmId: 12, currencyId: "coin", amount: 5e30 },
       purchased: false
     },
     {
       id: 29102,
       name: "Battle Card Preserver 2",
       description: "Cards in battle stay for next enemy if they have at least 90% HP.",
-      cost: { realmId: 12, currencyId: "coin", amount: 9.99e35 },
+      cost: { realmId: 12, currencyId: "coin", amount: 9e33 },
+      purchased: false
+    },
+    {
+      id: 29103,
+      name: "Auto-Battle Toggler",
+      description: "Unlock toggle to automatically continue battle when advancing to next enemy.",
+      cost: { realmId: 12, currencyId: "coin", amount: 2.5e34 },
+      purchased: false
+    },
+    {
+      id: 29104,
+      name: "Battle Card Preserver 3",
+      description: "Cards in battle stay for next enemy if they have at least 75% HP.",
+      cost: { realmId: 12, currencyId: "coin", amount: 2.5e36 },
       purchased: false
     },
     {
       id: 30001,
       name: "Spiritual Boss Poke",
-      description: "Pokes that have Spirit Familiars and Bosses realms selected (other realms can be selected as well) yield 13x cards.",
-      cost: { realmId: 12, currencyId: "spirit", amount: 1.3e32 },
+      description: "Pokes that have Spirit Familiars and Bosses realms selected (other realms can be selected as well) yield 11x cards.",
+      cost: { realmId: 12, currencyId: "spirit", amount: 2.2e32 },
       purchased: false
     },
     {
@@ -3301,7 +3315,7 @@ window.skills = [
       id: 30003,
       name: "Faded Boss Realm",
       description: "Decrease base cooldown for Bosses by 180hrs.",
-      cost: { realmId: 12, currencyId: "rune", amount: 4.2e32 },
+      cost: { realmId: 12, currencyId: "rune", amount: 4.2e36 },
       purchased: false
     },
     {
@@ -3335,7 +3349,7 @@ window.skills = [
     {
       id: 30008,
       name: "Nothing But Love",
-      description: "Pokes generate 33x worth of pokes of all currencies.",
+      description: "Pokes generate 6.9x worth of pokes of all currencies.",
       cost: { realmId: 12, currencyId: "zeal", amount: 1e36 },
       purchased: false
     },
@@ -3406,7 +3420,7 @@ window.skills = [
       id: 30018,
       name: "Runic Battle Speed",
       description: "Speed up battle loop by 2x.",
-      cost: { realmId: 12, currencyId: "rune", amount: 2e36 },
+      cost: { realmId: 12, currencyId: "rune", amount: 2e32 },
       purchased: false
     },
     {
@@ -3447,7 +3461,7 @@ function applySkill(id, skipCost = false) {
     // 2) mark purchased
     s.purchased = true;
 
-    if ((loadFinished || onLoadSingleCheck) && Object.values(skillMap).filter(s => s.purchased).length === 488) {
+    if ((loadFinished || onLoadSingleCheck) && Object.values(skillMap).filter(s => s.purchased).length === 490) {
       unlockAchievement('endgameChecklist2');
       onLoadSingleCheck = false;
     }
@@ -4653,6 +4667,9 @@ function applySkill(id, skipCost = false) {
         break;
       case 29101:
       case 29102:
+      case 29103:
+      case 29104:
+        break;
       case 30001:
         break;
       case 30002:

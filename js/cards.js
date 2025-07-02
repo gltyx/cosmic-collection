@@ -326,10 +326,10 @@ window.cards = [
         "type": "flatCurrencyPerSecond",
         "requirement": {
           "type": "level",
-          "amount": 20
+          "amount": 19
         },
         "currency": "stone",
-        "value": 1000.0
+        "value": 1900.0
       }
     ]
   },
@@ -615,7 +615,7 @@ window.cards = [
           "amount": 15
         },
         "currency": "crystal",
-        "value": 15.0
+        "value": 25.0
       }
     ]
   },
@@ -734,7 +734,7 @@ window.cards = [
           "amount": 7
         },
         "currency": "rune",
-        "value": 100.0
+        "value": 125.0
       }
     ]
   },
@@ -2096,7 +2096,7 @@ window.cards = [
         "type": "flatMinCardsPerPoke",
         "requirement": {
           "type": "level",
-          "amount": 10
+          "amount": 8
         },
         "value": 8.0
       },
@@ -2359,6 +2359,14 @@ window.cards = [
         },
         "currency": "pollen",
         "value": 2000.0
+      },
+      {
+        "type": "allGeneratorMultiplier",
+        "requirement": {
+          "type": "level",
+          "amount": 30
+        },
+        "value": 1.5
       }
     ]
   },
@@ -2807,7 +2815,15 @@ window.cards = [
         "type": "allGeneratorMultiplier",
         "requirement": {
           "type": "level",
-          "amount": 40
+          "amount": 30
+        },
+        "value": 1.5
+      },
+      {
+        "type": "allGeneratorMultiplier",
+        "requirement": {
+          "type": "level",
+          "amount": 50
         },
         "value": 2.0
       }
@@ -5727,7 +5743,7 @@ window.cards = [
           "type": "level",
           "amount": 10
         },
-        "value": 1.5
+        "value": 2.0
       },
       {
         "type": "currencyPerSecMultiplier",
@@ -7538,6 +7554,16 @@ window.cards = [
         "realm": 6,
         "rarity": "basic"
       }
+    ],
+    "specialEffects": [
+      {
+        "type": "allGeneratorMultiplier",
+        "requirement": {
+          "type": "level",
+          "amount": 20
+        },
+        "value": 1.5
+      }
     ]
   },
   {
@@ -8754,12 +8780,12 @@ window.cards = [
       {
         "type": "currencyPerPoke",
         "currency": "royal_jelly",
-        "value": 50.0
+        "value": 75.0
       },
       {
         "type": "currencyPerSec",
         "currency": "tooth",
-        "value": 500.0
+        "value": 750.0
       },
       {
         "type": "maxCardsPerPoke"
@@ -8838,6 +8864,11 @@ window.cards = [
         "type": "currencyPerPoke",
         "currency": "royal_jelly",
         "value": 100.0
+      },
+      {
+        "type": "currencyPerSec",
+        "currency": "tooth",
+        "value": 750.0
       },
       {
         "type": "cooldownDivider"
@@ -9851,6 +9882,16 @@ window.cards = [
         "type": "rarityOddsDivider",
         "realm": 6,
         "rarity": "decent"
+      }
+    ],
+    "specialEffects": [
+      {
+        "type": "allGeneratorMultiplier",
+        "requirement": {
+          "type": "level",
+          "amount": 15
+        },
+        "value": 1.5
       }
     ]
   },
@@ -13042,6 +13083,14 @@ window.cards = [
           "amount": 15
         },
         "value": 1500.0
+      },
+      {
+        "type": "allGeneratorMultiplier",
+        "requirement": {
+          "type": "level",
+          "amount": 20
+        },
+        "value": 1.5
       }
     ]
   },
@@ -18382,7 +18431,7 @@ window.cards = [
       "amount": 5.0
     },
     "description": "His mere presence poisoned Mordor’s air so deeply that crops failed for hundreds of miles, turning whole kingdoms to dust.",
-    "power": 4000,
+    "power": 6000,
     "defense": 250,
     "baseEffects": [
       {
@@ -18518,7 +18567,7 @@ window.cards = [
       "amount": 5.0
     },
     "description": "He assembled an entire island fortress in seconds using nothing but pure atomic manipulation.",
-    "power": 4000,
+    "power": 5000,
     "defense": 300,
     "baseEffects": [
       {
@@ -18576,7 +18625,7 @@ window.cards = [
       "amount": 5.0
     },
     "description": "Aizen spent seventeen months perfecting his Kyōka Suigetsu illusions before toppling Soul Society’s hierarchy.",
-    "power": 6000,
+    "power": 7000,
     "defense": 500,
     "baseEffects": [
       {
@@ -18639,7 +18688,7 @@ window.cards = [
       "amount": 5.0
     },
     "description": "He eliminated half of Titan in one snap, deeming only the “worthy” survivors fit to rebuild.",
-    "power": 5000,
+    "power": 7000,
     "defense": 600,
     "baseEffects": [
       {
@@ -18697,7 +18746,7 @@ window.cards = [
       "amount": 5.0
     },
     "description": "Isshin once bested the Soul King’s envoy with a single swing, then gave up his powers to save others.",
-    "power": 6000,
+    "power": 8000,
     "defense": 700,
     "baseEffects": [
       {
@@ -18924,7 +18973,7 @@ window.cards = [
       "amount": 5.0
     },
     "description": "He built a dimension-splitting portal gun in under five minutes, then discarded it for something “more chaotic.”",
-    "power": 10000,
+    "power": 15000,
     "defense": 5000,
     "baseEffects": [
       {
@@ -19103,7 +19152,7 @@ window.cards = [
       "amount": 5.0
     },
     "description": "Her Infinite Tsukuyomi trapped the entire world in lifelong dreams for a millennium.",
-    "power": 15000,
+    "power": 20000,
     "defense": 10000,
     "baseEffects": [
       {
@@ -19156,7 +19205,7 @@ window.cards = [
       "amount": 5.0
     },
     "description": "He’s been hidden in plain sight as a glowing silhouette on dozens of Marvel covers—watch closely and you’ll spot the creator himself.",
-    "power": 15000,
+    "power": 20000,
     "defense": 25000,
     "baseEffects": [
       {
@@ -19277,7 +19326,7 @@ window.cards = [
       "amount": 5.0
     },
     "description": "Breaking the 4th wall? The dev who wasted hundreds of hours of your life on this game.",
-    "power": 30000,
+    "power": 50000,
     "defense": 125000,
     "baseEffects": [
       {

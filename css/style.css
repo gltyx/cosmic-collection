@@ -489,7 +489,12 @@ nav#tabs { margin-bottom: 15px; }
   will-change: transform;
   contain: layout size; /* Prevent layout recalculation */
 }
-.card-outer:hover { transform:translateY(-4px); }
+#tab-content-hole .draw-area .card-outer:hover:not(.taking) {
+  transform: scale(var(--card-scale)) translateY(-4px);
+}
+.card-outer:hover:not(#tab-content-hole .draw-area .card-outer) {
+  transform: translateY(-4px);
+}
 .card-outer.zoomed {
   position:fixed; top:50%; left:50%;
   transform:translate(-50%,-50%) scale(2);
@@ -852,7 +857,7 @@ nav#tabs { margin-bottom: 15px; }
 }
 .cards-filter .filter-label {
   top: 10%;
-  font-size: clamp(0.9em, 2.2dvh, 1.2em);
+  font-size: clamp(0.8em, 2.2dvh, 1.2em);
   font-weight: bold;
   white-space: normal;
   overflow: visible;
@@ -1205,6 +1210,19 @@ nav#tabs { margin-bottom: 15px; }
   width: var(--base-card-size);
   aspect-ratio: 5 / 7;
   max-width: 160px;
+}
+
+#tab-content-hole .draw-area .card-outer.taking {
+  animation: cardTakeAnim 0.5s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+}
+
+@keyframes cardTakeAnim {
+  0% {
+    transform: scale(var(--card-scale)) translateX(0);
+  }
+  100% {
+    transform: scale(var(--card-scale)) translateX(200px);
+  }
 }
 
 @media (max-height: 600px) {

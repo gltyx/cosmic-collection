@@ -72,6 +72,29 @@
   filter: brightness(1.1);
 }
 
+/* Auto-Battle toggle button styling */
+.auto-battle-toggle {
+  padding: 8px 16px;
+  min-width: 100px;
+  font-size: 0.9em;
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  color: var(--accent);
+  text-align: center;
+}
+
+.auto-battle-toggle.active {
+  background: var(--accent);
+  color: white;
+}
+
+.auto-battle-toggle:hover {
+  filter: brightness(1.1);
+}
+
 /* Empty slot styling */
 .empty-slot {
   width: 100%;
@@ -458,6 +481,10 @@
   font-size: 1.6em;
 }
 
+.damage-number.mitigated {
+  font-size: 0.6em;
+}
+
 /* Card remove animation */
 @keyframes cardRemove {
   0% {
@@ -619,6 +646,10 @@
   margin: 12px 0;
   text-align: center;
   grid-column: 1;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Card base styles */
@@ -1061,5 +1092,18 @@
 
   .arrow-up-row .arrow-cell {
     width: 80px;          /* adjust arrow cell width for small screens */
+  }
+
+  /* Responsive battle controls for small screens */
+  .battle-controls {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .battle-pause-btn,
+  .auto-battle-toggle {
+    font-size: 0.9em;
+    padding: 6px 12px;
+    min-width: 80px;
   }
 }

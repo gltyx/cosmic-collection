@@ -493,7 +493,7 @@ const merchants = [
           const playerAmount = state.currencies[currency.id] || new Decimal(0);
           if (playerAmount.lessThan(amt)) {
             item.classList.add('unaffordable');
-          } else if (playerAmount.times(0.25).greaterThan(amt)) {
+          } else if (playerAmount.times(0.1).greaterThan(amt)) {
             item.classList.add('affordable');
           } else {
             item.classList.add('expensive');

@@ -88,6 +88,22 @@ function initializeSettingsTab() {
                     <ul>
                         <li><strong>Cooldown Formula:</strong> Sum of selected realm cooldowns × deselect multipliers (5x per skipped realm, can be reduced to 2.5x/2x with skills) ÷ cooldown divider effects</li>
                         <li><strong>Tier Thresholds:</strong> Each rarity has 20 tiers with differently increasing requirements. Full table available at bottom of Stats page (unlocks on realm 11)</li>
+                        <li><strong>Black Hole Poke:</strong> The number of cards you draw is calculated using a <i>blended random formula</i> that combines both a logarithmic and a linear approach, weighted depending on your current range of possible draws.</li> 
+                        <ul> 
+                            <li><strong>Min and Max Draws:</strong> Your minimum and maximum possible card draws are determined by a mix of base values and bonuses from cards, skills, achievements, absorber, and global multipliers (like Kill Rewards from bosses). The hover info on Black Hole shows the ultimate min/max values, while the Stats page shows total Base/Multiplier values.</li> 
+                            <li><strong>Weighted Random:</strong> The final draw amount is not a simple random number between min and max. Instead, it's a <i>weighted average between two types of randomness</i>: 
+                                <ul> 
+                                    <li><strong>Logarithmic Random:</strong> Favors lower numbers but still allows for high rolls.</li>
+                                    <li><strong>Linear Random:</strong> Standard even chance of getting anything between min and max.</li> 
+                                </ul> 
+                                </li> 
+                            <li><strong>How Weighting Works:</strong> The formula checks how large the gap is between your min and max draw values: <ul> 
+                                <li>If the gap is very large (e.g. max/min ≥ 90), the draw heavily favors the logarithmic side (90% weight), since large ranges benefit from skewing toward more balanced results.</li> 
+                                <li>If the gap is smaller, the formula uses a lower weight based on the ratio (e.g. a 10× gap = 10% log, 90% linear).</li> 
+                                </ul> 
+                            </li> 
+                        </ul>
+                        </li>
                         <li><strong>Merchant Pricing:</strong>
                         <ul>
                             <li><strong>Base price</strong>  
@@ -129,6 +145,13 @@ function initializeSettingsTab() {
                                 <li>Good Offer: <code>Random Price Factor</code> < 0.2</li>
                                 <li>Great Offer: <code>Random Price Factor</code> < 0.1 AND <code>Quantity Factor</code> > 0.3</li>
                                 <li>MUST BUY: <code>Random Price Factor</code> < 0.05 AND <code>Quantity Factor</code> > 0.6</li>
+                            </ul>
+                            </li>
+                            <li><strong>Buy all discount</strong> (for Negotiation Tactics)  
+                            <ul>
+                                <li>Green Text: Less than 10% of your currency</li>
+                                <li>Yellow Text: More than 10% of your currency</li>
+                                <li>Red Text: Unaffordable</li>
                             </ul>
                             </li>
                         </ul>

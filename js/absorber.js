@@ -33,7 +33,7 @@ let absorber3 = 0;
 function handleAbsorberClick() {
   if (state.absorberValue == 1 || absorberActive) return; // Don't allow activation if at 1x or already active
   
-  if (state.absorberValue > 2.9 && state.absorberValue < 3.1) {
+  if ((state.absorberValue > 2.9 && state.absorberValue < 3.1) || (state.absorberValue > 12.9 && state.absorberValue < 13.1)) {
     absorber3++;
     if (absorber3 == 3) {
       unlockAchievement('secret4');

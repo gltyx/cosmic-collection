@@ -38,7 +38,7 @@ function handleTimeCrunchClick() {
   // Award poke gains for each currency
   Object.entries(state.effects.currencyPerPoke).forEach(([curId, rate]) => {
     if (!rate || state.currencies[curId] == null) return;
-    const gain = new Decimal(rate * (skillMap[30008].purchased ? 3300 : (skillMap[12302].purchased ? 100 : 25)) * state.effects.currencyPerPokeMultiplier[curId]);
+    const gain = new Decimal(rate * (skillMap[30008].purchased ? 690 : (skillMap[12302].purchased ? 100 : 25)) * state.effects.currencyPerPokeMultiplier[curId]);
     state.currencies[curId] = state.currencies[curId].plus(gain);
   });
   

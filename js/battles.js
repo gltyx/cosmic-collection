@@ -276,7 +276,7 @@ function processVictory() {
   if (skillMap[29101].purchased && state.battle.currentEnemy.name !== 'Kuzzi') {
     // Skill 29101: "Undamaged cards in battle stay for next enemy"
     // Collect all undamaged cards (currentHp === maxHp)
-    const hpThreshold = skillMap[29102].purchased ? 0.9 : 1;
+    const hpThreshold = skillMap[29104].purchased ? 0.75 : skillMap[29102].purchased ? 0.9 : 1;
     const undamagedCards = state.battle.slots.filter(card =>
       card && card.currentHp >= (card.maxHp * hpThreshold)
     );
@@ -299,90 +299,101 @@ function processVictory() {
   } else if (state.battle.currentEnemy.name === 'Tartarus') {
     state.battle.globalAttackMult += 0.001;
   } else if (state.battle.currentEnemy.name === 'Cronus') {
-    state.battle.globalAttackMult += 0.005;
+    state.battle.globalAttackMult += 0.003;
   } else if (state.battle.currentEnemy.name === 'Typhon') {
-    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.05 : 0.005;
+    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.03 : 0.003;
   } else if (state.battle.currentEnemy.name === 'Gaia') {
     state.battle.globalHPMult += 0.002;
   } else if (state.battle.currentEnemy.name === 'Nyx') {
-    state.battle.globalHPMult += 0.01;
+    state.battle.globalHPMult += 0.005;
   } else if (state.battle.currentEnemy.name === 'Chaos') {
-    state.battle.globalAttackMult += 0.02;
+    state.battle.globalAttackMult += 0.01;
   } else if (state.battle.currentEnemy.name === 'Zeus') {
-    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 2.5 : 0.25;
+    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 1 : 0.1;
   } else if (state.battle.currentEnemy.name === 'Papa Smurf') {
     state.battle.globalAttackMult += 0.001;
   } else if (state.battle.currentEnemy.name === 'Dr Wily') {
     state.battle.globalHPMult += 0.001;
   } else if (state.battle.currentEnemy.name === 'Michael Scott') {
-    state.battle.globalAttackMult += 0.003;
+    state.battle.globalAttackMult += 0.002;
   } else if (state.battle.currentEnemy.name === 'Bowser') {
     state.battle.globalHPMult += 0.002;
   } else if (state.battle.currentEnemy.name === 'Genghis Khan') {
-    state.battle.globalAttackMult += 0.005;
+    state.battle.globalAttackMult += 0.003;
   } else if (state.battle.currentEnemy.name === 'Dracula') {
     state.battle.globalHPMult += 0.003;
   } else if (state.battle.currentEnemy.name === 'Cartman') {
-    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.1 : 0.01;
+    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.05 : 0.005;
   } else if (state.battle.currentEnemy.name === 'Agent Smith') {
     state.battle.globalHPMult += 0.005;
   } else if (state.battle.currentEnemy.name === 'Sephiroth') {
-    state.battle.globalAttackMult += 0.01;
+    state.battle.globalAttackMult += 0.007;
   } else if (state.battle.currentEnemy.name === 'Galactus') {
-    state.battle.globalAttackMult += 0.02;
+    state.battle.globalAttackMult += 0.008;
   } else if (state.battle.currentEnemy.name === 'T800') {
-    state.battle.globalHPMult += 0.01;
+    state.battle.globalHPMult += 0.008;
   } else if (state.battle.currentEnemy.name === 'Godzilla') {
-    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.2 : 0.02;
+    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.1 : 0.01;
   } else if (state.battle.currentEnemy.name === 'Darth Vader') {
-    state.battle.globalHPMult += 0.015;
+    state.battle.globalHPMult += 0.01;
   } else if (state.battle.currentEnemy.name === 'Shao Kahn') {
-    state.battle.globalAttackMult += 0.04;
+    state.battle.globalAttackMult += 0.02;
   } else if (state.battle.currentEnemy.name === 'Hal9000') {
-    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.3 : 0.03;
+    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.15 : 0.015;
   } else if (state.battle.currentEnemy.name === 'Sauron') {
-    state.battle.globalHPMult += 0.02;
+    state.battle.globalHPMult += 0.015;
   } else if (state.battle.currentEnemy.name === 'Pudge') {
-    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.5 : 0.05;
+    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.2 : 0.02;
   } else if (state.battle.currentEnemy.name === 'Doctor Manhattan') {
-    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.6 : 0.06;
+    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.3 : 0.03;
   } else if (state.battle.currentEnemy.name === 'Aizen') {
-    state.battle.globalAttackMult += 0.1;
+    state.battle.globalAttackMult += 0.05;
   } else if (state.battle.currentEnemy.name === 'Thanos') {
-    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.8 : 0.08;
+    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.5 : 0.05;
   } else if (state.battle.currentEnemy.name === 'Isshin') {
-    state.battle.globalAttackMult += 0.12;
+    state.battle.globalAttackMult += 0.08;
   } else if (state.battle.currentEnemy.name === 'Deadpool') {
-    state.battle.globalHPMult += 0.03;
+    state.battle.globalHPMult += 0.025;
   } else if (state.battle.currentEnemy.name === 'Kratos') {
-    state.battle.globalAttackMult += 0.15;
+    state.battle.globalAttackMult += 0.1;
   } else if (state.battle.currentEnemy.name === 'Arceus') {
-    state.battle.globalHPMult += 0.05;
+    state.battle.globalHPMult += 0.03;
   } else if (state.battle.currentEnemy.name === 'Rick') {
-    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 1 : 0.1;
+    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 0.75 : 0.075;
   } else if (state.battle.currentEnemy.name === 'Vegeta') {
-    state.battle.globalAttackMult += 0.18;
+    state.battle.globalAttackMult += 0.12;
   } else if (state.battle.currentEnemy.name === 'Chuck Norris') {
-    state.battle.globalHPMult += 0.05;
+    state.battle.globalHPMult += 0.04;
   } else if (state.battle.currentEnemy.name === 'Kaguya') {
-    state.battle.globalAttackMult += 0.5;
+    state.battle.globalAttackMult += 0.25;
   } else if (state.battle.currentEnemy.name === 'One Above All') {
-    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 5 : 0.5;
+    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 2 : 0.2;
   } else if (state.battle.currentEnemy.name === 'Saitama') {
-    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 5 : 0.5;
+    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 3 : 0.3;
   } else if (state.battle.currentEnemy.name === 'Kuzzi') {
-    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 10 : 1;
+    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 5 : 0.5;
   } else if (state.battle.currentEnemy.name === 'Your Ego') {
-    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 50 : 5;
+    state.battle.globalMaxCardsMult += skillMap[30002].purchased ? 10 : 1;
   }
 
   checkAchievements('battleMilestone', state.battle.currentEnemy.name);
 
   // Get next enemy
   state.battle.currentEnemy = getNextEnemy();
-  
+
+  // Auto-battle logic: if toggle is on and there are cards in slots, start battle automatically
+  if (state.battle.autoBattle && state.battle.currentEnemy && state.battle.slots.some(slot => slot !== null)) {
+    state.battle.paused = false;
+    // Use a small delay to ensure UI updates properly before starting battle
+    setTimeout(() => {
+      if (state.battle.autoBattle && !state.battle.paused && state.battle.currentEnemy && state.battle.slots.some(slot => slot !== null)) {
+        startBattleLoop();
+      }
+    }, 100);
+  }
+
   saveState();
-  
+
   // Only update UI if we're on battle tab
   if (currentTab === 'battles') {
     updateBattleUI();
@@ -563,6 +574,12 @@ function updateBattleUI() {
                   ${state.battle.slots.every(slot => slot === null) ? 'disabled' : ''}>
             ${state.battle.paused ? 'Start Battle' : 'Pause Battle'}
           </button>
+          ${skillMap[29103].purchased ? `
+            <button class="auto-battle-toggle ${state.battle.autoBattle ? 'active' : ''}"
+                    title="Automatically start battle when advancing to next enemy">
+              Auto-Battle
+            </button>
+          ` : ''}
         </div>
       </div>
       <div class="enemy-section">
@@ -709,6 +726,12 @@ function updateBattleUI() {
       state.battle.slots.splice(idx, 1);
       state.battle.slots.push(null);
 
+      if (state.battle.currentEnemy && state.battle.currentEnemy.name === 'Galactus') {
+        state.battle.currentEnemy.attack *= 1.5;
+      } else if (state.battle.currentEnemy && state.battle.currentEnemy.name === 'One Above All') {
+        state.battle.currentEnemy.attack += 1000;
+      }
+
       // 3) Pause battles (no cards → paused), save & re-render
       state.battle.paused = true;
       saveState();
@@ -736,14 +759,24 @@ function updateBattleUI() {
   if (pauseBtn) {
     pauseBtn.addEventListener('click', () => {
       if (!state.battle.slots.some(slot => slot !== null)) return;
-      
+
       state.battle.paused = !state.battle.paused;
       if (!state.battle.paused) {
         startBattleLoop();
       }
-      
+
       pauseBtn.classList.toggle('paused', state.battle.paused);
       pauseBtn.textContent = state.battle.paused ? 'Start Battle' : 'Pause Battle';
+    });
+  }
+
+  // Add auto-battle toggle handler
+  const autoBattleToggle = document.querySelector('.auto-battle-toggle');
+  if (autoBattleToggle) {
+    autoBattleToggle.addEventListener('click', () => {
+      state.battle.autoBattle = !state.battle.autoBattle;
+      autoBattleToggle.classList.toggle('active', state.battle.autoBattle);
+      saveState();
     });
   }
 
@@ -1458,6 +1491,76 @@ function battleLoop() {
     return;
   }
 
+  if(state.battle.currentEnemy.name === 'One Above All') {
+    // build a list of filled slot indices once
+    const filled = state.battle.slots
+      .map((c, i) => c !== null ? i : -1)
+      .filter(i => i !== -1);
+    let numAttacks = filled.length;
+    
+    if (state.battle.currentEnemy.stunTurns > 0) {
+      state.battle.currentEnemy.stunTurns--;
+    } else {
+      for (let i = 0; i < numAttacks; i++) {
+        // don't attack if battle paused or no enemy
+        if (state.battle.paused || !state.battle.currentEnemy) break;
+        
+        const filled = state.battle.slots
+          .map((c, idx) => c !== null ? idx : -1)
+          .filter(idx => idx !== -1);
+        let targetIdx = filled[filled.length - 1 - i];
+
+        const targetCard = state.battle.slots[targetIdx];
+        if (!targetCard) continue;                   // safety
+
+        // 3) dodge check
+        if (
+          state.battle.dodgeRealms.has(targetCard.realm) &&
+          Math.random() < state.battle.dodgeChance
+        ) {
+          showDamageNumber(0, `slot${targetIdx}`, 'dodge');
+          continue;
+        }
+
+        // 4) compute damage (absorb / protect)
+        let damage = state.battle.currentEnemy.attack;
+        let specialType = null;
+
+        // absorb
+        if (
+          state.battle.damageAbsorptionRealms.has(targetCard.realm) &&
+          state.battle.damageAbsorption > 0 &&
+          state.battle.currentEnemy.name !== 'Chaos'
+        ) {
+          damage *= (1 - state.battle.damageAbsorption);
+          specialType = 'absorb';
+        }
+
+        // protection from the next card
+        const nextCard = state.battle.slots[targetIdx + 1];
+        if (
+          nextCard &&
+          state.battle.protectionRealms.has(nextCard.realm) &&
+          Math.random() < state.battle.protectionChance
+        ) {
+          damage *= 0.5;
+          specialType = 'protect';
+        }
+
+        // 5) apply damage
+        targetCard.currentHp -= damage;
+        showDamageNumber(damage, `slot${targetIdx}`, specialType);
+
+        // 6) if killed, remove & shift
+        if (targetCard.currentHp <= 0) {
+          removeSlotCard(targetIdx);
+
+          state.battle.currentEnemy.attack += 1000;
+        }
+      }
+    }
+  }
+
   let resourcesUpdated = false;
   
   if ((state.battle.currentEnemy.name === 'Sephiroth' && Math.random() < 0.33)  || (state.battle.currentEnemy.name === 'Your Ego' && Math.random() < 0.5)) {
@@ -1494,11 +1597,11 @@ function battleLoop() {
           specialDamageType = 'empowerment';
         }
 
-        if (state.battle.currentEnemy.name === 'Darth Vader' && Math.random() < 0.98) {
+        if (state.battle.currentEnemy.name === 'Darth Vader' && Math.random() < 0.97) {
           damage *= 0.03;
-        }
-
-        if (state.battle.currentEnemy.name === 'Typhon' && Math.random() < 0.025) {
+          state.battle.currentEnemy.currentHp -= damage;
+          showDamageNumber(damage, 'enemy', 'mitigated');
+        } else if (state.battle.currentEnemy.name === 'Typhon' && Math.random() < 0.025) {
           state.battle.currentEnemy.currentHp += damage;
           showDamageNumber(damage, 'enemy', 'heal');
         } else if ((state.battle.currentEnemy.name === 'Dr Wily' && Math.random() < 0.25) ||
@@ -1558,7 +1661,7 @@ function battleLoop() {
             removeSlotCard(index);
           }
         } else if (state.battle.currentEnemy.name === 'Godzilla') {
-          const reflect = Math.floor(damage * 0.15);
+          const reflect = Math.floor(damage * 0.2);
           card.currentHp -= reflect;
           showDamageNumber(reflect, `slot${index}`, 'reflect');
 
@@ -1624,313 +1727,313 @@ function battleLoop() {
     }
   }
 
-
+  if (state.battle.currentEnemy.name !== 'One Above All') {
   
-  let numAttacks = 1;
-  if (state.battle.currentEnemy.name === 'Cronus' || state.battle.currentEnemy.name === 'Your Ego') {
-    if (Math.random() < 0.5) {
+    let numAttacks = 1;
+    if (state.battle.currentEnemy.name === 'Cronus' || state.battle.currentEnemy.name === 'Your Ego') {
+      if (Math.random() < 0.5) {
+        numAttacks = 2;
+      }
+    } else if (state.battle.currentEnemy.name === 'Chaos') {
       numAttacks = 2;
-    }
-  } else if (state.battle.currentEnemy.name === 'Chaos') {
-    numAttacks = 2;
-  } else if (state.battle.currentEnemy.name === 'Zeus' || state.battle.currentEnemy.name === 'Isshin') {
-    numAttacks = 3;
-  } else if(state.battle.currentEnemy.name === 'Aizen') {
-    while(Math.random() < 0.5) {
-      numAttacks += 1;
-    }
-  } else if(state.battle.currentEnemy.name === 'One Above All') {
-    // build a list of filled slot indices once
-    const filled = state.battle.slots
-      .map((c, i) => c !== null ? i : -1)
-      .filter(i => i !== -1);
-    numAttacks = filled.length;
-  }
-
-  let wasStunned = false;
-  
-  // 2) handle stun
-  if (state.battle.currentEnemy.stunTurns > 0) {
-    state.battle.currentEnemy.stunTurns--;
-    wasStunned = true;
-  } else {
-    for (let i = 0; i < numAttacks; i++) {
-      // don't attack if battle paused or no enemy
-      if (state.battle.paused || !state.battle.currentEnemy) break;
-
-      if (state.battle.currentEnemy.name === 'Pudge' && Math.random() < 0.25) {
-        const filled = state.battle.slots.filter(c => c !== null);
-
-        if (filled.length > 0) {
-          const pulledCard = filled.pop();
-          filled.unshift(pulledCard);
-
-          const pullDamage = Math.floor(pulledCard.currentHp * 0.5);
-          pulledCard.currentHp -= pullDamage;
-
-          state.battle.slots = [
-            ...filled,
-            ...Array(state.battle.slotLimit - filled.length).fill(null)
-          ];
-
-          updateBattleUI();
-
-          showDamageNumber(pullDamage, `slot0`, 'crit');
-        }
+    } else if (state.battle.currentEnemy.name === 'Zeus' || state.battle.currentEnemy.name === 'Isshin') {
+      numAttacks = 3;
+    } else if(state.battle.currentEnemy.name === 'Aizen') {
+      while(Math.random() < 0.5) {
+        numAttacks += 1;
       }
-      
-      // 1) pick which slot to hit
-      let targetIdx = 0;
-      if (state.battle.currentEnemy.name === 'Zeus' || (state.battle.currentEnemy.name === 'Isshin' && i != 0) || (state.battle.currentEnemy.name === 'Your Ego' && i != 0)) {
-        // gather filled slots
-        const filled = state.battle.slots
-          .map((c, idx) => c !== null ? idx : -1)
-          .filter(idx => idx !== -1);
-        if (filled.length === 0) break;             // no cards to hit
-        targetIdx = filled[Math.floor(Math.random() * filled.length)];
-      }
+    } 
 
-      if (state.battle.currentEnemy.name === 'One Above All') {
-        const filled = state.battle.slots
-          .map((c, idx) => c !== null ? idx : -1)
-          .filter(idx => idx !== -1);
-        targetIdx = filled[filled.length - 1 - i];
-      }
+    let wasStunned = false;
+    
+    if (state.battle.currentEnemy.stunTurns > 0) {
+      state.battle.currentEnemy.stunTurns--;
+      wasStunned = true;
+    } else {
+      for (let i = 0; i < numAttacks; i++) {
+        // don't attack if battle paused or no enemy
+        if (state.battle.paused || !state.battle.currentEnemy) break;
 
-      const targetCard = state.battle.slots[targetIdx];
-      if (!targetCard) continue;                   // safety
+        if (state.battle.currentEnemy.name === 'Pudge' && Math.random() < 0.25) {
+          const filled = state.battle.slots.filter(c => c !== null);
 
-      // 3) dodge check
-      if (
-        state.battle.dodgeRealms.has(targetCard.realm) &&
-        Math.random() < state.battle.dodgeChance &&
-        state.battle.currentEnemy.name !== 'Tartarus' &&
-        state.battle.currentEnemy.name !== 'Chuck Norris'
-      ) {
-        showDamageNumber(0, `slot${targetIdx}`, 'dodge');
-        continue;
-      }
+          if (filled.length > 0) {
+            const pulledCard = filled.pop();
+            filled.unshift(pulledCard);
 
-      // 4) compute damage (absorb / protect)
-      let damage = state.battle.currentEnemy.attack;
-      let specialType = null;
+            const pullDamage = Math.floor(pulledCard.currentHp * 0.5);
+            pulledCard.currentHp -= pullDamage;
 
-      // absorb
-      if (
-        state.battle.damageAbsorptionRealms.has(targetCard.realm) &&
-        state.battle.damageAbsorption > 0 &&
-        state.battle.currentEnemy.name !== 'Chaos'
-      ) {
-        damage *= (1 - state.battle.damageAbsorption);
-        specialType = 'absorb';
-      }
+            state.battle.slots = [
+              ...filled,
+              ...Array(state.battle.slotLimit - filled.length).fill(null)
+            ];
 
-      // protection from the next card
-      const nextCard = state.battle.slots[targetIdx + 1];
-      if (
-        nextCard &&
-        state.battle.protectionRealms.has(nextCard.realm) &&
-        Math.random() < state.battle.protectionChance &&
-        state.battle.currentEnemy.name !== 'Poseidon'
-      ) {
-        damage *= 0.5;
-        specialType = 'protect';
-      }
+            updateBattleUI();
 
-      if (state.battle.currentEnemy.name === 'Genghis Khan' && Math.random() < 0.25) {
-        damage *= 3;
-        specialType = 'empowerment';
-      }
-
-      if (state.battle.currentEnemy.name === 'Your Ego' && Math.random() < 0.05) {
-        damage *= 5;
-        specialType = 'empowerment';
-      }
-
-      if (state.battle.currentEnemy.name === 'Sauron' && Math.random() < 0.1) {
-        damage = targetCard.maxHp * 1.01;
-        specialType = 'empowerment';
-      }
-
-      // 5) apply damage
-      targetCard.currentHp -= damage;
-      showDamageNumber(damage, `slot${targetIdx}`, specialType);
-
-      if ((state.battle.currentEnemy.name === 'Shao Kahn' || state.battle.currentEnemy.name === 'Kaguya') && Math.random() < 0.4) {
-        const filled = state.battle.slots
-          .map((c, idx) => c !== null ? idx : -1)
-          .filter(idx => idx !== -1);
-
-        if (filled.length) {
-          const lastIdx = filled[filled.length - 1];
-          const lastCard = state.battle.slots[lastIdx];
-
-          lastCard.currentHp -= damage;
-          showDamageNumber(damage, `slot${lastIdx}`, specialType);
-
-          if (lastCard.currentHp <= 0) {
-            removeSlotCard(lastIdx);
+            showDamageNumber(pullDamage, `slot0`, 'crit');
           }
         }
-      }
+        
+        // 1) pick which slot to hit
+        let targetIdx = 0;
+        if (state.battle.currentEnemy.name === 'Zeus' || (state.battle.currentEnemy.name === 'Isshin' && i != 0) || (state.battle.currentEnemy.name === 'Your Ego' && i != 0)) {
+          // gather filled slots
+          const filled = state.battle.slots
+            .map((c, idx) => c !== null ? idx : -1)
+            .filter(idx => idx !== -1);
+          if (filled.length === 0) break;             // no cards to hit
+          targetIdx = filled[Math.floor(Math.random() * filled.length)];
+        }
 
-      if (state.battle.currentEnemy.name === 'Hal9000') {
-        // 1) Build sorted list of filled slots
-        const filled = state.battle.slots
-          .map((c, i) => c !== null ? i : -1)
-          .filter(i => i !== -1);
+        if (state.battle.currentEnemy.name === 'One Above All') {
+          const filled = state.battle.slots
+            .map((c, idx) => c !== null ? idx : -1)
+            .filter(idx => idx !== -1);
+          targetIdx = filled[filled.length - 1 - i];
+        }
 
-        // 2) Find where our original hit landed
-        const startPos = filled.indexOf(targetIdx);
-        if (startPos !== -1) {
-          // 3) Propagate half each time
-          let splash = damage / 2;
-          for (let p = startPos + 1; p < filled.length; p++) {
-            const idx = filled[p];
-            const splashAmt = Math.floor(splash);
-            if (splashAmt <= 0) break;
+        const targetCard = state.battle.slots[targetIdx];
+        if (!targetCard) continue;                   // safety
 
-            const card2 = state.battle.slots[idx];
-            card2.currentHp -= splashAmt;
-            showDamageNumber(splashAmt, `slot${idx}`, specialType);
+        // 3) dodge check
+        if (
+          state.battle.dodgeRealms.has(targetCard.realm) &&
+          Math.random() < state.battle.dodgeChance &&
+          state.battle.currentEnemy.name !== 'Tartarus' &&
+          state.battle.currentEnemy.name !== 'Chuck Norris'
+        ) {
+          showDamageNumber(0, `slot${targetIdx}`, 'dodge');
+          continue;
+        }
 
-            if (card2.currentHp <= 0) {
-              removeSlotCard(idx);
+        // 4) compute damage (absorb / protect)
+        let damage = state.battle.currentEnemy.attack;
+        let specialType = null;
+
+        // absorb
+        if (
+          state.battle.damageAbsorptionRealms.has(targetCard.realm) &&
+          state.battle.damageAbsorption > 0 &&
+          state.battle.currentEnemy.name !== 'Chaos'
+        ) {
+          damage *= (1 - state.battle.damageAbsorption);
+          specialType = 'absorb';
+        }
+
+        // protection from the next card
+        const nextCard = state.battle.slots[targetIdx + 1];
+        if (
+          nextCard &&
+          state.battle.protectionRealms.has(nextCard.realm) &&
+          Math.random() < state.battle.protectionChance &&
+          state.battle.currentEnemy.name !== 'Poseidon'
+        ) {
+          damage *= 0.5;
+          specialType = 'protect';
+        }
+
+        if (state.battle.currentEnemy.name === 'Genghis Khan' && Math.random() < 0.25) {
+          damage *= 3;
+          specialType = 'empowerment';
+        }
+
+        if (state.battle.currentEnemy.name === 'Your Ego' && Math.random() < 0.05) {
+          damage *= 5;
+          specialType = 'empowerment';
+        }
+
+        if (state.battle.currentEnemy.name === 'Sauron' && Math.random() < 0.08) {
+          damage = targetCard.maxHp * 1.01;
+          specialType = 'empowerment';
+        }
+
+        // 5) apply damage
+        targetCard.currentHp -= damage;
+        showDamageNumber(damage, `slot${targetIdx}`, specialType);
+
+        if ((state.battle.currentEnemy.name === 'Shao Kahn' || state.battle.currentEnemy.name === 'Kaguya') && Math.random() < 0.4) {
+          const filled = state.battle.slots
+            .map((c, idx) => c !== null ? idx : -1)
+            .filter(idx => idx !== -1);
+
+          if (filled.length) {
+            const lastIdx = filled[filled.length - 1];
+            const lastCard = state.battle.slots[lastIdx];
+
+            lastCard.currentHp -= damage;
+            showDamageNumber(damage, `slot${lastIdx}`, specialType);
+
+            if (lastCard.currentHp <= 0) {
+              removeSlotCard(lastIdx);
             }
-            splash /= 2;
+          }
+        }
+
+        if (state.battle.currentEnemy.name === 'Hal9000') {
+          // 1) Build sorted list of filled slots
+          const filled = state.battle.slots
+            .map((c, i) => c !== null ? i : -1)
+            .filter(i => i !== -1);
+
+          // 2) Find where our original hit landed
+          const startPos = filled.indexOf(targetIdx);
+          if (startPos !== -1) {
+            // 3) Propagate half each time
+            let splash = damage / 2;
+            for (let p = startPos + 1; p < filled.length; p++) {
+              const idx = filled[p];
+              const splashAmt = Math.floor(splash);
+              if (splashAmt <= 0) break;
+
+              const card2 = state.battle.slots[idx];
+              card2.currentHp -= splashAmt;
+              showDamageNumber(splashAmt, `slot${idx}`, specialType);
+
+              if (card2.currentHp <= 0) {
+                removeSlotCard(idx);
+              }
+              splash /= 2;
+            }
+          }
+        }
+
+        if (state.battle.currentEnemy.name === 'Thanos' && Math.random() < 0.0333) {
+          const filled = state.battle.slots
+            .map((c,i) => c ? i : -1)
+            .filter(i => i !== -1);
+          if (filled.length) {
+            const toKill = Math.ceil(filled.length/2);
+            const killIdx = filled.sort(() => Math.random()-0.5).slice(0,toKill);
+            killIdx.forEach(idx => {
+              state.battle.slots[idx] = null;
+              showDamageNumber(0, `slot${idx}`, 'snap');
+            });
+            state.battle.slots = state.battle.slots.filter(c => c !== null)
+                                      .concat(Array(state.battle.slotLimit - filled.length).fill(null));
+            // Delay UI update to allow damage numbers to show
+            setTimeout(() => updateBattleUI(), 100);
+          }
+        }
+
+        if ((state.battle.currentEnemy.name === 'Rick' && Math.random() < 0.13) ||
+            (state.battle.currentEnemy.name === 'Kuzzi' && Math.random() < 0.66)) {
+          const filled = state.battle.slots
+            .map((c, i) => c ? i : -1)
+            .filter(i => i !== -1);
+
+          if (filled.length) {
+            const idx = filled[Math.floor(Math.random() * filled.length)];
+
+            showDamageNumber(0, `slot${idx}`, 'poof');
+
+            state.battle.slots[idx] = null;
+            state.battle.slots = state.battle.slots
+              .filter(c => c !== null)
+              .concat(Array(state.battle.slotLimit - filled.length).fill(null));
+
+            // Delay UI update to allow damage numbers to show
+            setTimeout(() => updateBattleUI(), 100);
+          }
+        }
+
+        if (state.battle.currentEnemy.name === 'Doctor Manhattan') {
+          const currencies = Object.keys(state.currencies);
+          if (currencies.length) {
+            const randKey = currencies[Math.floor(Math.random() * currencies.length)];
+            const currVal    = state.currencies[randKey];
+            const drainAmt   = currVal.mul(0.4).floor();
+            state.currencies[randKey] = currVal.minus(drainAmt);
+          }
+          resourcesUpdated = true;
+        }
+
+        if (state.battle.currentEnemy.name === 'Your Ego') {
+          const currencies = Object.keys(state.currencies);
+          if (currencies.length) {
+            const randKey = currencies[Math.floor(Math.random() * currencies.length)];
+            const currVal    = state.currencies[randKey];
+            state.currencies[randKey] = currVal.minus(currVal);
+          }
+          resourcesUpdated = true;
+        }
+
+        if ((state.battle.currentEnemy.name === 'Dracula' || state.battle.currentEnemy.name === 'Your Ego' || state.battle.currentEnemy.name === 'Saitama' || state.battle.currentEnemy.name === 'Doctor Manhattan')
+            && state.battle.currentEnemy.maxHp > state.battle.currentEnemy.currentHp) {
+          const lifestealMult = state.battle.currentEnemy.name === 'Saitama' ? 1 : state.battle.currentEnemy.name === 'Doctor Manhattan' ? 2 : 5;
+          const healAmount = Math.min(state.battle.currentEnemy.maxHp - state.battle.currentEnemy.currentHp, damage * lifestealMult, (targetCard.currentHp + damage) * lifestealMult);
+          state.battle.currentEnemy.currentHp += healAmount;
+          showDamageNumber(healAmount, 'enemy', 'heal');
+        }
+
+        if (state.battle.currentEnemy.name === 'Michael Scott' && Math.random() < 0.5) {
+          const papercutDamage = targetCard.maxHp * 0.05;
+          targetCard.currentHp -= papercutDamage;
+          showDamageNumber(papercutDamage, `slot${targetIdx}`, 'papercut');
+        }
+
+        if (state.battle.currentEnemy.name === 'Kaguya' && Math.random() < 0.03) {
+          const extraDamage = Math.floor(state.battle.currentEnemy.currentHp * 0.01) + Math.floor(targetCard.maxHp * 0.01);
+          targetCard.currentHp -= extraDamage;
+          showDamageNumber(extraDamage, `slot${targetIdx}`, 'papercut');
+        }
+
+        // 6) if killed, remove & shift
+        if (targetCard.currentHp <= 0) {
+          removeSlotCard(targetIdx);
+
+          if (state.battle.currentEnemy.name === 'Galactus') {
+            state.battle.currentEnemy.attack *= 1.5;
           }
         }
       }
-
-      if (state.battle.currentEnemy.name === 'Thanos' && Math.random() < 0.04) {
-        const filled = state.battle.slots
-          .map((c,i) => c ? i : -1)
-          .filter(i => i !== -1);
-        if (filled.length) {
-          const toKill = Math.ceil(filled.length/2);
-          const killIdx = filled.sort(() => Math.random()-0.5).slice(0,toKill);
-          killIdx.forEach(idx => {
-            state.battle.slots[idx] = null;
-            showDamageNumber(0, `slot${idx}`, 'snap');
-          });
-          state.battle.slots = state.battle.slots.filter(c => c !== null)
-                                    .concat(Array(state.battle.slotLimit - filled.length).fill(null));
-          // Delay UI update to allow damage numbers to show
-          setTimeout(() => updateBattleUI(), 100);
-        }
-      }
-
-      if ((state.battle.currentEnemy.name === 'Rick' && Math.random() < 0.15) ||
-          (state.battle.currentEnemy.name === 'Kuzzi' && Math.random() < 0.66)) {
-        const filled = state.battle.slots
-          .map((c, i) => c ? i : -1)
-          .filter(i => i !== -1);
-
-        if (filled.length) {
-          const idx = filled[Math.floor(Math.random() * filled.length)];
-
-          showDamageNumber(0, `slot${idx}`, 'poof');
-
-          state.battle.slots[idx] = null;
-          state.battle.slots = state.battle.slots
-            .filter(c => c !== null)
-            .concat(Array(state.battle.slotLimit - filled.length).fill(null));
-
-          // Delay UI update to allow damage numbers to show
-          setTimeout(() => updateBattleUI(), 100);
-        }
-      }
-
-      if (state.battle.currentEnemy.name === 'Doctor Manhattan') {
-        const currencies = Object.keys(state.currencies);
-        if (currencies.length) {
-          const randKey = currencies[Math.floor(Math.random() * currencies.length)];
-          const currVal    = state.currencies[randKey];
-          const drainAmt   = currVal.mul(0.4).floor();
-          state.currencies[randKey] = currVal.minus(drainAmt);
-        }
-        resourcesUpdated = true;
-      }
-
-      if (state.battle.currentEnemy.name === 'Your Ego') {
-        const currencies = Object.keys(state.currencies);
-        if (currencies.length) {
-          const randKey = currencies[Math.floor(Math.random() * currencies.length)];
-          const currVal    = state.currencies[randKey];
-          state.currencies[randKey] = currVal.minus(currVal);
-        }
-        resourcesUpdated = true;
-      }
-
-      if ((state.battle.currentEnemy.name === 'Dracula' || state.battle.currentEnemy.name === 'Your Ego' || state.battle.currentEnemy.name === 'Saitama' || state.battle.currentEnemy.name === 'Doctor Manhattan')
-          && state.battle.currentEnemy.maxHp > state.battle.currentEnemy.currentHp) {
-        const lifestealMult = state.battle.currentEnemy.name === 'Saitama' ? 1 : state.battle.currentEnemy.name === 'Doctor Manhattan' ? 2 : 5;
-        const healAmount = Math.min(state.battle.currentEnemy.maxHp - state.battle.currentEnemy.currentHp, damage * lifestealMult, (targetCard.currentHp + damage) * lifestealMult);
-        state.battle.currentEnemy.currentHp += healAmount;
-        showDamageNumber(healAmount, 'enemy', 'heal');
-      }
-
-      if (state.battle.currentEnemy.name === 'Michael Scott' && Math.random() < 0.5) {
-        const papercutDamage = targetCard.maxHp * 0.05;
-        targetCard.currentHp -= papercutDamage;
-        showDamageNumber(papercutDamage, `slot${targetIdx}`, 'papercut');
-      }
-
-      // 6) if killed, remove & shift
-      if (targetCard.currentHp <= 0) {
-        removeSlotCard(targetIdx);
-
-        if (state.battle.currentEnemy.name === 'Galactus') {
-          state.battle.currentEnemy.attack *= 1.5;
-        }
-      }
     }
-  }
 
-  if (state.battle.currentEnemy.name === 'Training Dummy' && state.battle.currentEnemy.currentHp < state.battle.currentEnemy.maxHp) {
-    const healAmount = Math.min(state.battle.currentEnemy.maxHp - state.battle.currentEnemy.currentHp, state.battle.currentEnemy.currentHp * 0.001);
-    state.battle.currentEnemy.currentHp += healAmount;
-    showDamageNumber(healAmount, 'enemy', 'heal');
-  } else if ((state.battle.currentEnemy.name === 'Gaia' || state.battle.currentEnemy.name === 'Papa Smurf') && state.battle.currentEnemy.currentHp < state.battle.currentEnemy.maxHp && Math.random() < 0.05) {
-    const healAmount = Math.min(state.battle.currentEnemy.maxHp - state.battle.currentEnemy.currentHp, state.battle.currentEnemy.maxHp * 0.02);
-    state.battle.currentEnemy.currentHp += healAmount;
-    showDamageNumber(healAmount, 'enemy', 'heal');
-  } else if (state.battle.currentEnemy.name === 'T800' && state.battle.currentEnemy.currentHp >= state.battle.currentEnemy.maxHp && Math.random() < 0.03) {
-    const healAmount = Math.min(state.battle.currentEnemy.maxHp - state.battle.currentEnemy.currentHp, state.battle.currentEnemy.maxHp * 0.1);
-    state.battle.currentEnemy.currentHp += healAmount;
-    showDamageNumber(healAmount, 'enemy', 'heal');
-  } else if (state.battle.currentEnemy.name === 'Nyx' && Math.random() < 0.03) {
-    const filledIndices = state.battle.slots
-      .map((card, i) => card !== null ? i : -1)
-      .filter(i => i !== -1);
+    if (state.battle.currentEnemy.name === 'Training Dummy' && state.battle.currentEnemy.currentHp < state.battle.currentEnemy.maxHp) {
+      const healAmount = Math.min(state.battle.currentEnemy.maxHp - state.battle.currentEnemy.currentHp, state.battle.currentEnemy.currentHp * 0.001);
+      state.battle.currentEnemy.currentHp += healAmount;
+      showDamageNumber(healAmount, 'enemy', 'heal');
+    } else if ((state.battle.currentEnemy.name === 'Gaia' || state.battle.currentEnemy.name === 'Papa Smurf') && state.battle.currentEnemy.currentHp < state.battle.currentEnemy.maxHp && Math.random() < 0.05) {
+      const healAmount = Math.min(state.battle.currentEnemy.maxHp - state.battle.currentEnemy.currentHp, state.battle.currentEnemy.maxHp * 0.02);
+      state.battle.currentEnemy.currentHp += healAmount;
+      showDamageNumber(healAmount, 'enemy', 'heal');
+    } else if (state.battle.currentEnemy.name === 'T800' && state.battle.currentEnemy.currentHp >= state.battle.currentEnemy.maxHp && Math.random() < 0.03) {
+      const healAmount = Math.min(state.battle.currentEnemy.maxHp - state.battle.currentEnemy.currentHp, state.battle.currentEnemy.maxHp * 0.18);
+      state.battle.currentEnemy.currentHp += healAmount;
+      showDamageNumber(healAmount, 'enemy', 'heal');
+    } else if (state.battle.currentEnemy.name === 'Nyx' && Math.random() < 0.03) {
+      const filledIndices = state.battle.slots
+        .map((card, i) => card !== null ? i : -1)
+        .filter(i => i !== -1);
 
-    if (filledIndices.length > 0) {
-      const idx = filledIndices[
-        Math.floor(Math.random() * filledIndices.length)
-      ];
+      if (filledIndices.length > 0) {
+        const idx = filledIndices[
+          Math.floor(Math.random() * filledIndices.length)
+        ];
 
-      removeSlotCard(idx);
+        removeSlotCard(idx);
+      }
+    } else if (state.battle.currentEnemy.name === 'Kratos' && !wasStunned) {
+      state.battle.currentEnemy.attack *= 1.04;
+      updateBattleStats();
+    } else if (state.battle.currentEnemy.name === 'Vegeta' && state.battle.vegetaEvolutions < 5 && Math.random() < 0.09 && !wasStunned) {
+      state.battle.currentEnemy.attack *= 2;
+      state.battle.currentEnemy.maxHp *= 2;
+      state.battle.currentEnemy.currentHp = state.battle.currentEnemy.maxHp;
+      state.battle.vegetaEvolutions += 1;
+      showDamageNumber(0, 'enemy', 'evolve');
+      updateBattleStats();
+    } else if (state.battle.currentEnemy.name === 'Chuck Norris' && Math.random() < 0.2 && !wasStunned) {
+      state.battle.currentEnemy.attack *= 1.1;
+      updateBattleStats();
+    } else if (state.battle.currentEnemy.name === 'Saitama' && !wasStunned) {
+      state.battle.currentEnemy.attack *= 1.01;
+      state.battle.slots.forEach((card) => {
+        if (!card) return;
+        card.attack = Math.floor(card.attack * 0.9);
+      });
+      updateBattleStats();
     }
-  } else if (state.battle.currentEnemy.name === 'Kratos' && !wasStunned) {
-    state.battle.currentEnemy.attack *= 1.04;
-    updateBattleStats();
-  } else if (state.battle.currentEnemy.name === 'Vegeta' && state.battle.vegetaEvolutions < 5 && Math.random() < 0.09 && !wasStunned) {
-    state.battle.currentEnemy.attack *= 2;
-    state.battle.currentEnemy.maxHp *= 2;
-    state.battle.currentEnemy.currentHp = state.battle.currentEnemy.maxHp;
-    state.battle.vegetaEvolutions += 1;
-    showDamageNumber(0, 'enemy', 'evolve');
-    updateBattleStats();
-  } else if (state.battle.currentEnemy.name === 'Chuck Norris' && Math.random() < 0.2 && !wasStunned) {
-    state.battle.currentEnemy.attack *= 1.1;
-    updateBattleStats();
-  } else if (state.battle.currentEnemy.name === 'Saitama' && !wasStunned) {
-    state.battle.currentEnemy.attack *= 1.01;
-    state.battle.slots.forEach((card) => {
-      if (!card) return;
-      card.attack = Math.floor(card.attack * 0.9);
-    });
-    updateBattleStats();
   }
 
   if (resourcesUpdated) {
