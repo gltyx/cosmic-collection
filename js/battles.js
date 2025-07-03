@@ -1734,7 +1734,7 @@ function battleLoop() {
       if (Math.random() < 0.5) {
         numAttacks = 2;
       }
-    } else if (state.battle.currentEnemy.name === 'Chaos') {
+    } else if (state.battle.currentEnemy.name === 'Chaos' || (state.battle.currentEnemy.name === 'Kaguya' && Math.random() < 0.4)) {
       numAttacks = 2;
     } else if (state.battle.currentEnemy.name === 'Zeus' || state.battle.currentEnemy.name === 'Isshin') {
       numAttacks = 3;
@@ -1785,6 +1785,15 @@ function battleLoop() {
           if (filled.length === 0) break;             // no cards to hit
           targetIdx = filled[Math.floor(Math.random() * filled.length)];
         }
+
+        if (state.battle.currentEnemy.name === 'Kaguya' && i != 0) {
+          const filled = state.battle.slots
+            .map((c, idx) => c !== null ? idx : -1)
+            .filter(idx => idx !== -1);
+          if (filled.length === 0) break;             // no cards to hit
+          targetIdx = filled[filled.length - 1];
+        }
+
 
         if (state.battle.currentEnemy.name === 'One Above All') {
           const filled = state.battle.slots
@@ -1852,7 +1861,7 @@ function battleLoop() {
         targetCard.currentHp -= damage;
         showDamageNumber(damage, `slot${targetIdx}`, specialType);
 
-        if ((state.battle.currentEnemy.name === 'Shao Kahn' || state.battle.currentEnemy.name === 'Kaguya') && Math.random() < 0.4) {
+        if ((state.battle.currentEnemy.name === 'Shao Kahn') && Math.random() < 0.4) {
           const filled = state.battle.slots
             .map((c, idx) => c !== null ? idx : -1)
             .filter(idx => idx !== -1);
@@ -1972,7 +1981,7 @@ function battleLoop() {
           showDamageNumber(papercutDamage, `slot${targetIdx}`, 'papercut');
         }
 
-        if (state.battle.currentEnemy.name === 'Kaguya' && Math.random() < 0.03) {
+        if (state.battle.currentEnemy.name === 'Kaguya' && Math.random() < 0.04) {
           const extraDamage = Math.floor(state.battle.currentEnemy.currentHp * 0.01) + Math.floor(targetCard.maxHp * 0.01);
           targetCard.currentHp -= extraDamage;
           showDamageNumber(extraDamage, `slot${targetIdx}`, 'papercut');
@@ -2028,9 +2037,13 @@ function battleLoop() {
       updateBattleStats();
     } else if (state.battle.currentEnemy.name === 'Saitama' && !wasStunned) {
       state.battle.currentEnemy.attack *= 1.01;
-      state.battle.slots.forEach((card) => {
-        if (!card) return;
-        card.attack = Math.floor(card.attack * 0.9);
+
+      const filledIndices = state.battle.slots
+        .map((card, i) => card !== null ? i : -1)
+        .filter(i => i !== -1);
+      filledIndices.forEach((idx) => {
+        const card = state.battle.slots[idx];
+        card.attack = Math.floor(card.attack * (1 - (0.1 / (idx+1))));
       });
       updateBattleStats();
     }

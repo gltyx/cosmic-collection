@@ -19100,7 +19100,7 @@ window.cards = [
     },
     "description": "Death had a near Chuck Norris experience once.",
     "power": 2000,
-    "defense": 9000,
+    "defense": 11250,
     "baseEffects": [
       {
         "type": "currencyPerPoke",
@@ -19327,7 +19327,7 @@ window.cards = [
     },
     "description": "Breaking the 4th wall? The dev who wasted hundreds of hours of your life on this game.",
     "power": 50000,
-    "defense": 125000,
+    "defense": 50000,
     "baseEffects": [
       {
         "type": "currencyPerPoke",

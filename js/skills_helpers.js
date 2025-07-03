@@ -3385,7 +3385,7 @@ window.skills = [
       id: 30013,
       name: "That's Enough Water",
       description: "Remove Sea World deselect cooldown multiplier.",
-      cost: { realmId: 12, currencyId: "coral", amount: 2.5e34 },
+      cost: { realmId: 12, currencyId: "coral", amount: 5e34 },
       purchased: false
     },
     {

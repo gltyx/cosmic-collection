@@ -667,7 +667,8 @@ function showTab(tab) {
   else if (tab === 'merchant') {
     document.getElementById('tab-btn-merchant')
       .classList.remove('new-offers');
-      renderMerchantTab();
+    removeMerchantIcon();
+    renderMerchantTab();
   }
   else if (tab === 'battles') {
     updateBattleUI();

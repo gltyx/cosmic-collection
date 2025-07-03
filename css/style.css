@@ -208,6 +208,13 @@ nav#tabs { margin-bottom: 15px; }
 .tab-btn:hover { background: var(--tab-hover); }
 .tab-btn.active { background: var(--tab-active); font-weight:bold; }
 
+.tab-btn.merchant-tab {
+  width: 110px;
+}
+.tab-btn.merchant-icon-showing {
+  padding: 0px 4px 0px 8px;
+}
+
 /* Tab content (with texture) */
 .tab-content {
   background: var(--tab-content-bg) var(--texture) repeat;
@@ -247,6 +254,20 @@ nav#tabs { margin-bottom: 15px; }
   background: linear-gradient(135deg, rgba(0,255,0,0.3), rgba(0,128,0,0.3));
   pointer-events: none;
   z-index: 1;
+}
+
+/* Merchant tab icon styling */
+.merchant-tab-icon {
+  width: 28px !important;
+  height: 28px !important;
+  margin-left: 5% !important;
+  border-radius: 40% !important;
+  vertical-align: middle !important;
+  border: 1px solid rgba(255,255,255,0.3) !important;
+  position: relative !important;
+  z-index: 2 !important;
+  display: inline-block !important;
+  object-fit: cover !important;
 }
 
 #currency-bar {

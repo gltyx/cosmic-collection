@@ -142,10 +142,10 @@ const merchants = [
       merchantOdds: 200,
       raritiesSkipped: [],
       priceMultiplier: 1,
-      rarityScaling: 4.5,
+      rarityScaling: 5,
       guaranteedRealm: 10,
       guaranteedCount: 5,
-      description: 'Next level blacksmith. She guarantees at least 5 weapon cards and has +2 to rarity scaling.',
+      description: 'Next level blacksmith. She guarantees at least 5 weapon cards and has +2.5 to rarity scaling.',
       unlocked: false
     },
     {
@@ -154,12 +154,12 @@ const merchants = [
       cardMultiplier: 1,
       refreshTime: 1,
       merchantOdds: 150,
-      raritiesSkipped: ['junk'],
+      raritiesSkipped: [],
       priceMultiplier: 1,
-      rarityScaling: 2.5,
+      rarityScaling: 7.5,
       guaranteedRealm: 11,
       guaranteedCount: 2,
-      description: 'Nobody knows just how old this guy is. Unlike other merchants, he sells Greek Gods cards - always has two. And he does not sell junk.',
+      description: 'Nobody knows just how old this guy is. Unlike other merchants, he sells Greek Gods cards - always has two. And +5 to rarity scaling.',
       unlocked: false
     },
     {
@@ -170,10 +170,10 @@ const merchants = [
       merchantOdds: 50,
       raritiesSkipped: [],
       priceMultiplier: 0.5,
-      rarityScaling: 10,
+      rarityScaling: 12.5,
       guaranteedRealm: 12,
       guaranteedCount: 3,
-      description: 'The ultimate merchant. Always has 3 boss cards. 2x cards, 1/2 price, and +7.5 to rarity scaling.',
+      description: 'The ultimate merchant. Always has 3 boss cards. 2x cards, 1/2 price, and +10 to rarity scaling.',
       unlocked: false
     }
     
@@ -424,7 +424,10 @@ const merchants = [
     }
   
     const btn = document.getElementById('tab-btn-merchant');
-    if (!btn.classList.contains('active')) btn.classList.add('new-offers');
+    if (!btn.classList.contains('active')) {
+      btn.classList.add('new-offers');
+      addMerchantIcon();
+    }
 
     // if offers length is 0, set merchant refresh time to 10 seconds
     if (state.merchantOffers.length === 0) {
@@ -890,6 +893,63 @@ if (bulkBuyBtn) {
 // Global merchant tooltip element to prevent flickering
 let merchantTooltip = null;
 let merchantTooltipTimeout = null;
+
+// ——— MERCHANT ICON FUNCTIONS ———
+function addMerchantIcon() {
+  const btn = document.getElementById('tab-btn-merchant');
+  if (!btn) return;
+
+  // Remove existing icon if present
+  removeMerchantIcon();
+
+  if (state.currentMerchant) {
+    const icon = document.createElement('img');
+    icon.className = 'merchant-tab-icon';
+
+    
+    document.getElementById('tab-btn-merchant')
+      .classList.add('merchant-icon-showing');
+
+    // Use the merchant's image
+    const merchantSlug = slugify(state.currentMerchant.name);
+    const imagePath = `assets/images/merchants/${merchantSlug}.jpg`;
+
+    // Load image via cache if available
+    if (window.imageCache) {
+      window.imageCache.getImage('merchants', imagePath).then(cachedImg => {
+        if (cachedImg) {
+          icon.src = cachedImg.src;
+        } else {
+          // Fallback to direct path
+          icon.src = imagePath;
+        }
+      }).catch(() => {
+        // Fallback to direct path
+        icon.src = imagePath;
+      });
+    } else {
+      // Direct path if no cache
+      icon.src = imagePath;
+    }
+
+    btn.appendChild(icon);
+  }
+}
+
+function removeMerchantIcon() {
+  const btn = document.getElementById('tab-btn-merchant');
+  if (!btn) return;
+
+  document.getElementById('tab-btn-merchant')
+    .classList.remove('merchant-icon-showing');
+
+  const existingIcon = btn.querySelector('.merchant-tab-icon');
+  if (existingIcon) {
+    existingIcon.remove();
+  }
+}
+
+// Note: Using the global slugify function from resources.js
 
 // Setup tooltip functionality for merchant cards
 function setupMerchantTooltips() {

@@ -155,7 +155,7 @@ function getBossMechanicsByName() {
                             killReward: '+4% Global HP Mult' 
                         },
   'Kaguya':             { 
-                            specialPowers: 'Only Takes Damage from the Front Card. 40% chance to also attack the last card. 3% chance for attack to deal extra damage equal to (1% of Her current health + 1% of target max health).', 
+                            specialPowers: 'Only Takes Damage from the Front Card. 40% chance to also attack the last card. 4% chance for attack to deal extra damage equal to (1% of Her current health + 1% of target max health).', 
                             killReward: '+25% Global Attack Mult' 
                         },
   'One Above All':      { 
@@ -163,7 +163,7 @@ function getBossMechanicsByName() {
                             killReward: skillMap[30002].purchased ? '+200% to Global Max Cards Mult' : '+20% to Global Max Cards Mult' 
                         },
   'Saitama':            { 
-                            specialPowers: 'Increases his Attack by 1%. Reduces Attack of all your cards by 10%. 1x Lifesteal.', 
+                            specialPowers: 'Increases his Attack by 1%. Reduces Attack of all your cards by (10% / slot #). 1x Lifesteal.', 
                             killReward: skillMap[30002].purchased ? '+300% to Global Max Cards Mult' : '+30% to Global Max Cards Mult' 
                         },
   'Kuzzi':              { 
