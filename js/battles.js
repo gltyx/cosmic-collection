@@ -710,8 +710,8 @@ function updateBattleUI() {
     cardOuter.addEventListener('click', () => {
       if (!state.skipRemoveFromBattleDialog){
         const ok = confirm(
-          "Are you sure you want to remove this card from battle? " +
-          "The card will still remain sacrificed."
+          "你确定要从战斗中移除这张卡吗？ " +
+          "该卡牌将仍处于牺牲状态."
         );
         if (!ok) return;
       }
