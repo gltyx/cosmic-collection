@@ -23,6 +23,9 @@ function initializeSettingsTab() {
     // Game tips button
     const gameTipsBtn = document.getElementById('gameTipsBtn');
 
+    // Welcome Message button
+    const welcomeMessageBtn = document.getElementById('welcomeMessageBtn');
+
     // The End button
     const theEndBtn = document.getElementById('theEndBtn');
 
@@ -623,6 +626,13 @@ function initializeSettingsTab() {
     // Game tips button handler
     gameTipsBtn.addEventListener('click', function() {
         gameTipsModal.style.display = 'flex';
+    });
+
+    // Welcome Message button handler
+    welcomeMessageBtn.addEventListener('click', function() {
+        if (typeof showWelcomeModal === 'function') {
+            showWelcomeModal();
+        }
     });
 
     // Close game tips handlers

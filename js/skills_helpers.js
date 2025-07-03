@@ -1172,63 +1172,63 @@ window.skills = [
     {
       id: 11001,
       name: "Better Merchants",
-      description: "Increase Merchant Rarity Scaling by 0.1.",
+      description: "Increase Merchant Rarity Scaling by 0.2.",
       cost: { realmId: 3, currencyId: "pollen", amount: 5e6 },
       purchased: false
     },
     {
       id: 11002,
       name: "Better Merchants 2",
-      description: "Increase Merchant Rarity Scaling by 0.1.",
+      description: "Increase Merchant Rarity Scaling by 0.2.",
       cost: { realmId: 4, currencyId: "egg", amount: 5e6 },
       purchased: false
     },
     {
       id: 11003,
       name: "Better Merchants 3",
-      description: "Increase Merchant Rarity Scaling by 0.1.",
+      description: "Increase Merchant Rarity Scaling by 0.2.",
       cost: { realmId: 5, currencyId: "crystal", amount: 5e6 },
       purchased: false
     },
     {
       id: 11004,
       name: "Better Merchants 4",
-      description: "Increase Merchant Rarity Scaling by 0.1.",
+      description: "Increase Merchant Rarity Scaling by 0.2.",
       cost: { realmId: 6, currencyId: "rune", amount: 5e6 },
       purchased: false
     },
     {
       id: 11005,
       name: "Better Merchants 5",
-      description: "Increase Merchant Rarity Scaling by 0.1.",
+      description: "Increase Merchant Rarity Scaling by 0.2.",
       cost: { realmId: 7, currencyId: "tooth", amount: 5e6 },
       purchased: false
     },
     {
       id: 11006,
       name: "Better Merchants 6",
-      description: "Increase Merchant Rarity Scaling by 0.1.",
+      description: "Increase Merchant Rarity Scaling by 0.2.",
       cost: { realmId: 8, currencyId: "coin", amount: 5e6 },
       purchased: false
     },
     {
       id: 11007,
       name: "Better Merchants 7",
-      description: "Increase Merchant Rarity Scaling by 0.1.",
+      description: "Increase Merchant Rarity Scaling by 0.2.",
       cost: { realmId: 9, currencyId: "spirit", amount: 5e6 },
       purchased: false
     },
     {
       id: 11008,
       name: "Better Merchants 8",
-      description: "Increase Merchant Rarity Scaling by 0.1.",
+      description: "Increase Merchant Rarity Scaling by 0.2.",
       cost: { realmId: 10, currencyId: "pearl", amount: 5e11 },
       purchased: false
     },
     {
       id: 11009,
       name: "Better Merchants 9",
-      description: "Increase Merchant Rarity Scaling by 0.1.",
+      description: "Increase Merchant Rarity Scaling by 0.3.",
       cost: { realmId: 11, currencyId: "zeal", amount: 5e11 },
       purchased: false
     },
@@ -1452,7 +1452,7 @@ window.skills = [
     {
       id: 14005,
       name: "Solicitors are not welcome here!",
-      description: "Lower odds for the first 11 merchants by 5x.",
+      description: "Lower odds for the first 11 merchants by 6x.",
       cost: { realmId: 12, currencyId: "spirit", amount: 5e28 },
       purchased: false
     },
@@ -4049,8 +4049,10 @@ function applySkill(id, skipCost = false) {
       case 11006: // Better Merchants 6
       case 11007: // Better Merchants 7
       case 11008: // Better Merchants 8
+        state.effects.extraMerchantRarityScaling += 0.2;
+        break;
       case 11009: // Better Merchants 9
-        state.effects.extraMerchantRarityScaling += 0.1;
+        state.effects.extraMerchantRarityScaling += 0.3;
         break;
       case 11010: // Ultimate Better Merchants
         state.effects.extraMerchantRarityScaling += 0.6;
@@ -4137,7 +4139,7 @@ function applySkill(id, skipCost = false) {
         break;
       case 14005: // Solicitors are not welcome here.
         for (let i = 0; i < 11; i++) {
-          merchants[i].merchantOdds /= 5;
+          merchants[i].merchantOdds /= 6;
         }
         break;
       case 15001: // Fleeting Realm

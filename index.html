@@ -51,28 +51,54 @@
   <!-- Welcome Modal -->
   <div id="welcome-modal" class="welcome-modal" style="display: none;">
     <div class="welcome-content">
-      <h2>Welcome to Cosmic Collection - an Incremental Collectible Card Game!</h2>
-      <div class="welcome-tips">
-        <div class="tip-item">
-          <div class="tip-text">Poke the black hole and see what it spits out</div>
+      <div class="welcome-header">
+        <h1 class="welcome-title">Welcome to Cosmic Collection</h1>
+        <div class="welcome-subtitle">An Incremental Collectible Card Game</div>
+        <div style="margin-top: 45px; margin-bottom: 15px;" class="welcome-sparkles">🃏⚫🃏</div>
+      </div>
+
+      <div class="welcome-body">
+        <div class="welcome-intro">
+          <p>Start your journey through the cosmos—where the black hole is pokeable and every card has a story to tell.</p>
         </div>
-        <div class="tip-item">
-          <div class="tip-text">Swipe cards to flip them over</div>
+
+        <div class="welcome-tips">
+          <div class="tip-item">
+            <div class="tip-icon">🕳️</div>
+            <div class="tip-text">Poke the black hole to see what cards it spits out.</div>
+          </div>
+          <div class="tip-item">
+            <div class="tip-icon">🃏</div>
+            <div class="tip-text">Swipe cards to flip them over and reveal what you got.</div>
+          </div>
+          <div class="tip-item">
+            <div class="tip-icon">👆</div>
+            <div class="tip-text">Click a card to check out its stats and special effects.</div>
+          </div>
+          <div class="tip-item">
+            <div class="tip-icon">🌌</div>
+            <div class="tip-text">Use the tabs above to explore your collection, buy new skills, buy cards from traveling merchants, and more.</div>
+          </div>
+          <div class="tip-item">
+            <div class="tip-icon">⚔️</div>
+            <div class="tip-text">Later on, you will unlock Battles where you can use your cards to strategically take on various enemies.</div>
+          </div>
+          <div class="tip-item">
+            <div class="tip-icon">💡</div>
+            <div class="tip-text">You’ll get the hang of it as you go. But if you want to dive deeper, there’s a whole section of Game Tips under Settings. Totally optional, but super handy.</div>
+          </div>
         </div>
-        <div class="tip-item">
-          <div class="tip-text">Click cards to see details</div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-text">Explore the tabs on top to see your collection, skills, and more</div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-text">I'm sure you can figure the rest out. Or check out the much more in depth Game Tips under Settings. Enjoy!</div>
+
+        <div class="welcome-challenge">
+          <h2>Can you collect them all?</h2>
         </div>
       </div>
-      <h2>Can you collect them all?</h2>
-      <button class="welcome-close-btn">Got it!</button>
+
+      <button class="welcome-close-btn">Begin Your Journey!</button>
     </div>
   </div>
+
+
 
   <!-- Currency Bar -->
   <div id="currency-bar"></div>
@@ -177,7 +203,7 @@
   </div>
   <div id="tab-content-settings" class="tab-content" style="display:none;">
     <div class="settings-container">
-      <div class="version">Game Version: v0.996</div>
+      <div class="version">Game Version: v0.997</div>
       <div class="settings-section">
         <h2>Save & Load</h2>
         <div class="settings-buttons">
@@ -230,6 +256,9 @@
         <div class="settings-buttons">
           <button id="theEndBtn" class="settings-button the-end-button" style="display: none;">
             <i class="fas fa-crown"></i> The End
+          </button>
+          <button id="welcomeMessageBtn" class="settings-button welcome-message-button">
+            <i class="fas fa-star"></i> Welcome Message
           </button>
           <button id="gameTipsBtn" class="settings-button toggle-button">
             <i class="fas fa-lightbulb"></i> Game Tips

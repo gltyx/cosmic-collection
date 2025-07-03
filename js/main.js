@@ -4029,14 +4029,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
   // Show welcome modal for new users
   if (!state.lastSaveTime) {
-    const welcomeModal = document.getElementById('welcome-modal');
-    welcomeModal.style.display = 'flex';
-    
-    // Close button handler
-    const closeBtn = welcomeModal.querySelector('.welcome-close-btn');
-    closeBtn.onclick = () => {
-      welcomeModal.style.display = 'none';
-    };
+    showWelcomeModal();
   }
 
   // Initialize all game data
@@ -4369,6 +4362,46 @@ function checkGauntletOnLoad() {
     clearInterval(gauntletInterval);
   }
   gauntletInterval = setInterval(checkGauntletTime, 30000);
+}
+
+// Welcome Modal Function
+function showWelcomeModal() {
+  const welcomeModal = document.getElementById('welcome-modal');
+  if (!welcomeModal) return;
+
+  welcomeModal.style.display = 'flex';
+
+  // Remove any existing event listeners to prevent duplicates
+  const closeBtn = welcomeModal.querySelector('.welcome-close-btn');
+  if (closeBtn) {
+    // Clone the button to remove all event listeners
+    const newCloseBtn = closeBtn.cloneNode(true);
+    closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+
+    // Add the close handler
+    newCloseBtn.onclick = () => {
+      welcomeModal.style.display = 'none';
+    };
+  }
+
+  // Remove existing click-outside handler and add new one
+  const newWelcomeModal = welcomeModal.cloneNode(true);
+  welcomeModal.parentNode.replaceChild(newWelcomeModal, welcomeModal);
+
+  // Add click outside to close
+  newWelcomeModal.onclick = (e) => {
+    if (e.target === newWelcomeModal) {
+      newWelcomeModal.style.display = 'none';
+    }
+  };
+
+  // Re-add the close button handler to the new modal
+  const newCloseBtn = newWelcomeModal.querySelector('.welcome-close-btn');
+  if (newCloseBtn) {
+    newCloseBtn.onclick = () => {
+      newWelcomeModal.style.display = 'none';
+    };
+  }
 }
 
 // The End Modal - Epic Finale

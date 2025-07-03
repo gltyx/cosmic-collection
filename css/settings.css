@@ -547,6 +547,31 @@
     }
 }
 
+/* Welcome Message Button Styling */
+.welcome-message-button {
+    background: linear-gradient(45deg, #4a90e2, #5ba3f5) !important;
+    border: 2px solid #87ceeb !important;
+    color: white !important;
+    transition: all 0.3s ease !important;
+    animation: welcomeButtonGlow 2s ease-in-out infinite alternate;
+}
+
+.welcome-message-button:hover {
+    background: linear-gradient(45deg, #5ba3f5, #6bb6ff) !important;
+    border-color: #a0d8ff !important;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 20px rgba(74, 144, 226, 0.8);
+}
+
+@keyframes welcomeButtonGlow {
+    0% {
+        box-shadow: 0 0 15px rgba(74, 144, 226, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 25px rgba(74, 144, 226, 0.8);
+    }
+}
+
 /* Tips modal styles */
 .tips-modal-content {
     max-width: 800px !important;
