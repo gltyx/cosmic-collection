@@ -1313,7 +1313,7 @@ window.skills = [
       id: 12201,
       name: "Space Bending Interceptor",
       description: "Unlocks a device that intercepts space bending (both passively and when you flip over cards), which can be activated to automate flipping over cards for its duration.",
-      cost: { realmId: 5, currencyId: "egg", amount: 8e6 },
+      cost: { realmId: 5, currencyId: "egg", amount: 6e6 },
       purchased: false
     },
     {
@@ -1327,7 +1327,7 @@ window.skills = [
       id: 12203,
       name: "Interceptor Poker Automation",
       description: "Interceptor also auto-pokes black hole in addition to flipping cards.",
-      cost: { realmId: 10, currencyId: "spirit", amount: 3e8 },
+      cost: { realmId: 9, currencyId: "spirit", amount: 3e7 },
       purchased: false
     },
     {
@@ -3300,7 +3300,7 @@ window.skills = [
     {
       id: 30001,
       name: "Spiritual Boss Poke",
-      description: "Pokes that have Spirit Familiars and Bosses realms selected (other realms can be selected as well) yield 11x cards.",
+      description: "Pokes that have Spirit Familiars and Bosses realms selected (other realms can be selected as well) yield 7x cards.",
       cost: { realmId: 12, currencyId: "spirit", amount: 2.2e32 },
       purchased: false
     },
@@ -3349,7 +3349,7 @@ window.skills = [
     {
       id: 30008,
       name: "Nothing But Love",
-      description: "Pokes generate 6.9x worth of pokes of all currencies.",
+      description: "Pokes generate 33x worth of pokes of all currencies.",
       cost: { realmId: 12, currencyId: "zeal", amount: 1e36 },
       purchased: false
     },

@@ -1642,7 +1642,7 @@ function battleLoop() {
             showDamageNumber(weakPointDamage, 'enemy', 'weakPoint');
           }
           if (state.battle.dismemberRealms.has(card.realm) && Math.random() < state.battle.dismemberChance) {
-            state.battle.currentEnemy.attack = Math.floor(state.battle.currentEnemy.attack * (state.battle.currentEnemy.name === 'Your Ego' ? 0.9975 : 0.99));
+            state.battle.currentEnemy.attack = Math.floor(state.battle.currentEnemy.attack * (state.battle.currentEnemy.name === 'Your Ego' ? 0.995 : 0.99));
             if (state.battle.currentEnemy.attack <= 1) {
               state.battle.currentEnemy.attack = 1;
               unlockAchievement('secret18');
@@ -1691,7 +1691,7 @@ function battleLoop() {
         }
 
         if (state.battle.stunRealms.has(card.realm) && Math.random() < state.battle.stunChance && state.battle.currentEnemy.name !== 'Uranus' && state.battle.currentEnemy.name !== 'Zeus') {
-          if (state.battle.currentEnemy.name !== 'Your Ego' || Math.random() < 0.25) {
+          if (state.battle.currentEnemy.name !== 'Your Ego' || Math.random() < 0.5) {
             state.battle.currentEnemy.stunTurns += 1;
             showDamageNumber(0, 'enemy', 'stun');
           }

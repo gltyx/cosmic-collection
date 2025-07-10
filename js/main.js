@@ -761,7 +761,7 @@ function performPoke() {
   const isSpecialCondition = skillMap[30001].purchased && state.selectedRealms.includes(9) && state.selectedRealms.includes(12);
 
   if (isSpecialCondition) {
-    draws *= 11;
+    draws *= 7;
   }
 
   // Create and animate floating number
@@ -881,7 +881,7 @@ function performPoke() {
   Object.entries(state.effects.currencyPerPoke).forEach(([curId, rate]) => {
     if (!rate || state.currencies[curId] == null) return;
     state.currencies[curId] =
-      state.currencies[curId].plus(new Decimal(rate * state.effects.currencyPerPokeMultiplier[curId] * (skillMap[30008].purchased ? 6.9 : 1) ));
+      state.currencies[curId].plus(new Decimal(rate * state.effects.currencyPerPokeMultiplier[curId] * (skillMap[30008].purchased ? 33 : 1) ));
   });
 
   // Check for affordable skills after currency update
@@ -1277,8 +1277,8 @@ function updateHoleTooltipContent() {
   // Check for special condition (realm 9 + 12 with skill 30001)
   const isSpecialCondition = skillMap[30001].purchased && state.selectedRealms.includes(9) && state.selectedRealms.includes(12);
   if (isSpecialCondition) {
-    minCards *= 11;
-    maxCards *= 11;
+    minCards *= 7;
+    maxCards *= 7;
   }
 
   // Determine card value colors
@@ -1301,7 +1301,7 @@ function updateHoleTooltipContent() {
   `;
 
   if (skillMap[30008].purchased) {
-    holeTooltip.innerHTML += `<div style="color: gray">♥ Get 6.9x Pokes of Currencies ♥</div>`;
+    holeTooltip.innerHTML += `<div style="color: gray">♥ Get 33x Pokes of Currencies ♥</div>`;
   }
 }
 
@@ -1463,7 +1463,7 @@ function updateTimeCrunchTooltipContent() {
   if (!tooltip) return;
 
   const timeUntilCharged = Math.max(0, state.timeCrunchMaxChargeTime - state.timeCrunchValue);
-  const pokeMultiplier = skillMap[30008].purchased ? 690 : (skillMap[12302].purchased ? 100 : 25);
+  const pokeMultiplier = skillMap[30008].purchased ? 3300 : (skillMap[12302].purchased ? 100 : 25);
 
   // Calculate total currency gain
   let totalGain = 0;
