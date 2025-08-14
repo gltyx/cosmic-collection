@@ -3328,7 +3328,7 @@ window.skills = [
     {
       id: 30005,
       name: "Oooh Shiny!",
-      description: "+1B Max Cards per Poke.",
+      description: "+777M Max Cards per Poke.",
       cost: { realmId: 12, currencyId: "pearl", amount: 1e33 },
       purchased: false
     },
@@ -4691,7 +4691,7 @@ function applySkill(id, skipCost = false) {
         if (loadFinished) updatePokeFilterStats();
         break;
       case 30005:
-        state.effects.maxCardsPerPoke += 1e9;
+        state.effects.maxCardsPerPoke += 7.77e8;
         break;
       case 30006:
         realms[2].deselectMultiplier /= 2;

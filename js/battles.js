@@ -1926,7 +1926,7 @@ function battleLoop() {
         }
 
         if ((state.battle.currentEnemy.name === 'Rick' && Math.random() < 0.13) ||
-            (state.battle.currentEnemy.name === 'Kuzzi' && Math.random() < 0.66)) {
+            (state.battle.currentEnemy.name === 'Kuzzi' && Math.random() < 0.5)) {
           const filled = state.battle.slots
             .map((c, i) => c ? i : -1)
             .filter(i => i !== -1);
@@ -2475,7 +2475,7 @@ function showResetBattlesDialog() {
     if (state.achievementsUnlocked.has('endgameChecklist3') && cards.filter(c => c.quantity > 0).length === 0 && cards.filter(c => c.realm === 11 || c.realm === 12).every(c => c.locked && !state.battle.lockoutTimers[c.id])) {
       state.runningGauntlet = true;
       startGauntletTimer();
-      showTidbit('You have started the gauntlet! You have 4 hours, good luck!');
+      showTidbit('You have started the gauntlet! You have 2 hours, good luck!');
     }
     
     const firstBossRealm = realms.find(r => r.unlocked && r.id === state.battle.currentBattleRealm);

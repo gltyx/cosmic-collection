@@ -3280,7 +3280,7 @@ function giveCard(cardId, amount = 1) {
   // --- 2. Update quantity ---
   c.quantity += amount;
 
-  if (c.quantity >= 1e16) {
+  if (c.quantity >= 1e17) {
     unlockAchievement('endgameChecklist');
   }
 
@@ -4266,7 +4266,7 @@ function checkGauntletTime() {
   }
 
   const elapsed = Date.now() - state.gauntletStartTime;
-  const fourHours = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
+  const fourHours = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
   const remaining = fourHours - elapsed;
 
   // Check if Gauntlet has failed (time expired)
@@ -4283,14 +4283,6 @@ function checkGauntletTime() {
 
   // Define notification thresholds in minutes
   const notifications = [
-    { minutes: 225, message: '3 hours and 45 minutes remaining in Gauntlet!' },
-    { minutes: 210, message: '3 hours and 30 minutes remaining in Gauntlet!' },
-    { minutes: 195, message: '3 hours and 15 minutes remaining in Gauntlet!' },
-    { minutes: 180, message: '3 hours remaining in Gauntlet!' },
-    { minutes: 165, message: '2 hours and 45 minutes remaining in Gauntlet!' },
-    { minutes: 150, message: '2 hours and 30 minutes remaining in Gauntlet!' },
-    { minutes: 135, message: '2 hours and 15 minutes remaining in Gauntlet!' },
-    { minutes: 120, message: '2 hours remaining in Gauntlet!' },
     { minutes: 105, message: '1 hour and 45 minutes remaining in Gauntlet!' },
     { minutes: 90, message: '1 hour and 30 minutes remaining in Gauntlet!' },
     { minutes: 75, message: '1 hour and 15 minutes remaining in Gauntlet!' },
@@ -4331,7 +4323,7 @@ function checkGauntletOnLoad() {
   }
 
   const elapsed = Date.now() - state.gauntletStartTime;
-  const fourHours = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
+  const fourHours = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
   const remaining = fourHours - elapsed;
 
   // Check if Gauntlet has failed while offline
